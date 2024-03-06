@@ -5,4 +5,11 @@ export default {
     googleClientId: '86207633715-lho3f9u9fq6lnrcrppp73nnhqg1gsbch.apps.googleusercontent.com',
     googleClientSecret: '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',
     googleOAuthRedirectUri: 'http://localhost:5000/api/sessions/oauth/google',
+    databaseHost: process.env.DB_HOST || 'localhost',
+    databaseName: process.env.DB_DATABASE,
+    databaseUser: process.env.DB_USER,
+    databasePassword: process.env.DB_PASSWORD,
+    databasePort: process.env.DB_PORT || '5432',
+    databaseSSL: process.env.DB_SSL || 'false',
+    // jwtSecret: process.env.JWT_SECRET || '<KEY>',
 }

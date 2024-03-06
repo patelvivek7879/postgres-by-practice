@@ -3,9 +3,6 @@ import qs from 'querystring';
 import config from 'config';
 import axios from 'axios';
 
-
-console.log("************************************************************************************************ 1");
-
 const router = express.Router();
 
 const getGoogleOAuthTokens = async ({code}: {code:string}) =>{

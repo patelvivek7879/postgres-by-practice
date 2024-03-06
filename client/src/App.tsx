@@ -1,15 +1,11 @@
-import './App.css'
-import getGoogleOAuthURL from './auth/getGoogleOAuthURL'
+import "split-pane-react/esm/themes/default.css";
+import AppContainer from "./AppContainer";
+
 
 function App() {
-
-  return (
-    <>
-      <a href={getGoogleOAuthURL()}>
-        Login with Google
-      </a>
-    </>
+  return(
+    <AppContainer/>
   )
 }
 
-export default App
+export default App;

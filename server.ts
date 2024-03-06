@@ -6,6 +6,12 @@ import pingRouter from './routes/ping';
 import auth from './routes/auth';
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs';
+import cors from 'cors';
+import runQuery from './routes/run-query';
+import config from 'config'
+import { Client }   from "pg";
+import { connectToDatabase } from './db-connection';
+
 const swaggerDocument = YAML.load('./swagger.yaml');
 
 export const logger = pino(
@@ -18,9 +24,6 @@ export const logger = pino(
         colorize: true,
       },
     },
-    //   redact: {
-    //     paths: ['email'],
-    //   }}
   }
 );
 
@@ -29,11 +32,20 @@ dotenv.config();
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
+
 app.use(express.json())
+// app.use(cors())
+app.use(cors({
+  origin:"http://localhost:3100",
+  methods:"GET,POST,PUT,DELETE",
+  credentials:true
+}));
 
 // Routes 
 app.use(pingRouter);
-app.use('/api/sessions/oauth/google/',auth);
+
+app.use(runQuery);
+// app.use('/api/sessions/oauth/google/',auth);
 
 app.get('/', (req: Request, res: Response) => {
   logger.info('Hello from Pino logger route /');
@@ -45,4 +57,5 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`);
+  connectToDatabase()
 });
