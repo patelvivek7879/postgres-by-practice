@@ -1,17 +1,18 @@
 import {
   Button,
   Card,
+  Divider,
   Form,
   Input,
   Layout,
+  Row,
+  Space,
   Typography,
   notification,
 } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
-import queryString from "query-string";
+import { useNavigate } from "react-router-dom";
 
-const { Content } = Layout;
 const { Title } = Typography;
 
 const Login = () => {
@@ -69,74 +70,82 @@ const Login = () => {
   };
 
   const googleLoginHandler = () => {
-    window.location.href = 'http://localhost:5000/api/v1/auth/google';
-    // fetch("/api/v1/auth/google")
-      // .then((response1) => {
-      //   console.log("r1 -->>",response1);
-      //   return response1.json();
-      // })
-      // .then((response2) => console.log("r2 -->>",response2))
-      // .catch();
+    window.location.href = "http://localhost:5000/api/v1/auth/google";
   };
 
   return (
     <Layout className="w-full h-screen d-flex justify-center align-middle">
-      <Card className="ml-auto mr-auto min-w-96 min-h-200">
-        <Title level={5} className="flex justify-center">
-          Pratice Postgres
-        </Title>
-
-        <Button
-          onClick={() => {
-            googleLoginHandler();
-          }}
-          icon={<GoogleOutlined />}
-        >
-          Login with Google
-        </Button>
-
-        <Form
-          form={form}
-          layout={"vertical"}
-          onFinish={(values) => localLogin(values)}
-        >
-          <Form.Item
-            label="Email or Username"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Please enter your email or username!",
-              },
-            ]}
-          >
-            <Input placeholder="enter your email or username" />
-          </Form.Item>
-
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input.Password type="password" placeholder="Password" />
-          </Form.Item>
-          <Form.Item className="flex justify-center">
-            <Button type="primary" htmlType="submit">
-              Sign In
-            </Button>
-          </Form.Item>
-        </Form>
-        <Card bordered={false} className="flex justify-center shadow-none">
-          Don't have an account?
+      <Card
+        className="ml-auto mr-auto min-w-96"
+        title={
+          <Row justify={'center'} align={'middle'}>
+          <Title level={5} className="flex justify-center align-middle mt-2">
+            Pratice Postgres
+          </Title>
+          </Row>
+        }
+      >
+        <div className="mt-4">
           <Button
-            className="m-0 p-1"
-            type="link"
-            size="small"
-            onClick={() => navigate("/register")}
+            className="google-login-form-button"
+            onClick={() => {
+              googleLoginHandler();
+            }}
+            icon={<GoogleOutlined />}
           >
-            register
+            Sign in with Google
           </Button>
-        </Card>
+          <Divider>
+            <Typography.Text type="secondary">OR</Typography.Text>
+          </Divider>
+          <Form
+            form={form}
+            layout={"vertical"}
+            onFinish={(values) => localLogin(values)}
+            id="form-login"
+          >
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your email or username!",
+                },
+              ]}
+            >
+              <Input placeholder="Enter your email" />
+            </Form.Item>
+
+            <Form.Item
+              name="password"
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
+            >
+              <Input.Password type="password" placeholder="Password" />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+              >
+                Sign In
+              </Button>
+            </Form.Item>
+          </Form>
+          <Space className="flex justify-center" align="center">
+            <>Don't have an account?</>
+            <Button
+              className="m-0 pl-0"
+              type="link"
+              size="small"
+              onClick={() => navigate("/register")}
+            >
+              register
+            </Button>
+          </Space>
+        </div>
       </Card>
     </Layout>
   );
