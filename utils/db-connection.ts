@@ -2,7 +2,8 @@ import dotenv from 'dotenv';
 import config from 'config'
 import { Client }   from "pg";
 
-import {logger } from "./server"
+// local files imports
+import {logger } from "./logger"
 
 dotenv.config();
 
@@ -26,7 +27,6 @@ export const connectToDatabase = async () => {
     try{
       await client.connect();
       logger.info("Connection established successfully ..."); 
-  
     }catch(err){
         logger.error("Error connecting to PostgreSQL database", err);
     }

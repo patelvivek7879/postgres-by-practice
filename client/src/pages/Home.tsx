@@ -21,6 +21,7 @@ import ResultComponent from "@/components/ResultComponent";
 import AceEditorComponent from "@/components/AceEditorComponents";
 import Sidebar from "@/components/Sidebar";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 const { Header } = Layout;
@@ -32,8 +33,26 @@ const Home = () => {
   const [sizes, setSizes] = useState([300, "40%", "auto"]);
 
   const [result, setResult] = useState(null);
-  const logout = () => {
+
+  const navigate = useNavigate();
+
+  const logout = async () => {
     console.log("logout function got invoked");
+    try{
+      const response = await fetch("/api/v1/logout",{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: '',
+      })
+      console.log(JSON.stringify(response));
+      if(response.status === 200){
+        navigate('/login',{ replace: true });
+      }
+    }catch (error){
+      console.log("   logout error   ",error)
+    }
   };
 
   const changeTheme = () => {

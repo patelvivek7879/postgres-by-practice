@@ -1,13 +1,9 @@
-import { Get, Route } from "tsoa";
 import express from 'express';
-
-import { logger } from '../server';
 
 const router = express.Router();
 
-router.get('/ping', (req, res) => {
-    logger.info(req.url)
-    res.send('pong');
+router.get('/ping', async (req, res) => {
+    res.status(200).send('pong');
 })
 
 export default router;

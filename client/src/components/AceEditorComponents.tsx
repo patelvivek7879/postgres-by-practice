@@ -19,12 +19,15 @@ import modeJsonUrl from "ace-builds/src-noconflict/mode-json?url";
 ace.config.setModuleUrl("ace/mode/json", modeJsonUrl);
 
 import themeChromeUrl from "ace-builds/src-noconflict/theme-chrome?url";
+import { useNavigate } from "react-router-dom";
 ace.config.setModuleUrl("ace/theme/chrome", themeChromeUrl);
 
 const { Title } = Typography;
 
 const AceEditorComponent = ({setResult}: any) => {
   const [sqlValue, setSQLValue] = useState("");
+
+  const navigate = useNavigate();
 
   const formatSQLValue = (value: string) => {
     const formattedValue = format(value, {
@@ -38,7 +41,7 @@ const AceEditorComponent = ({setResult}: any) => {
 
   const runQuery = async () => {
     try {
-      const response = await fetch("api/execute/query", {
+      const response = await fetch("api/v1/execute/query", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         // mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -68,13 +71,14 @@ const AceEditorComponent = ({setResult}: any) => {
           placement: "bottomRight",
           duration: 3,
         })
-      }else{
+      }else if(result.status === 401){
         notification.error({
           message: "Error",
           description: result.message,
           placement: "bottomRight",
           duration: 3,
         })
+        navigate("/login")
       }
     } catch (error) {
       console.log(error);
