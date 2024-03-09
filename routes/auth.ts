@@ -143,8 +143,8 @@ export const googlePassportStrategy = new PassportGoogleStrategy(
 
 function handleGoogleCallback(req: Request, res: Response, next: NextFunction) {
   passport.authenticate('google', {
-    successRedirect:  'http://localhost:3100/pbyp',
-    failureRedirect: 'http://localhost:3100/pbyp/login',
+    successRedirect:  process.env.SUCCESS_REDIRECT,
+    failureRedirect: process.env.FAILURE_REDIRECT,
   })(req, res, next);
 }
 
@@ -198,6 +198,21 @@ router.post("/api/v1/logout", function (req, res, next) {
     // res.utils.data('signout', {});
     res.redirect("/pbyp/login");
   });
+});
+
+
+router.get('/api/v1/user/profile', (req, res) => {
+  // Check if user is authenticated
+  if (req.isAuthenticated()) {
+      // Access the logged-in user from the session
+      const user = req.user;
+
+      console.log(user)
+      res.json({ user });
+  } else {
+      // User is not authenticated
+      res.status(401).json({ message: 'Unauthorized' });
+  }
 });
 
 export default router;

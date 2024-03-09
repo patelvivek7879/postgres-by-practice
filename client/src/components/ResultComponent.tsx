@@ -1,10 +1,9 @@
 import { Typography } from "antd";
 import JSONPretty from 'react-json-pretty';
 
-
 const { Title } = Typography
 
-const ResultComponent = ({result}: any) => {
+const ResultComponent = ({result}:{result: any}) => {
   return (
     <div className="p-4">
       <Title level={5}>Results</Title>

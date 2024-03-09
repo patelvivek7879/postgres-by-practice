@@ -28,6 +28,7 @@ import AceEditorComponent from "@/components/AceEditorComponents";
 import Sidebar from "@/components/Sidebar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SendOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 const { Header } = Layout;
@@ -46,6 +47,7 @@ const Home = () => {
   const logout = async () => {
     console.log("logout function got invoked");
     try {
+      localStorage.removeItem('userProfile')
       const response = await fetch("/api/v1/logout", {
         method: "POST",
         headers: {
@@ -79,6 +81,8 @@ const Home = () => {
     },
   ];
 
+  const avtarPicUrl = JSON.parse(localStorage.getItem('userProfile') ?? "")?.picture ?? '';
+
   return (
     <Layout
       style={{ backgroundColor: "#fff", minHeight: "calc(100vh - 64px)" }}
@@ -93,11 +97,11 @@ const Home = () => {
             <div style={{ width: 300, height: 250 }}>
               <Form>
                 <Form.Item>
-                  <Input.TextArea />
+                  <Input.TextArea rows={7}/>
                 </Form.Item>
                 <Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    Submit
+                  <Button className="w-full" icon={<SendOutlined />} htmlType="submit">
+                    Send
                   </Button>
                 </Form.Item>
               </Form>
@@ -154,13 +158,12 @@ const Home = () => {
             {/* TODO: google image  */}
             <Avatar
               size={32}
-              src={
+              src={ avtarPicUrl ?
                 <img
-                  src={
-                    "https://lh3.googleusercontent.com/a/ACg8ocIakDxk9P5ZCHmQQTjNVWLPzrYtvqZX8qlUgcl0irHTeJe7=s96-c"
-                  }
-                />
+                  src={avtarPicUrl}
+                /> : null
               }
+              icon={ !avtarPicUrl ? <UserOutlined size={32} /> : null}
             />
           </Dropdown>
         </Space>
@@ -178,7 +181,7 @@ const Home = () => {
             split="vertical"
             sizes={sizes}
             onChange={setSizes}
-            sashRender={(_index: number, _active: boolean) => {
+            sashRender={() => {
               return (
                 <Divider
                   type="vertical"
@@ -197,7 +200,7 @@ const Home = () => {
                 split="horizontal"
                 sizes={sizesParent}
                 onChange={setSizesParent}
-                sashRender={(_index: number, _active: boolean) => {
+                sashRender={() => {
                   return (
                     <Divider
                       type="horizontal"

@@ -2,7 +2,6 @@ import { Button, Card, Divider, Form, Input, Layout, Space, Typography } from "a
 import { useNavigate } from "react-router-dom";
 import { GoogleOutlined } from "@ant-design/icons";
 
-const { Content } = Layout;
 const { Title } = Typography;
 
 const Register = () => {

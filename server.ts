@@ -14,6 +14,7 @@ import expressSession from 'express-session';
 import bodyParser from 'body-parser';
 import { prisma } from './repository/User';
 import session from 'express-session';
+import path from 'path';
 
 
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -94,6 +95,22 @@ app.use(usersRoutes);
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use(
+  express.static(path.join(__dirname, 'public'), {
+      setHeaders: () => ({
+          // private - browsers can cache but not CDNs
+          // no-cache - caches must revalidate with the origin server before using a cached copy
+          'Cache-Control': 'no-cache, private',
+      }),
+  }),
+);
+
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'), {
+      headers: { 'Cache-Control': 'no-cache, private' },
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`);

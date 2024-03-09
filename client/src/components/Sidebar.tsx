@@ -3,13 +3,15 @@ import {
   LeftCircleOutlined,
   RightCircleOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Layout, Menu, Progress, Row, Space, Tooltip, Typography } from "antd";
+import { Button, Card, Layout, Progress, Row, Space, Tooltip, Typography } from "antd";
 
 const { Sider } = Layout;
 const { Title } = Typography;
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+
+  const progress = JSON.parse(localStorage.getItem('userProfile') ?? "").progress
 
   return (
     <Sider
@@ -51,7 +53,7 @@ const Sidebar = () => {
       <Card title={null} size="small" className="w-full">
         <Title level={5}>Progress</Title>
         <Space style={{width: '100%'}} size={'middle'} className="d-flex flex-row justify-center mt-4" >
-      <Progress type="circle" percent={50} size="small"/>
+      <Progress type="circle" percent={progress} size="small"/>
         2 / 30
       </Space>
       </Card>
