@@ -3,9 +3,15 @@ import {
   Button,
   Divider,
   Dropdown,
+  FloatButton,
+  Form,
+  Input,
   Layout,
   MenuProps,
+  Popover,
   Space,
+  Switch,
+  Tooltip,
   Typography,
 } from "antd";
 import SplitPane, { Pane } from "split-pane-react";
@@ -33,25 +39,26 @@ const Home = () => {
   const [sizes, setSizes] = useState([300, "40%", "auto"]);
 
   const [result, setResult] = useState(null);
+  const [showFeedbackBtn, setShowFeedbackBtn] = useState(true);
 
   const navigate = useNavigate();
 
   const logout = async () => {
     console.log("logout function got invoked");
-    try{
-      const response = await fetch("/api/v1/logout",{
-        method: 'POST',
+    try {
+      const response = await fetch("/api/v1/logout", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: '',
-      })
+        body: "",
+      });
       console.log(JSON.stringify(response));
-      if(response.status === 200){
-        navigate('/login',{ replace: true });
+      if (response.status === 200) {
+        navigate("/login", { replace: true });
       }
-    }catch (error){
-      console.log("   logout error   ",error)
+    } catch (error) {
+      console.log("   logout error   ", error);
     }
   };
 
@@ -73,7 +80,38 @@ const Home = () => {
   ];
 
   return (
-    <Layout style={{ backgroundColor: "#fff" }}>
+    <Layout
+      style={{ backgroundColor: "#fff", minHeight: "calc(100vh - 64px)" }}
+    >
+      {showFeedbackBtn ? (
+        <Popover
+          style={{ marginRight: 24 }}
+          overlayClassName="feedback-popover"
+          trigger={"click"}
+          title={<Typography.Title level={5}>Feedback</Typography.Title>}
+          content={
+            <div style={{ width: 300, height: 250 }}>
+              <Form>
+                <Form.Item>
+                  <Input.TextArea />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Form>
+            </div>
+          }
+        >
+          <Tooltip title={"Drop feedback"} placement="left">
+            <FloatButton
+              style={{ marginRight: "50px" }}
+              onClick={() => console.log("onClick")}
+            />
+          </Tooltip>
+        </Popover>
+      ) : null}
       <Header
         style={{
           display: "flex",
@@ -86,15 +124,44 @@ const Home = () => {
         <Title level={3} className="mb-0 text-white" style={{ margin: 0 }}>
           PbyP
         </Title>
-        <Space size={"small"}>
+        <Space size={"small"} align="center">
+          <Tooltip
+            title={
+              showFeedbackBtn ? "Hide feedback button" : "Show feedback button"
+            }
+          >
+            <Switch
+              size={"small"}
+              value={showFeedbackBtn}
+              onClick={(e) => {
+                setShowFeedbackBtn(e);
+              }}
+            />
+          </Tooltip>
           <Button
             type="text"
             size={"small"}
-            icon={theme === "dark" ? <SunOutlined /> : <MoonOutlined />}
+            icon={
+              theme === "dark" ? (
+                <SunOutlined size={32} />
+              ) : (
+                <MoonOutlined size={32} />
+              )
+            }
             onClick={changeTheme}
           ></Button>
           <Dropdown menu={{ items }}>
-            <Avatar size={24} icon={<UserOutlined />} src={""} />
+            {/* TODO: google image  */}
+            <Avatar
+              size={32}
+              src={
+                <img
+                  src={
+                    "https://lh3.googleusercontent.com/a/ACg8ocIakDxk9P5ZCHmQQTjNVWLPzrYtvqZX8qlUgcl0irHTeJe7=s96-c"
+                  }
+                />
+              }
+            />
           </Dropdown>
         </Space>
       </Header>
@@ -104,10 +171,7 @@ const Home = () => {
           className="m-2 p-4"
           style={{
             backgroundColor: "#fff",
-            height: "100vh",
-            overflowY: "scroll",
-            scrollBehavior: "smooth",
-            scrollbarColor: "#f5f5f5 transparent",
+            height: "calc(100vh-64px)",
           }}
         >
           <SplitPane

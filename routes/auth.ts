@@ -12,6 +12,10 @@ const router = express.Router();
 
 // Passport login strategy
 
+const getUsernameFromEmail = (email: string) => {
+  return email.split("@")[0];
+};
+
 async function passportGoogleStrategyHandler(
   req: Request,
   accessToken: string,
@@ -40,11 +44,42 @@ async function passportGoogleStrategyHandler(
   console.log("user ===>>> ",user)
 
   if (!user) {
-    return done(null, false, { message: "User not registered!" });
+    const createdUser = await prisma.users.create({
+      data: {
+        username: getUsernameFromEmail(email) as string,
+        email: email,
+        name: name,
+        password: "",
+        progress: 0,
+        dob: null,
+        picture: picture,
+      },
+    });
+
+    if (createdUser) {
+      const user = await prisma.users.findFirst({
+        where: {
+          email: email,
+        },
+      });
+      return done(null, user);
+    }
+    return done(null, createdUser);
   }
 
   if (user.email === email) {
-      return done(null, user);
+    if (user.picture !== picture) {
+      const updatedUser = await prisma.users.update({
+        data: {
+          picture: picture,
+        },
+        where: {
+          email: email,
+        },
+      });
+      return done(null, updatedUser);
+    }
+    return done(null, user);
   } else {
     return done(null, false, { message: "wrong email or password" });
   }

@@ -2,13 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
+:root {
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
 
-expand-btn:hover{
- inset: 64px 10px;
- scale: 1.5;
+expand-btn:hover {
+  inset: 64px 10px;
+  scale: 1.5;
+}
+
+.feedback-popover .ant-popover-content {
+  margin-right: 24px !important;
+}
+
+#form-login .login-form {
+  max-width: 300px;
+}
+#form-login .login-form-forgot {
+  float: right;
+}
+#form-login .ant-col-rtl .login-form-forgot {
+  float: left;
+}
+#form-login .login-form-button {
+  width: 100%;
+}
+
+#form-signup .signup-form-button {
+  width: 100%;
+}
+
+.google-login-form-button {
+  width: 100%;
 }

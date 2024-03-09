@@ -58,6 +58,7 @@ app.use(
 passport.use(localPassportStrategy);
 passport.use(googlePassportStrategy);
 
+app.use(session({ secret: process.env.SESSION_SECRET as string, resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 

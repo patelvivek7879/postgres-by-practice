@@ -15,4 +15,5 @@ model users {
   email String @unique
   name String?
   dob DateTime?
+  picture String?
 }

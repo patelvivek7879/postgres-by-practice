@@ -88,7 +88,7 @@ const AceEditorComponent = ({setResult}: any) => {
   return (
     <div className="h-screen p-4 mb-2">
       <Title level={5}>Editor</Title>
-      <Row justify={"end"} align={"middle"} style={{ backgroundColor: '#f9f9f9' }}>
+      <Row justify={"end"} align={"middle"} style={{ backgroundColor: '#f9f9f9', lineHeight: 3 }}>
         <Space size={4}>
         <Tooltip title="Run">
           <Button
@@ -97,7 +97,7 @@ const AceEditorComponent = ({setResult}: any) => {
             icon={<CaretRightOutlined />}
             onClick={runQuery}
             disabled={sqlValue === ""}
-          />
+          >Run</Button>
         </Tooltip>
         <Tooltip title="Format">
           <Button
