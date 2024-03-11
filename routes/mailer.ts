@@ -13,7 +13,6 @@ import { logger } from "../utils/logger";
 const router = express.Router();
 
 router.post("/api/v1/sendMail", async (req, res) => {
-    console.log(req)
   const { message } = req.body;
 
   try {
@@ -48,7 +47,6 @@ router.post("/api/v1/sendMail", async (req, res) => {
     });
 
   } catch (error) {
-    console.log("444444 44444 4444");
     logger.error(error);
     res.status(200).json({
       status: 200,

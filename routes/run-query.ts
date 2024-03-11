@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { client } from "../utils/db-connection";
 import { mustBeAuthenticated } from "../middleware/authetication";
+import { logger } from "../utils/logger";
 
 const router = express.Router();
 
@@ -54,7 +55,7 @@ router.post(
         });
       }
     } catch (err) {
-      console.log(err);
+      logger.info(err);
       res.status(500).json({
         message: `${err}`,
         success: false,

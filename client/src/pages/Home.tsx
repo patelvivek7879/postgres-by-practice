@@ -26,8 +26,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SendOutlined, SettingOutlined } from "@ant-design/icons";
 import ThemeSwitch from "@/components/ThemeSwitch";
+import NavbarTitleLogo from "@/components/NavbarTitleLogo";
 
-const { Title } = Typography;
 const { Header } = Layout;
 
 const Home = ({ loggedInUser }: any) => {
@@ -63,7 +63,7 @@ const Home = ({ loggedInUser }: any) => {
     {
       key: "logout",
       label: (
-        <Space onClick={logout} style={{minWidth: 100}}>
+        <Space onClick={logout} style={{ minWidth: 100 }}>
           <LogoutOutlined /> Log out
         </Space>
       ),
@@ -120,9 +120,7 @@ const Home = ({ loggedInUser }: any) => {
           borderBottom: "1px solid #e8e8e8",
         }}
       >
-        <Title level={3} className="mb-0 text-white" style={{ margin: 0 }}>
-          PbyP
-        </Title>
+        <NavbarTitleLogo />
         <Space size={"small"} align="center">
           <ThemeSwitch />
           <Dropdown
@@ -148,7 +146,7 @@ const Home = ({ loggedInUser }: any) => {
                 },
               ],
             }}
-            trigger={['click']}
+            trigger={["click"]}
           >
             <Button type="text" ghost icon={<SettingOutlined />} />
           </Dropdown>

@@ -16,6 +16,7 @@ import { prisma } from './repository/User';
 import session from 'express-session';
 import path from 'path';
 import emailService from './routes/mailer';
+import { logger } from './utils/logger';
 
 
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -114,6 +115,6 @@ app.use('*', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
+  logger.info(`Server is up at http://localhost:${port}`);
   connectToDatabase()
 });

@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { User } from "../types/User";
+import { logger } from "../utils/logger";
 
 export const prisma = new PrismaClient();
 
@@ -11,8 +12,6 @@ const createUser = async (userData: User) => {
         email: email,
     }
   })
-
-  console.log(isUserExist)
 
   const user = await prisma.users.create({
     data: {
@@ -37,7 +36,7 @@ const getUser = async (userId: string) => {
       });
       return user;
     } catch (err) {
-      console.log(err);
+      logger.error(err);
     }
   };
 
@@ -46,7 +45,7 @@ const getAllUsers = async () => {
     const allUsers = await prisma.users.findMany();
     return allUsers;
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 };
 

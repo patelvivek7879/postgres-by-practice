@@ -1,13 +1,11 @@
 import { Space, Button, Typography, Layout, Switch, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
-import { getCurrentYear } from "@/utils/Time";
 import {
-  GithubOutlined,
-  LinkedinOutlined,
   ArrowRightOutlined
 } from "@ant-design/icons";
 import ThemeSwitch from "@/components/ThemeSwitch";
 import FooterComponent from "@/components/FooterComponent";
+import NavbarTitleLogo from "@/components/NavbarTitleLogo";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Text } = Typography;
@@ -26,9 +24,7 @@ const Landing = () => {
           borderBottom: "1px solid #e8e8e8",
         }}
       >
-        <Title level={3} className="mb-0 text-white" style={{ margin: 0 }}>
-          PbyP
-        </Title>
+        <NavbarTitleLogo />
         <Space align="center">
          <ThemeSwitch />
           <Button type="text" onClick={() => navigate("/register")}>

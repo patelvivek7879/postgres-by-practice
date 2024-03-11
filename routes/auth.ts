@@ -7,6 +7,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { prisma } from "../repository/User";
 import passport, { session } from "passport";
 import { Strategy as PassportGoogleStrategy } from 'passport-google-oauth20';
+import { logger } from "../utils/logger";
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ const getUsernameFromEmail = (email: string) => {
   return email.split("@")[0];
 };
 
-async function passportGoogleStrategyHandler(
+export async function passportGoogleStrategyHandler(
   req: Request,
   accessToken: string,
   refreshToken: string,
@@ -24,19 +25,13 @@ async function passportGoogleStrategyHandler(
   done: any
 ) {
   try{
-
-    // const { models, config, webhooks } = req;
   const {email, picture, name} = profile && profile._json;
-
-  console.log("user profile ===>>> ",accessToken, refreshToken);
 
   const user = await prisma.users.findFirst({
     where: {
       email: email,
     },
   });
-
-  console.log("user ===>>> ",user)
 
   if (!user) {
     const createdUser = await prisma.users.create({
@@ -99,7 +94,6 @@ export const localPassportStrategy = new LocalStrategy(
         }
 
         if (user.email === email) {
-          console.log(user.password, password);
           if (user.password === password) {
             return done(null, user);
           } else {
@@ -131,10 +125,6 @@ export const googlePassportStrategy = new PassportGoogleStrategy(
   passportGoogleStrategyHandler
 )
 
-// OIDC ISSUER PATH for Google account
-// https://accounts.google.com/.well-known/openid-configuration
-
-
 function handleGoogleCallback(req: Request, res: Response, next: NextFunction) {
   passport.authenticate('google', {
     // successRedirect:  process.env.SUCCESS_REDIRECT,
@@ -145,7 +135,7 @@ function handleGoogleCallback(req: Request, res: Response, next: NextFunction) {
 // for now just define routes here
 router.get("/api/v1/auth/google",passport.authenticate('google', { scope: ['profile email'] }),
   async (req: Request, res: Response) => {
-    await console.log("google login request",req)
+     logger.info("google login request")
   }
 );
 
@@ -162,10 +152,9 @@ router.post(
     failureFlash: true,
   }),
   async (req: any, res: Response, next: NextFunction) => {
-    console.log(" req ", req);
     await req.session.save((err: Error) => {
       if (err) {
-        console.log(" error ", err);
+        logger.error(err);
         res.status(500).json({
           status: 500,
           user: null,
@@ -181,17 +170,13 @@ router.post(
 );
 
 router.post("/api/v1/logout", function (req, res, next) {
-  console.log(" === logout req ===", req);
-
   if (!req.session) {
-    // return res.utils.data('signout', {});
     res.redirect("/pbyp/login");
   }
   req.session.destroy(function (err) {
     if (err) {
-      console.error(err);
+      logger.error(err);
     }
-    // res.utils.data('signout', {});
     res.redirect("/pbyp/login");
   });
 });
@@ -202,8 +187,6 @@ router.get('/api/v1/user/profile', (req, res) => {
   if (req.isAuthenticated()) {
       // Access the logged-in user from the session
       const user = req.user;
-
-      console.log(" user profile =====>>>> ",req.user)
       res.json({ user });
   } else {
       // User is not authenticated
