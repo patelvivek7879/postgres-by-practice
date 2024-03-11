@@ -9,6 +9,7 @@ import {
   Layout,
   MenuProps,
   Popover,
+  Row,
   Space,
   Switch,
   Tooltip,
@@ -16,26 +17,20 @@ import {
 } from "antd";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import {
-  SunOutlined,
-  MoonOutlined,
-  UserOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import QuestionsComponent from "@/components/QuestionsComponent";
 import ResultComponent from "@/components/ResultComponent";
 import AceEditorComponent from "@/components/AceEditorComponents";
 import Sidebar from "@/components/Sidebar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SendOutlined } from '@ant-design/icons';
+import { SendOutlined, SettingOutlined } from "@ant-design/icons";
+import ThemeSwitch from "@/components/ThemeSwitch";
 
 const { Title } = Typography;
 const { Header } = Layout;
 
-const Home = () => {
-  const [theme, setTheme] = useState("light");
-
+const Home = ({ loggedInUser }: any) => {
   const [sizesParent, setSizesParent] = useState([1, 1, 200]);
   const [sizes, setSizes] = useState([300, "40%", "auto"]);
 
@@ -47,7 +42,7 @@ const Home = () => {
   const logout = async () => {
     console.log("logout function got invoked");
     try {
-      localStorage.removeItem('userProfile')
+      localStorage.removeItem("userProfile");
       const response = await fetch("/api/v1/logout", {
         method: "POST",
         headers: {
@@ -64,24 +59,20 @@ const Home = () => {
     }
   };
 
-  const changeTheme = () => {
-    console.log("current theme");
-    setTheme(theme === "light" ? "dark" : "light");
-  };
-
   const items: MenuProps["items"] = [
     {
-      key: "1",
+      key: "logout",
       label: (
-        <Button onClick={logout} type="text" icon={<LogoutOutlined />}>
-          Log out
-        </Button>
+        <Space onClick={logout} style={{minWidth: 100}}>
+          <LogoutOutlined /> Log out
+        </Space>
       ),
       disabled: false,
     },
   ];
 
-  const avtarPicUrl = JSON.parse(localStorage.getItem('userProfile') ?? "")?.picture ?? '';
+  const avtarPicUrl =
+    JSON.parse(localStorage.getItem("userProfile") ?? "{}")?.picture ?? "";
 
   return (
     <Layout
@@ -97,10 +88,14 @@ const Home = () => {
             <div style={{ width: 300, height: 250 }}>
               <Form>
                 <Form.Item>
-                  <Input.TextArea rows={7}/>
+                  <Input.TextArea rows={7} />
                 </Form.Item>
                 <Form.Item>
-                  <Button className="w-full" icon={<SendOutlined />} htmlType="submit">
+                  <Button
+                    className="w-full"
+                    icon={<SendOutlined />}
+                    htmlType="submit"
+                  >
                     Send
                   </Button>
                 </Form.Item>
@@ -121,7 +116,7 @@ const Home = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor: "#ffffff",
+          // backgroundColor: "#ffffff",
           borderBottom: "1px solid #e8e8e8",
         }}
       >
@@ -129,51 +124,49 @@ const Home = () => {
           PbyP
         </Title>
         <Space size={"small"} align="center">
-          <Tooltip
-            title={
-              showFeedbackBtn ? "Hide feedback button" : "Show feedback button"
-            }
+          <ThemeSwitch />
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: "feedback-switch",
+                  label: (
+                    <Row justify={"space-between"} align={"middle"}>
+                      <Space>
+                        <Typography.Text>Feedback enable:</Typography.Text>
+                        <Switch
+                          size={"small"}
+                          value={showFeedbackBtn}
+                          onClick={(e) => {
+                            setShowFeedbackBtn(e);
+                          }}
+                        />
+                      </Space>
+                    </Row>
+                  ),
+                  disabled: false,
+                },
+              ],
+            }}
+            trigger={['click']}
           >
-            <Switch
-              size={"small"}
-              value={showFeedbackBtn}
-              onClick={(e) => {
-                setShowFeedbackBtn(e);
-              }}
-            />
-          </Tooltip>
-          <Button
-            type="text"
-            size={"small"}
-            icon={
-              theme === "dark" ? (
-                <SunOutlined size={32} />
-              ) : (
-                <MoonOutlined size={32} />
-              )
-            }
-            onClick={changeTheme}
-          ></Button>
+            <Button type="text" ghost icon={<SettingOutlined />} />
+          </Dropdown>
           <Dropdown menu={{ items }}>
             {/* TODO: google image  */}
             <Avatar
               size={32}
-              src={ avtarPicUrl ?
-                <img
-                  src={avtarPicUrl}
-                /> : null
-              }
-              icon={ !avtarPicUrl ? <UserOutlined size={32} /> : null}
+              src={<img src={avtarPicUrl} />}
+              icon={!avtarPicUrl ? <UserOutlined size={32} /> : null}
             />
           </Dropdown>
         </Space>
       </Header>
-      <Layout style={{ backgroundColor: "#fff" }}>
-        <Sidebar />
+      <Layout>
+        <Sidebar loggedInUser={loggedInUser} />
         <Layout
           className="m-2 p-4"
           style={{
-            backgroundColor: "#fff",
             height: "calc(100vh-64px)",
           }}
         >

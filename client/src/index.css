@@ -8,6 +8,12 @@
   overflow: hidden;
 }
 
+body{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 expand-btn:hover {
   inset: 64px 10px;
   scale: 1.5;

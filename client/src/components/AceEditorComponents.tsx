@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Row, Tooltip, Button, notification, Typography, Space } from "antd";
+import { Row, Tooltip, Button, notification, Typography, Space, Layout, Select } from "antd";
 import { MenuUnfoldOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { format } from "sql-formatter";
 import AceEditor from "react-ace";
@@ -23,9 +23,14 @@ import { useNavigate } from "react-router-dom";
 ace.config.setModuleUrl("ace/theme/chrome", themeChromeUrl);
 
 const { Title } = Typography;
+const { Header } = Layout;
 
 const AceEditorComponent = ({setResult}: any) => {
   const [sqlValue, setSQLValue] = useState("");
+
+  const theme = localStorage.getItem('preferredTheme');
+  
+  console.log("  ace editor    ",theme)
 
   const navigate = useNavigate();
 
@@ -41,7 +46,7 @@ const AceEditorComponent = ({setResult}: any) => {
 
   const runQuery = async () => {
     try {
-      const response = await fetch("api/v1/execute/query", {
+      const response = await fetch("/api/v1/execute/query", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         // mode: "cors", // no-cors, *cors, same-origin
         // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -88,12 +93,36 @@ const AceEditorComponent = ({setResult}: any) => {
   return (
     <div className="h-screen p-4 mb-2">
       <Title level={5}>Editor</Title>
-      <Row justify={"end"} align={"middle"} style={{ backgroundColor: '#f9f9f9', lineHeight: 3 }}>
+      <Header className="py-0 px-2 h-10">
+      <Row justify={"space-between"} align={"middle"} style={{ lineHeight: 3 }}>
+        <Space>
+          <>
+          <small>Database:</small>
+          <Select 
+          // style={{ width: 100 }}
+          className="w-28"
+          options={[{
+            label: "JSON",
+            value: "json",
+          }]}>
+          </Select>
+            </>
+            <>
+          <small>Table:</small>
+          <Select 
+          className="w-28"
+          options={[{
+            label: "JSON",
+            value: "json",
+          }]}>
+          </Select>
+            </>
+        </Space>
         <Space size={4}>
         <Tooltip title="Run">
           <Button
-            type="default"
-            size="small"
+            // type="default"
+            // size="small"
             icon={<CaretRightOutlined />}
             onClick={runQuery}
             disabled={sqlValue === ""}
@@ -109,10 +138,16 @@ const AceEditorComponent = ({setResult}: any) => {
         </Tooltip>
         </Space>
       </Row>
+      </Header>
       <div className="mt-2 h-full">
       <AceEditor
+        // theme={theme === 'dark' ? "nord_dark" : "crimson_editor" }
+        theme={
+          localStorage.getItem("preferredTheme") === "light"
+            ? "crimson_editor"
+            : "nord_dark"
+        }
         mode="sql"
-        theme="crimson_editor"
         onChange={(val) => setSQLValue(val)}
         name="UNIQUE_ID_OF_DIV"
         editorProps={{ $blockScrolling: true }}

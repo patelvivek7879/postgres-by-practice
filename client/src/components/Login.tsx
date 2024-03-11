@@ -93,7 +93,7 @@ const Login = () => {
             }}
             icon={<GoogleOutlined />}
           >
-            Sign in with Google
+            Continue with Google
           </Button>
           <Divider>
             <Typography.Text type="secondary">OR</Typography.Text>

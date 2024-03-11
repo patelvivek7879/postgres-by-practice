@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LeftCircleOutlined,
   RightCircleOutlined,
@@ -8,10 +8,15 @@ import { Button, Card, Layout, Progress, Row, Space, Tooltip, Typography } from 
 const { Sider } = Layout;
 const { Title } = Typography;
 
-const Sidebar = () => {
+const Sidebar = ({loggedInUser}: any) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  const progress = JSON.parse(localStorage.getItem('userProfile') ?? "").progress
+  useEffect(() => {
+    const p = JSON.parse(localStorage.getItem('userProfile') ?? "{}").progress
+    setProgress(p ?? loggedInUser?.progress);
+  },[localStorage.getItem('userProfile')]);
+  
 
   return (
     <Sider

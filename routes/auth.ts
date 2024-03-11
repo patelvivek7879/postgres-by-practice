@@ -30,11 +30,6 @@ async function passportGoogleStrategyHandler(
 
   console.log("user profile ===>>> ",accessToken, refreshToken);
 
-  // done(true, email, profile)
-
-  console.log("====>>>",email, picture, name);
-
-
   const user = await prisma.users.findFirst({
     where: {
       email: email,
@@ -128,7 +123,6 @@ export const googlePassportStrategy = new PassportGoogleStrategy(
     clientID: process.env.GOOGLE_CLIENT_ID as string,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET_KEY as string,
     callbackURL: process.env.GOOGLE_REDIRECT_URI as string,
-    // callbackURL: publicUrl + baseUrl + '/auth/google/callback',
 
     // This option tells the strategy to use the userinfo endpoint instead
     userProfileURL:
@@ -143,7 +137,7 @@ export const googlePassportStrategy = new PassportGoogleStrategy(
 
 function handleGoogleCallback(req: Request, res: Response, next: NextFunction) {
   passport.authenticate('google', {
-    successRedirect:  process.env.SUCCESS_REDIRECT,
+    // successRedirect:  process.env.SUCCESS_REDIRECT,
     failureRedirect: process.env.FAILURE_REDIRECT,
   })(req, res, next);
 }
@@ -155,7 +149,9 @@ router.get("/api/v1/auth/google",passport.authenticate('google', { scope: ['prof
   }
 );
 
-router.get('/api/v1/auth/google/callback', handleGoogleCallback);
+router.get('/api/v1/auth/google/callback', handleGoogleCallback, async (req, res) =>{
+  return res.redirect(process.env.SUCCESS_REDIRECT as string);
+});
 
 
 router.post(
@@ -207,7 +203,7 @@ router.get('/api/v1/user/profile', (req, res) => {
       // Access the logged-in user from the session
       const user = req.user;
 
-      console.log(user)
+      console.log(" user profile =====>>>> ",req.user)
       res.json({ user });
   } else {
       // User is not authenticated

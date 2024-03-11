@@ -15,6 +15,7 @@ import bodyParser from 'body-parser';
 import { prisma } from './repository/User';
 import session from 'express-session';
 import path from 'path';
+import emailService from './routes/mailer';
 
 
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -37,7 +38,6 @@ app.use(cors())
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cookieParser());
 
 app.use(
     expressSession({
@@ -92,6 +92,7 @@ app.use(authRoutes);
 app.use(pingRouter);
 app.use(runQuery);
 app.use(usersRoutes);
+app.use(emailService)
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
