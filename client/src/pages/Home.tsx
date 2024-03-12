@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  Col,
   Divider,
   Dropdown,
   FloatButton,
@@ -11,6 +12,7 @@ import {
   Popover,
   Row,
   Space,
+  Spin,
   Switch,
   Tooltip,
   Typography,
@@ -22,7 +24,7 @@ import QuestionsComponent from "@/components/QuestionsComponent";
 import ResultComponent from "@/components/ResultComponent";
 import AceEditorComponent from "@/components/AceEditorComponents";
 import Sidebar from "@/components/Sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SendOutlined, SettingOutlined } from "@ant-design/icons";
 import ThemeSwitch from "@/components/ThemeSwitch";
@@ -30,14 +32,35 @@ import NavbarTitleLogo from "@/components/NavbarTitleLogo";
 
 const { Header } = Layout;
 
-const Home = ({ loggedInUser }: any) => {
+const Home = ({setThemeVal}: any) => {
   const [sizesParent, setSizesParent] = useState([1, 1, 200]);
   const [sizes, setSizes] = useState([300, "40%", "auto"]);
-
   const [result, setResult] = useState(null);
   const [showFeedbackBtn, setShowFeedbackBtn] = useState(true);
 
+  const [loading, setLoading] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+
+  const [form] = Form.useForm();
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+
+    // fetch("/api/v1/user/profile")
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((jsonRes) => {
+    //     console.log(jsonRes);
+    //     localStorage.setItem("userProfile", JSON.stringify(jsonRes?.user));
+    //     setLoggedInUser(jsonRes.user);
+    //     setLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log("error", error);
+    //   });
+  }, []);
 
   const logout = async () => {
     console.log("logout function got invoked");
@@ -71,8 +94,35 @@ const Home = ({ loggedInUser }: any) => {
     },
   ];
 
-  const avtarPicUrl =
-    JSON.parse(localStorage.getItem("userProfile") ?? "{}")?.picture ?? "";
+  // const avtarPicUrl = 
+  //   JSON.parse(localStorage.getItem("userProfile") ?? "{}")?.picture ?? loggedInUser?.picture;
+
+  console.log(loggedInUser)
+
+  const sendFeedback = async (values: any) => {
+    const { message } = values;
+    try {
+      await fetch("/api/v1/sendMail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+    } catch (error) {
+      console.log(" fetch error ", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Row>
+        <Col span={24} style={{ textAlign: "center" }}>
+          <Spin />
+        </Col>
+      </Row>
+    );
+  }
 
   return (
     <Layout
@@ -86,8 +136,8 @@ const Home = ({ loggedInUser }: any) => {
           title={<Typography.Title level={5}>Feedback</Typography.Title>}
           content={
             <div style={{ width: 300, height: 250 }}>
-              <Form>
-                <Form.Item>
+              <Form form={form} onFinish={(values) => sendFeedback(values)}>
+                <Form.Item name="message">
                   <Input.TextArea rows={7} />
                 </Form.Item>
                 <Form.Item>
@@ -116,13 +166,12 @@ const Home = ({ loggedInUser }: any) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          // backgroundColor: "#ffffff",
           borderBottom: "1px solid #e8e8e8",
         }}
       >
         <NavbarTitleLogo />
         <Space size={"small"} align="center">
-          <ThemeSwitch />
+          <ThemeSwitch setThemeVal={setThemeVal} />
           <Dropdown
             menu={{
               items: [
@@ -152,11 +201,16 @@ const Home = ({ loggedInUser }: any) => {
           </Dropdown>
           <Dropdown menu={{ items }}>
             {/* TODO: google image  */}
+            {(loggedInUser as any)?.picture ?
             <Avatar
               size={32}
-              src={<img src={avtarPicUrl} />}
-              icon={!avtarPicUrl ? <UserOutlined size={32} /> : null}
-            />
+              src={<img src={(loggedInUser as any)?.picture} alt={'user image'}/>} 
+            /> : 
+            <Avatar
+              size={32}
+              src={<img src={(loggedInUser as any)?.picture  || JSON.parse(localStorage.getItem("userProfile") ?? "{}")?.picture}  />} 
+              icon={ <UserOutlined size={32} />}
+            />}
           </Dropdown>
         </Space>
       </Header>

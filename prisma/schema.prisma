@@ -16,4 +16,5 @@ model users {
   name String?
   dob DateTime?
   picture String?
+  accesstoken String?
 }

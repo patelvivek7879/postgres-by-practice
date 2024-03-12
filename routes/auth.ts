@@ -43,6 +43,7 @@ export async function passportGoogleStrategyHandler(
         progress: 0,
         dob: null,
         picture: picture,
+        accesstoken: accessToken
       },
     });
 
@@ -58,10 +59,11 @@ export async function passportGoogleStrategyHandler(
   }
 
   if (user.email === email) {
-    if (user.picture !== picture) {
+    if (user.picture !== picture || user.accesstoken !== accessToken) {
       const updatedUser = await prisma.users.update({
         data: {
           picture: picture,
+          accesstoken: accessToken,
         },
         where: {
           email: email,

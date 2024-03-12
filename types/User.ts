@@ -6,4 +6,5 @@ export type User = {
     password: string;
     progress: number;
     dob: Date;
+    accesstoken: string;
 }

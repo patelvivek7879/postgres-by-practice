@@ -75,14 +75,24 @@ const Login = () => {
 
   return (
     <Layout className="w-full h-screen d-flex justify-center align-middle">
+      <Row justify={"center"} align={"middle"}>
+        <Title level={3} className="flex justify-center align-middle mt-4 mb-0">
+          Practice Postgres
+        </Title>
+      </Row>
       <Card
         className="ml-auto mr-auto min-w-96"
         title={
-          <Row justify={'center'} align={'middle'}>
-          <Title level={5} className="flex justify-center align-middle mt-2">
-            Pratice Postgres
-          </Title>
-          </Row>
+          <>
+            <Row justify={"center"} align={"middle"}>
+              <Title
+                level={5}
+                className="flex justify-center align-middle mt-1"
+              >
+                Sign In
+              </Title>
+            </Row>
+          </>
         }
       >
         <div className="mt-4">
@@ -115,7 +125,6 @@ const Login = () => {
             >
               <Input placeholder="Enter your email" />
             </Form.Item>
-
             <Form.Item
               name="password"
               rules={[

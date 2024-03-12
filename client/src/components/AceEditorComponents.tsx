@@ -144,8 +144,8 @@ const AceEditorComponent = ({setResult}: any) => {
         // theme={theme === 'dark' ? "nord_dark" : "crimson_editor" }
         theme={
           localStorage.getItem("preferredTheme") === "light"
-            ? "crimson_editor"
-            : "nord_dark"
+            ? "nord_dark"
+            : "crimson_editor"
         }
         mode="sql"
         onChange={(val) => setSQLValue(val)}

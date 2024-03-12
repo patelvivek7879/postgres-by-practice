@@ -5,6 +5,7 @@ import {
   Form,
   Input,
   Layout,
+  Row,
   Space,
   Typography,
 } from "antd";
@@ -23,15 +24,17 @@ const Register = () => {
 
   return (
     <Layout className="w-full h-screen d-flex justify-center align-middle">
+       <Row justify={"center"} align={"middle"}>
+        <Title level={3} className="flex justify-center align-middle mt-4 mb-0">
+          Practice Postgres
+        </Title>
+      </Row>
       <Card
         className="ml-auto mr-auto min-w-96 min-h-200"
         title={
           <>
             <Title level={5} className="flex justify-center mt-2">
               Sign Up
-            </Title>
-            <Title level={5} className="flex justify-center mt-2">
-              Pratice Postgres
             </Title>
           </>
         }

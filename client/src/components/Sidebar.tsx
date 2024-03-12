@@ -17,6 +17,7 @@ const Sidebar = ({loggedInUser}: any) => {
     setProgress(p ?? loggedInUser?.progress);
   },[localStorage.getItem('userProfile')]);
   
+  console.log(loggedInUser)
 
   return (
     <Sider
@@ -27,7 +28,7 @@ const Sidebar = ({loggedInUser}: any) => {
           size="small"
           shape="circle"
           className={collapsed ? `expand-btn` : ""}
-          style={{ backgroundColor: "#fff" }}
+          style={{ background: "transparent" }}
           icon={
             collapsed ? (
               <Tooltip title={"Expand"} getPopupContainer={()=> document.body} getTooltipContainer={()=> document.body}>

@@ -10,7 +10,7 @@ import NavbarTitleLogo from "@/components/NavbarTitleLogo";
 const { Header, Content, Footer } = Layout;
 const { Title, Text } = Typography;
 
-const Landing = () => {
+const Landing = ({setThemeVal}: any) => {
   const navigate = useNavigate();
 
   return (
@@ -20,13 +20,12 @@ const Landing = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-        //   backgroundColor: "#ffffff",
           borderBottom: "1px solid #e8e8e8",
         }}
       >
         <NavbarTitleLogo />
         <Space align="center">
-         <ThemeSwitch />
+         <ThemeSwitch setThemeVal={setThemeVal}/>
           <Button type="text" onClick={() => navigate("/register")}>
             Sign Up
           </Button>
@@ -53,7 +52,7 @@ const Landing = () => {
             <Title level={4}>
             Practice Postgres FREE
             </Title>
-            <Button>
+            <Button onClick={()=> navigate("/login")}>
                 Get Started
                 <ArrowRightOutlined />
             </Button>

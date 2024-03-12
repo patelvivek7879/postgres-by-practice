@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
-const ThemeSwitch = () => {
+const ThemeSwitch = ({setThemeVal}: any) => {
   const [theme, setTheme] = useState<string>(
     localStorage.getItem("preferredTheme") === "dark" ? "dark" : "light",
   );
 
   const changeTheme = (e: any) => {
-    setTheme(e ? "dark": "light");
+    setThemeVal(e);
+    setTheme(e ? "dark" : "light");
   };
 
   useEffect(() => {
-      const storedTheme = localStorage.getItem("preferredTheme");
-      if(storedTheme){
-          localStorage.setItem("preferredTheme", theme );
-      }else{
-        localStorage.setItem("preferredTheme", 'light' );
-      }
+    if(theme === "dark") {
+      localStorage.setItem("preferredTheme", 'dark' );
+    }else{
+      localStorage.setItem("preferredTheme", 'light' );
+    }
   }, [theme]);
 
   return (

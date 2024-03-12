@@ -1,24 +1,24 @@
-import "split-pane-react/esm/themes/default.css";
 import AppContainer from "./AppContainer";
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, FloatButton, theme } from "antd";
+import { useState } from "react";
 
+import "split-pane-react/esm/themes/default.css";
 
 function App() {
 
-  const preferredTheme = localStorage.getItem("preferredTheme");
+  const [themeVal, setThemeVal] = useState(localStorage.getItem('preferredTheme') === 'dark' ? true : false);
 
   return(
     <ConfigProvider
     theme={{
-      // 1. Use dark algorithm
-      // algorithm: preferredTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
-      algorithm: theme.darkAlgorithm ,
-
-      // 2. Combine dark algorithm and compact algorithm
-      // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
+      algorithm: themeVal ? theme.darkAlgorithm : theme.defaultAlgorithm,
+      components: {
+        Layout: {
+          colorBgHeader: themeVal ? '#000' : '#fff'
+      }}
     }}
-  >
-    <AppContainer/>
+    >
+    <AppContainer setThemeVal={setThemeVal}/>
     </ConfigProvider>
   )
 }
