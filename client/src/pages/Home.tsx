@@ -32,14 +32,14 @@ import NavbarTitleLogo from "@/components/NavbarTitleLogo";
 
 const { Header } = Layout;
 
-const Home = ({setThemeVal}: any) => {
+const Home = ({setThemeVal, loggedInUser}: any) => {
   const [sizesParent, setSizesParent] = useState([1, 1, 200]);
   const [sizes, setSizes] = useState([300, "40%", "auto"]);
   const [result, setResult] = useState(null);
   const [showFeedbackBtn, setShowFeedbackBtn] = useState(true);
 
   const [loading, setLoading] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  // const [loggedInUser, setLoggedInUser] = useState(null);
 
   const [form] = Form.useForm();
 
@@ -82,12 +82,19 @@ const Home = ({setThemeVal}: any) => {
     }
   };
 
+  console.log((loggedInUser as any)?.email)
+
   const items: MenuProps["items"] = [
     {
+      key: 'email',
+      label:  (<Space size={2} style={{ minWidth: 100 }}>
+      <UserOutlined /> {(loggedInUser as any)?.username}
+    </Space>)
+    },{
       key: "logout",
       label: (
-        <Space onClick={logout} style={{ minWidth: 100 }}>
-          <LogoutOutlined /> Log out
+        <Space size={2} onClick={logout} style={{ minWidth: 100 }}>
+          <LogoutOutlined /> {"Log out"}
         </Space>
       ),
       disabled: false,

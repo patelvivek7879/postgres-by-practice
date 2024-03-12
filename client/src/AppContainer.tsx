@@ -33,7 +33,7 @@ const AppContainer = ({setThemeVal}: any) => {
         <Route path="/" element={ <Landing setThemeVal={setThemeVal}/>} />
         <Route path="/register" element={  <Register />} />
         <Route path="/login" element={ <Login />} />
-        <Route path="/home" element={ loggedInUser && <Home setThemeVal={setThemeVal} />} />
+        <Route path="/home" element={ loggedInUser && <Home setThemeVal={setThemeVal} loggedInUser={loggedInUser} />} />
     </Routes>
   )
 }

@@ -17,6 +17,7 @@ import session from 'express-session';
 import path from 'path';
 import emailService from './routes/mailer';
 import { logger } from './utils/logger';
+import githubRoutes from './routes/github-api';
 
 
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -94,7 +95,7 @@ app.use(pingRouter);
 app.use(runQuery);
 app.use(usersRoutes);
 app.use(emailService)
-
+app.use(githubRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
