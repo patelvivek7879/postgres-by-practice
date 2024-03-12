@@ -19,24 +19,25 @@ router.post("/api/v1/sendMail", mustBeAuthenticated ,async (req: Request, res: R
 
   try {
   let transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  // host: "smtp.gmail.com",
+  // port: 465,
+  // secure: true,
+  service: 'gmail',
   auth: {
     type: "OAuth2",
+    user: 'patelvivek7879@gmail.com', 
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    user: 'patelvivek7879@gmail.com',
     accessToken: process.env.GMAIL_AUTH_TOKEN,
   },
-},{
-  to: email,
 });
 
     const mailOptions = {
       from: email,
-      subject: "Test",
+      to: 'vivekpatel.in@outlook.com',
+      subject: "Test Email from node mailer",
       text: `${message}`,
+      html: `<h1>From:${email}</h1>`
     };
 
     await transporter.sendMail({...mailOptions});

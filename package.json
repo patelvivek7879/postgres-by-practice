@@ -1,5 +1,5 @@
 {
-  "name": "learn-postgres-by-practice",
+  "name": "postgres-by-practice",
   "version": "0.0.1",
   "description": "Platform where user can learn Postgres SQL  by practice",
   "main": "server.ts",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/patelvivek7879/postgres-by-practice.git"
+    "url": "git+ssh://git@github.com:patelvivek7879/postgres-by-practice.git"
   },
   "keywords": [
     "Postgres",

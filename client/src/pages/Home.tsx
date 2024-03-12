@@ -19,7 +19,7 @@ import {
 } from "antd";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, BranchesOutlined } from "@ant-design/icons";
 import QuestionsComponent from "@/components/QuestionsComponent";
 import ResultComponent from "@/components/ResultComponent";
 import AceEditorComponent from "@/components/AceEditorComponents";
@@ -32,34 +32,31 @@ import NavbarTitleLogo from "@/components/NavbarTitleLogo";
 
 const { Header } = Layout;
 
-const Home = ({setThemeVal, loggedInUser}: any) => {
+const Home = ({ setThemeVal, loggedInUser }: any) => {
   const [sizesParent, setSizesParent] = useState([1, 1, 200]);
   const [sizes, setSizes] = useState([300, "40%", "auto"]);
   const [result, setResult] = useState(null);
   const [showFeedbackBtn, setShowFeedbackBtn] = useState(true);
 
   const [loading, setLoading] = useState(false);
-  // const [loggedInUser, setLoggedInUser] = useState(null);
+  const [version, setVersion] = useState(0);
 
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-
-    // fetch("/api/v1/user/profile")
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((jsonRes) => {
-    //     console.log(jsonRes);
-    //     localStorage.setItem("userProfile", JSON.stringify(jsonRes?.user));
-    //     setLoggedInUser(jsonRes.user);
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log("error", error);
-    //   });
+    fetch("/api/v1/version")
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonRes) => {
+        setVersion(jsonRes.latestTag);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setVersion();
+      });
   }, []);
 
   const logout = async () => {
@@ -82,29 +79,41 @@ const Home = ({setThemeVal, loggedInUser}: any) => {
     }
   };
 
-  console.log((loggedInUser as any)?.email)
-
   const items: MenuProps["items"] = [
     {
-      key: 'email',
-      label:  (<Space size={2} style={{ minWidth: 100 }}>
-      <UserOutlined /> {(loggedInUser as any)?.username}
-    </Space>)
-    },{
+      key: "email",
+      label: (
+        <Space size={3} style={{ minWidth: 100 }}>
+          <UserOutlined /> {(loggedInUser as any)?.username}
+        </Space>
+      ),
+    },
+    {
       key: "logout",
       label: (
-        <Space size={2} onClick={logout} style={{ minWidth: 100 }}>
-          <LogoutOutlined /> {"Log out"}
+        <Space size={3} onClick={logout} style={{ minWidth: 100 }}>
+          <LogoutOutlined />
+          {"Log out"}
         </Space>
       ),
       disabled: false,
     },
+    {
+      key: "version",
+      label: (
+        <Space size={3} onClick={logout} style={{ minWidth: 100 }}>
+          <BranchesOutlined />
+          {version}
+        </Space>
+      ),
+      disabled: true,
+    },
   ];
 
-  // const avtarPicUrl = 
+  // const avtarPicUrl =
   //   JSON.parse(localStorage.getItem("userProfile") ?? "{}")?.picture ?? loggedInUser?.picture;
 
-  console.log(loggedInUser)
+  console.log(loggedInUser);
 
   const sendFeedback = async (values: any) => {
     const { message } = values;
@@ -208,16 +217,31 @@ const Home = ({setThemeVal, loggedInUser}: any) => {
           </Dropdown>
           <Dropdown menu={{ items }}>
             {/* TODO: google image  */}
-            {(loggedInUser as any)?.picture ?
-            <Avatar
-              size={32}
-              src={<img src={(loggedInUser as any)?.picture} alt={'user image'}/>} 
-            /> : 
-            <Avatar
-              size={32}
-              src={<img src={(loggedInUser as any)?.picture  || JSON.parse(localStorage.getItem("userProfile") ?? "{}")?.picture}  />} 
-              icon={ <UserOutlined size={32} />}
-            />}
+            {(loggedInUser as any)?.picture ? (
+              <Avatar
+                size={32}
+                src={
+                  <img
+                    src={(loggedInUser as any)?.picture}
+                    alt={"user image"}
+                  />
+                }
+              />
+            ) : (
+              <Avatar
+                size={32}
+                src={
+                  <img
+                    src={
+                      (loggedInUser as any)?.picture ||
+                      JSON.parse(localStorage.getItem("userProfile") ?? "{}")
+                        ?.picture
+                    }
+                  />
+                }
+                icon={<UserOutlined size={32} />}
+              />
+            )}
           </Dropdown>
         </Space>
       </Header>
