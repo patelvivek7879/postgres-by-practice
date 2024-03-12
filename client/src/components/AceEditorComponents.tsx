@@ -131,7 +131,6 @@ const AceEditorComponent = ({setResult}: any) => {
         <Tooltip title="Format">
           <Button
             type="text"
-            ghost
             onClick={() => formatSQLValue(sqlValue)}
             icon={<MenuUnfoldOutlined />}
           />

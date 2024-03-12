@@ -1,7 +1,6 @@
 import {
   Avatar,
   Button,
-  Col,
   Divider,
   Dropdown,
   FloatButton,
@@ -12,14 +11,17 @@ import {
   Popover,
   Row,
   Space,
-  Spin,
   Switch,
   Tooltip,
   Typography,
 } from "antd";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import { UserOutlined, LogoutOutlined, BranchesOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  LogoutOutlined,
+  BranchesOutlined,
+} from "@ant-design/icons";
 import QuestionsComponent from "@/components/QuestionsComponent";
 import ResultComponent from "@/components/ResultComponent";
 import AceEditorComponent from "@/components/AceEditorComponents";
@@ -29,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import { SendOutlined, SettingOutlined } from "@ant-design/icons";
 import ThemeSwitch from "@/components/ThemeSwitch";
 import NavbarTitleLogo from "@/components/NavbarTitleLogo";
+import Loading from "@/common/Loading";
 
 const { Header } = Layout;
 
@@ -38,8 +41,9 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
   const [result, setResult] = useState(null);
   const [showFeedbackBtn, setShowFeedbackBtn] = useState(true);
 
-  const [loading, setLoading] = useState(false);
-  const [version, setVersion] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [version, setVersion] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -52,15 +56,23 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
       })
       .then((jsonRes) => {
         setVersion(jsonRes.latestTag);
+        setLoading(false);
       })
       .catch((error) => {
         console.log("error", error);
-        setVersion();
+        setVersion(null);
       });
   }, []);
 
+  useEffect(() => {
+    if (!loggedInUser) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [loggedInUser]);
+
   const logout = async () => {
-    console.log("logout function got invoked");
     try {
       localStorage.removeItem("userProfile");
       const response = await fetch("/api/v1/logout", {
@@ -83,7 +95,7 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
     {
       key: "email",
       label: (
-        <Space size={3} style={{ minWidth: 100 }}>
+        <Space style={{ minWidth: 100 }}>
           <UserOutlined /> {(loggedInUser as any)?.username}
         </Space>
       ),
@@ -91,59 +103,67 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
     {
       key: "logout",
       label: (
-        <Space size={3} onClick={logout} style={{ minWidth: 100 }}>
-          <LogoutOutlined />
-          {"Log out"}
+        <Space onClick={logout} style={{ minWidth: 100 }}>
+          <LogoutOutlined /> {"Log out"}
         </Space>
       ),
       disabled: false,
     },
     {
+      type: "divider",
+    },
+    {
       key: "version",
       label: (
-        <Space size={3} onClick={logout} style={{ minWidth: 100 }}>
-          <BranchesOutlined />
-          {version}
+        <Space onClick={logout} style={{ minWidth: 100 }}>
+          <BranchesOutlined /> {version}
         </Space>
       ),
       disabled: true,
     },
   ];
 
-  // const avtarPicUrl =
-  //   JSON.parse(localStorage.getItem("userProfile") ?? "{}")?.picture ?? loggedInUser?.picture;
-
-  console.log(loggedInUser);
-
-  const sendFeedback = async (values: any) => {
-    const { message } = values;
+  const sendFeedback = async () => {
+    setSending(true)
     try {
-      await fetch("/api/v1/sendMail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const values = form.validateFields();
+      if (values) {
+        const { message } = await values;
+        const feedbackBody = {
+          message: message,
+          from: loggedInUser.email,
+        };
+        try {
+          const res = await fetch("/api/v1/sendMail", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(feedbackBody),
+          });
+          console.log(" res ===>>> ",res)
+          setSending(false)
+        } catch (error) {
+          console.log(" Failed to send feedback ",error);
+          setSending(false)
+        }
+      }
     } catch (error) {
-      console.log(" fetch error ", error);
+      console.log("Failed to validate values : ", error);
+      setSending(false)
     }
   };
 
   if (loading) {
     return (
-      <Row>
-        <Col span={24} style={{ textAlign: "center" }}>
-          <Spin />
-        </Col>
-      </Row>
+      <div className="flex justify-center items-center h-screen">
+        <Loading iconType="3Quarters" />
+      </div>
     );
   }
 
   return (
-    <Layout
-      style={{ backgroundColor: "#fff", minHeight: "calc(100vh - 64px)" }}
-    >
+    <Layout style={{ minHeight: "calc(100vh - 64px)" }}>
       {showFeedbackBtn ? (
         <Popover
           style={{ marginRight: 24 }}
@@ -152,17 +172,18 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
           title={<Typography.Title level={5}>Feedback</Typography.Title>}
           content={
             <div style={{ width: 300, height: 250 }}>
-              <Form form={form} onFinish={(values) => sendFeedback(values)}>
+              <Form form={form} onFinish={() => sendFeedback()}>
                 <Form.Item name="message">
-                  <Input.TextArea rows={7} />
+                  <Input.TextArea rows={7} disabled={sending}/>
                 </Form.Item>
                 <Form.Item>
                   <Button
                     className="w-full"
-                    icon={<SendOutlined />}
+                    icon={ sending ? <Loading iconType="normal" iconSize={14}/>  : <SendOutlined />}
                     htmlType="submit"
+                    disabled={sending}
                   >
-                    Send
+                    {sending ? `Sending...` : `Send`}
                   </Button>
                 </Form.Item>
               </Form>
@@ -213,7 +234,7 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
             }}
             trigger={["click"]}
           >
-            <Button type="text" ghost icon={<SettingOutlined />} />
+            <Button type="text" icon={<SettingOutlined />} />
           </Dropdown>
           <Dropdown menu={{ items }}>
             {/* TODO: google image  */}
