@@ -125,7 +125,7 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
   ];
 
   const sendFeedback = async () => {
-    setSending(true)
+    setSending(true);
     try {
       const values = form.validateFields();
       if (values) {
@@ -144,23 +144,37 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
             body: JSON.stringify(feedbackBody),
           });
 
-          if((await res.json()).status === 200) {
+          const resJson = await res.json();
+
+          if (resJson.status === 200) {
             notification.success({
               message: "Feedback sent successfully",
-              placement: "bottomRight",
+              placement: "topRight",
               duration: 3,
-            })
+            });
+          }else if(resJson.status === 429) {
+            notification.error({
+              message: resJson.message,
+              placement: "topRight",
+              duration: 3,
+            });
+          }else{
+            throw new Error(resJson)
           }
-
-          setSending(false)
+          setSending(false);
         } catch (error) {
-          console.log(" Failed to send feedback ",error);
-          setSending(false)
+          console.log(" Failed to send feedback ", error);
+          setSending(false);
+          notification.error({
+            message: error as any,
+            placement: "topRight",
+            duration: 3,
+          });
         }
       }
     } catch (error) {
       console.log("Failed to validate values : ", error);
-      setSending(false)
+      setSending(false);
     }
   };
 
@@ -179,24 +193,53 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
           style={{ marginRight: 24 }}
           overlayClassName="feedback-popover"
           trigger={"click"}
-          title={<Typography.Title level={5} className="mt-0">Feedback</Typography.Title>}          
+          title={
+            <Typography.Title level={5} className="mt-0">
+              Feedback
+            </Typography.Title>
+          }
           content={
             <div style={{ width: 300, height: 250 }}>
               <Form form={form} onFinish={() => sendFeedback()}>
                 <Space size={"middle"} direction="vertical" className="w-full">
-                <Form.Item name="message">
-                  <Input.TextArea rows={7} disabled={sending} maxLength={300} showCount/>
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    className="w-full"
-                    icon={ sending ? <Loading iconType="normal" iconSize={14}/>  : <SendOutlined />}
-                    htmlType="submit"
-                    disabled={sending}
+                  <Form.Item
+                    name="message"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter your feedback!",
+                      },
+                    ]}
                   >
-                    {sending ? `Sending...` : `Send`}
-                  </Button>
-                </Form.Item>
+                    <Input.TextArea
+                      rows={7}
+                      disabled={sending}
+                      maxLength={300}
+                      showCount
+                    />
+                  </Form.Item>
+                  <Form.Item shouldUpdate>
+                    {()=>(<Button
+                      className="w-full"
+                      icon={
+                        sending ? (
+                          <Loading iconType="normal" iconSize={14} />
+                        ) : (
+                          <SendOutlined />
+                        )
+                      }
+                      htmlType="submit"
+                      disabled={
+                        sending ||
+                        !form.isFieldsTouched(true) ||
+                        !!form
+                          .getFieldsError()
+                          .filter(({ errors }) => errors.length).length
+                      }
+                    >
+                      {sending ? `Sending...` : `Send`}
+                    </Button>)}
+                  </Form.Item>
                 </Space>
               </Form>
             </div>
@@ -205,7 +248,6 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
           <Tooltip title={"Drop feedback"} placement="left">
             <FloatButton
               style={{ marginRight: "50px" }}
-              onClick={() => console.log("onClick")}
             />
           </Tooltip>
         </Popover>

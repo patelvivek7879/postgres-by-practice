@@ -10,12 +10,14 @@ import fs from "fs";
 import { logger } from "../utils/logger";
 import { User } from "../types/User";
 import { prisma } from "../repository/User";
+import { rateLimiter } from "../middleware/rateLimiter";
 
 const router = express.Router();
 
 router.post(
   "/api/v1/feedback",
   mustBeAuthenticated,
+  rateLimiter,
   async (req: Request, res: Response) => {
     const { message, time, from } = req.body;
     const { email, name } = req.user as User;
