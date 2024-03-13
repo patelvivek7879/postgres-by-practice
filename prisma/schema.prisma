@@ -18,3 +18,11 @@ model users {
   picture String?
   accesstoken String?
 }
+
+model feedbacks {
+  f_id String? @unique
+  from String
+  name String?
+  message String?
+  createdAt BigInt @unique
+}

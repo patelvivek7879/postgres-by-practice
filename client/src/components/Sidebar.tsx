@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
+import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import {
-  LeftCircleOutlined,
-  RightCircleOutlined,
-} from "@ant-design/icons";
-import { Button, Card, Layout, Progress, Row, Space, Tooltip, Typography } from "antd";
+  Button,
+  Card,
+  Layout,
+  Progress,
+  Row,
+  Space,
+  Tooltip,
+  Typography,
+} from "antd";
 
 const { Sider } = Layout;
 const { Title } = Typography;
 
-const Sidebar = ({loggedInUser}: any) => {
+const Sidebar = ({ loggedInUser }: any) => {
   const [collapsed, setCollapsed] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const p = JSON.parse(localStorage.getItem('userProfile') ?? "{}").progress
+    const p = JSON.parse(localStorage.getItem("userProfile") ?? "{}").progress;
     setProgress(p ?? loggedInUser?.progress);
-  },[localStorage.getItem('userProfile')]);
-  
-  console.log(loggedInUser)
+  }, [localStorage.getItem("userProfile")]);
 
   return (
     <Sider
@@ -31,18 +35,26 @@ const Sidebar = ({loggedInUser}: any) => {
           style={{ background: "transparent" }}
           icon={
             collapsed ? (
-              <Tooltip title={"Expand"} getPopupContainer={()=> document.body} getTooltipContainer={()=> document.body}>
+              <Tooltip
+                title={"Expand"}
+                getPopupContainer={() => document.body}
+                getTooltipContainer={() => document.body}
+              >
                 <RightCircleOutlined color="#f5f5f5" />
               </Tooltip>
             ) : (
-              <Tooltip title="Collapse" getPopupContainer={()=> document.body} getTooltipContainer={()=> document.body}>
+              <Tooltip
+                title="Collapse"
+                getPopupContainer={() => document.body}
+                getTooltipContainer={() => document.body}
+              >
                 <LeftCircleOutlined color="#f5f5f5" />
               </Tooltip>
             )
           }
         />
       }
-      style={{height: "100vh", minWidth: '200px'}}
+      style={{ height: "100vh", minWidth: "200px" }}
       collapsible
       collapsed={collapsed}
       collapsedWidth={0}
@@ -56,13 +68,16 @@ const Sidebar = ({loggedInUser}: any) => {
       className="d-flex flex-column justify-even"
     >
       <Row style={{ height: "100%", width: "100%" }}>
-      <Card title={null} size="small" className="w-full">
-        <Title level={5}>Progress</Title>
-        <Space style={{width: '100%'}} size={'middle'} className="d-flex flex-row justify-center mt-4" >
-      <Progress type="circle" percent={progress} size="small"/>
-        2 / 30
-      </Space>
-      </Card>
+        <Card title={null} size="small" className="w-full">
+          <Title level={5}>Progress</Title>
+          <Space
+            style={{ width: "100%" }}
+            size={"middle"}
+            className="d-flex flex-row justify-center mt-4"
+          >
+            <Progress type="circle" percent={progress} size="small" />2 / 30
+          </Space>
+        </Card>
       </Row>
       {/* <Menu
         theme="light"

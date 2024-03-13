@@ -11,5 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     progress INTEGER,
-    dob DATE
+    dob DATE,
+    picture TEXT,
+    accesstoken TEXT
 );

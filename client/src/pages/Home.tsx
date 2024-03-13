@@ -14,6 +14,7 @@ import {
   Switch,
   Tooltip,
   Typography,
+  notification,
 } from "antd";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
@@ -130,18 +131,27 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
       if (values) {
         const { message } = await values;
         const feedbackBody = {
+          time: Date.now(),
           message: message,
           from: loggedInUser.email,
         };
         try {
-          const res = await fetch("/api/v1/sendMail", {
+          const res = await fetch("/api/v1/feedback", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(feedbackBody),
           });
-          console.log(" res ===>>> ",res)
+
+          if((await res.json()).status === 200) {
+            notification.success({
+              message: "Feedback sent successfully",
+              placement: "bottomRight",
+              duration: 3,
+            })
+          }
+
           setSending(false)
         } catch (error) {
           console.log(" Failed to send feedback ",error);
@@ -169,12 +179,13 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
           style={{ marginRight: 24 }}
           overlayClassName="feedback-popover"
           trigger={"click"}
-          title={<Typography.Title level={5}>Feedback</Typography.Title>}
+          title={<Typography.Title level={5} className="mt-0">Feedback</Typography.Title>}          
           content={
             <div style={{ width: 300, height: 250 }}>
               <Form form={form} onFinish={() => sendFeedback()}>
+                <Space size={"middle"} direction="vertical" className="w-full">
                 <Form.Item name="message">
-                  <Input.TextArea rows={7} disabled={sending}/>
+                  <Input.TextArea rows={7} disabled={sending} maxLength={300} showCount/>
                 </Form.Item>
                 <Form.Item>
                   <Button
@@ -186,6 +197,7 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
                     {sending ? `Sending...` : `Send`}
                   </Button>
                 </Form.Item>
+                </Space>
               </Form>
             </div>
           }

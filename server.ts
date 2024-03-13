@@ -15,7 +15,7 @@ import bodyParser from 'body-parser';
 import { prisma } from './repository/User';
 import session from 'express-session';
 import path from 'path';
-import emailService from './routes/mailer';
+import feedbackService from './routes/feedback';
 import { logger } from './utils/logger';
 import githubRoutes from './routes/github-api';
 
@@ -94,7 +94,7 @@ app.use(authRoutes);
 app.use(pingRouter);
 app.use(runQuery);
 app.use(usersRoutes);
-app.use(emailService)
+app.use(feedbackService)
 app.use(githubRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

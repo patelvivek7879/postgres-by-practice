@@ -15,8 +15,6 @@ const AppContainer = ({setThemeVal}: any) => {
       return response.json();
     })
     .then((jsonRes)=>{
-      console.log(jsonRes)
-
       if((jsonRes.status === 401 || jsonRes.message === 'Unauthorized') && location.pathname !== '/'){
         navigate('/login')
       }
