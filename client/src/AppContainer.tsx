@@ -5,7 +5,7 @@ import Register from './components/Register';
 import { useEffect } from 'react';
 import Landing from './pages/Landing';
 import Feedbacks from './pages/Feedbacks';
-import AuthProvider, { useAuthContext } from './AuthProvider';
+import { useAuthContext } from './AuthProvider';
 import { isEmpty } from 'lodash';
 
 const AppContainer = ({setThemeVal}: any) => {
@@ -20,28 +20,7 @@ const AppContainer = ({setThemeVal}: any) => {
     }
   }, [loggedInUser]);
 
-  // useEffect(() =>{
-  //   fetch('/api/v1/user/profile').then((response) => {
-  //     return response.json();
-  //   })
-  //   .then((jsonRes)=>{
-  //     if((jsonRes.status === 401 || jsonRes.message === 'Unauthorized') && location.pathname !== '/'){
-  //       navigate('/login')
-  //     }
-  //     localStorage.setItem('userProfile', JSON.stringify(jsonRes?.user))
-  //     setLoggedInUser(jsonRes.user);
-  //   })
-  //   .catch((error) => {
-  //     console.log('error', error)
-  //   })
-
-  //   return ()=>{
-  //     setLoggedInUser(null);
-  //   }
-  // },[]);
-
   return (
-    <AuthProvider>
     <Routes>
         <Route path="/" element={ <Landing setThemeVal={setThemeVal} loggedInUser={loggedInUser}/>} />
         <Route path="/register" element={  <Register />} />
@@ -49,7 +28,6 @@ const AppContainer = ({setThemeVal}: any) => {
         <Route path="/home" element={ loggedInUser && <Home setThemeVal={setThemeVal} loggedInUser={loggedInUser} />} />
         <Route path="/admin/feedbacks" element={ loggedInUser && <Feedbacks setThemeVal={setThemeVal} loggedInUser={loggedInUser} />} />
     </Routes>
-    </AuthProvider>
   )
 }
 

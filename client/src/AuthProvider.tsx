@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
-    if (isEmpty(loggedInUser)) fetchLoggedInUser();
+    fetchLoggedInUser();
   }, []);
 
   const authContext = {

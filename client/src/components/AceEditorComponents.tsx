@@ -15,7 +15,8 @@ import {
   MenuUnfoldOutlined,
   CaretRightOutlined,
   SaveOutlined,
-  InfoCircleOutlined 
+  InfoCircleOutlined,
+  CloseOutlined
 } from "@ant-design/icons";
 import { format } from "sql-formatter";
 import AceEditor from "react-ace";
@@ -186,7 +187,22 @@ const AceEditorComponent = ({ setResult }: any) => {
           style={{ overflow: "hidden" }}
         />
       </div>
-      <Drawer open={open} closable onClose={()=> setOpen(false)} width={"35%"}>
+      <Drawer
+        title={<>
+          Database Details
+        </>} 
+        open={open} 
+        closeIcon={null}
+        closable={false}
+        maskClosable={true}
+        onClose={()=> setOpen(false)} 
+        width={"35%"} 
+        destroyOnClose
+        extra={
+          <CloseOutlined onClick={()=> setOpen(false)} />
+        }
+        forceRender
+      >
       <Alert 
         message="Note:" 
         description={<Space size={1} direction="vertical">
