@@ -9,6 +9,7 @@ import {
   Layout,
   Select,
   Drawer,
+  Alert,
 } from "antd";
 import {
   MenuUnfoldOutlined,
@@ -106,9 +107,9 @@ const AceEditorComponent = ({ setResult }: any) => {
     setOpen(true);
   }
 
-  return (
+  return (<>
+    <Title level={4} className="pl-4">Editor</Title>
     <div className="h-screen p-4 mb-2">
-      {/* <Title level={5}>Editor</Title> */}
       <Header className="py-0 px-2 h-10" style={{ borderRadius: 5}}>
         <Row
           justify={"space-between"}
@@ -119,7 +120,6 @@ const AceEditorComponent = ({ setResult }: any) => {
             <>
               <small>Database:</small>
               <Select
-                // style={{ width: 100 }}
                 className="w-28"
                 options={[
                   {
@@ -186,11 +186,20 @@ const AceEditorComponent = ({ setResult }: any) => {
           style={{ overflow: "hidden" }}
         />
       </div>
-      <Drawer open={open} closable onClose={()=> setOpen(false)}>
+      <Drawer open={open} closable onClose={()=> setOpen(false)} width={"35%"}>
+      <Alert 
+        message="Note:" 
+        description={<Space size={1} direction="vertical">
+        <Typography.Paragraph className="mb-0">Max 3 databases can be created </Typography.Paragraph>
+        <Typography.Paragraph className="mb-0">Max 5 tables can be created for each database</Typography.Paragraph>
+        </Space>} 
+        type="info" showIcon 
+      />
         <Title level={5}>Database</Title>
         <Title level={5}>Tables</Title>
       </Drawer>
     </div>
+    </>
   );
 };
 

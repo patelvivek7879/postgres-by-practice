@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 import {
   Card,
-  Col,
-  Divider,
   Layout,
   Progress,
-  Row,
   Space,
   Statistic,
   Tooltip,
-  Typography,
 } from "antd";
-import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons";
+import { CodeSandboxOutlined, StockOutlined } from "@ant-design/icons";
 
 const { Sider } = Layout;
-const { Title } = Typography;
 
 const Sidebar = ({ loggedInUser }: any) => {
   const [progress, setProgress] = useState(0);
@@ -47,7 +42,7 @@ const Sidebar = ({ loggedInUser }: any) => {
         ) : (
           <Card size="small">
             <Tooltip title={"Progress"}>
-            <AreaChartOutlined className="flex justify-center" />
+            <StockOutlined className="flex justify-center" />
             </Tooltip>
           </Card>
         )}
@@ -58,7 +53,7 @@ const Sidebar = ({ loggedInUser }: any) => {
         ) : (
           <Card size="small">
             <Tooltip title={"Modules"}>
-            <PieChartOutlined className="flex justify-center"/>
+            <CodeSandboxOutlined className="flex justify-center"/>
             </Tooltip>
           </Card>
         )}
