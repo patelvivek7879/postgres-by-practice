@@ -7,7 +7,7 @@ export const prisma = new PrismaClient();
 const createUser = async (userData: User) => {
   const { user_id, email, name, username, password, progress, dob } = userData;
 
-  const isUserExist = await prisma.users.findFirstOrThrow({
+  const isUserExist = await prisma.users.findUnique({
     where:{
         email: email,
     }
@@ -22,6 +22,7 @@ const createUser = async (userData: User) => {
       user_id,
       username,
       dob,
+      new_user: isUserExist ? false : true
     },
   });
   return user;

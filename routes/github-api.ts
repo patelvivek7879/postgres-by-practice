@@ -1,3 +1,4 @@
+import { mustBeAuthenticated } from './../middleware/authetication';
 import * as express from "express";
 import axios from "axios";
 
@@ -20,7 +21,7 @@ async function getLatestTagLabel(owner: string, repo: string) {
   }
 }
 
-router.get("/api/v1/version", async (req, res) => {
+router.get("/api/v1/version", mustBeAuthenticated ,async (req, res) => {
   try {
     const result = await getLatestTagLabel(
       "patelvivek7879",

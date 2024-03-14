@@ -8,6 +8,7 @@ import { prisma } from "../repository/User";
 import passport, { session } from "passport";
 import { Strategy as PassportGoogleStrategy } from 'passport-google-oauth20';
 import { logger } from "../utils/logger";
+import { mustBeAuthenticated } from "../middleware/authetication";
 
 const router = express.Router();
 
@@ -64,6 +65,7 @@ export async function passportGoogleStrategyHandler(
         data: {
           picture: picture,
           accesstoken: accessToken,
+          new_user: false
         },
         where: {
           email: email,
@@ -184,7 +186,7 @@ router.post("/api/v1/logout", function (req, res, next) {
 });
 
 
-router.get('/api/v1/user/profile', (req, res) => {
+router.get('/api/v1/user/profile', mustBeAuthenticated, (req, res) => {
   // Check if user is authenticated
   if (req.isAuthenticated()) {
       // Access the logged-in user from the session

@@ -2,12 +2,12 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "./providers/ThemeProvider.tsx";
+import AuthProvider from "./AuthProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <ThemeProvider>
-    <BrowserRouter basename="/pbyp">
+  <BrowserRouter basename="/pbyp">
+    <AuthProvider>
       <App />
+    </AuthProvider>
     </BrowserRouter>
-  </ThemeProvider>
 );

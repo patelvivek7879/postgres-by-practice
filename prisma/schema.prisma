@@ -18,6 +18,7 @@ model users {
   dob DateTime?
   picture String?
   accesstoken String?
+  new_user Boolean?
 }
 
 model feedbacks {

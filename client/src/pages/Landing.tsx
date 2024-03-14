@@ -3,37 +3,21 @@ import { useNavigate } from "react-router-dom";
 import {
   ArrowRightOutlined
 } from "@ant-design/icons";
-import ThemeSwitch from "@/components/ThemeSwitch";
 import FooterComponent from "@/components/FooterComponent";
-import NavbarTitleLogo from "@/components/NavbarTitleLogo";
+import Navbar from "@/common/Navbar";
+import { useAuthContext } from "@/AuthProvider";
 
-const { Header, Content, Footer } = Layout;
+const { Content } = Layout;
 const { Title, Text } = Typography;
 
 const Landing = ({setThemeVal}: any) => {
   const navigate = useNavigate();
 
+  const { loggedInUser }: any = useAuthContext();
+
   return (
     <>
-      <Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #e8e8e8",
-        }}
-      >
-        <NavbarTitleLogo />
-        <Space align="center">
-         <ThemeSwitch setThemeVal={setThemeVal}/>
-          <Button type="text" onClick={() => navigate("/register")}>
-            Sign Up
-          </Button>
-          <Button type="primary" onClick={() => navigate("/login")}>
-            Sign In
-          </Button>
-        </Space>
-      </Header>
+    <Navbar setThemeVal={setThemeVal} loggedInUser={loggedInUser} isAdminRoute={false} />
       <Layout>
       <Content
         hasSider={false}
@@ -52,7 +36,9 @@ const Landing = ({setThemeVal}: any) => {
             <Title level={4}>
             Practice Postgres FREE
             </Title>
-            <Button onClick={()=> navigate("/login")}>
+            <Button onClick={()=> {
+                loggedInUser ? navigate("/home") : navigate("/login")
+              }}>
                 Get Started
                 <ArrowRightOutlined />
             </Button>

@@ -28,37 +28,22 @@ import { SendOutlined, SettingOutlined } from "@ant-design/icons";
 import Loading from "@/common/Loading";
 import Navbar from "@/common/Navbar";
 import FooterComponent from "@/components/FooterComponent";
+import { useAuthContext } from "@/AuthProvider";
 
 const { Header, Content } = Layout;
 
-const Home = ({ setThemeVal, loggedInUser }: any) => {
+const Home = ({ setThemeVal }: any) => {
   const [sizesParent, setSizesParent] = useState([1, 1, 200]);
   const [sizes, setSizes] = useState([300, "40%", "auto"]);
   const [result, setResult] = useState(null);
   const [showFeedbackBtn, setShowFeedbackBtn] = useState(true);
 
+  const { loggedInUser }: any = useAuthContext()
+
   const [loading, setLoading] = useState(true);
-  const [version, setVersion] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
 
   const [form] = Form.useForm();
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetch("/api/v1/version")
-      .then((response) => {
-        return response.json();
-      })
-      .then((jsonRes) => {
-        setVersion(jsonRes.latestTag);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log("error", error);
-        setVersion(null);
-      });
-  }, []);
 
   useEffect(() => {
     if (!loggedInUser) {
@@ -194,14 +179,14 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
         >
           <Tooltip title={"Drop feedback"} placement="left">
             <FloatButton
-              // rootClassName="feedback-btn"
               type="primary"
               style={{ marginRight: "50px" }}
             />
           </Tooltip>
         </Popover>
       ) : null}
-      <Navbar setThemeVal={setThemeVal} loggedInUser={loggedInUser} isAdminRoute={false} />
+  showFeedbackBtn
+      <Navbar setThemeVal={setThemeVal} loggedInUser={loggedInUser} isAdminRoute={false} setShowFeedbackBtn={setShowFeedbackBtn} showFeedbackBtn={showFeedbackBtn}/>
       <Layout className="w-full h-full">
         <Sidebar loggedInUser={loggedInUser}/>
         <Layout
