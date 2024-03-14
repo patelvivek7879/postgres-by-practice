@@ -7,13 +7,15 @@ const { Text} = Typography;
 
 const FooterComponent = () => {
   return (
-    <Footer>
+    <Footer className='shadow-lg' style={{ borderTop: '1px solid #fff'}}>
     <Row justify={"center"} align={"middle"}>
+      <Text type="secondary">
       {getCurrentYear()} Practice Postgres ™️, All Rights Reserved
+      </Text>
     </Row>
     <Row justify={"center"} align={"middle"}>
       <Space size={2}>
-        <Text>Developed By</Text>
+        <Text type='secondary'>Developed By</Text>
         <Text strong> Vivek Patel</Text>
         <Button
           type="text"

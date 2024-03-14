@@ -14,8 +14,10 @@ function App() {
       algorithm: themeVal ? theme.darkAlgorithm : theme.defaultAlgorithm,
       components: {
         Layout: {
-          headerBg: themeVal ? '#000' : '#fff'
-      }}
+          headerBg: themeVal ? '#000' : '#fff',
+          footerBg: themeVal? '#000' : '#fff',
+        },
+    }
     }}
     >
     <AppContainer setThemeVal={setThemeVal}/>

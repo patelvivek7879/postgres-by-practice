@@ -8,8 +8,14 @@ import {
   Space,
   Layout,
   Select,
+  Drawer,
 } from "antd";
-import { MenuUnfoldOutlined, CaretRightOutlined } from "@ant-design/icons";
+import {
+  MenuUnfoldOutlined,
+  CaretRightOutlined,
+  SaveOutlined,
+  InfoCircleOutlined 
+} from "@ant-design/icons";
 import { format } from "sql-formatter";
 import AceEditor from "react-ace";
 import ace from "ace-builds";
@@ -36,8 +42,7 @@ const { Header } = Layout;
 
 const AceEditorComponent = ({ setResult }: any) => {
   const [sqlValue, setSQLValue] = useState("");
-
-  const theme = localStorage.getItem("preferredTheme");
+  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -97,10 +102,14 @@ const AceEditorComponent = ({ setResult }: any) => {
     }
   };
 
+  const openConnectionDrawer = () =>{
+    setOpen(true);
+  }
+
   return (
     <div className="h-screen p-4 mb-2">
-      <Title level={5}>Editor</Title>
-      <Header className="py-0 px-2 h-10">
+      {/* <Title level={5}>Editor</Title> */}
+      <Header className="py-0 px-2 h-10" style={{ borderRadius: 5}}>
         <Row
           justify={"space-between"}
           align={"middle"}
@@ -132,12 +141,17 @@ const AceEditorComponent = ({ setResult }: any) => {
                 ]}
               ></Select>
             </>
+            <Button type="text" icon={<InfoCircleOutlined />} onClick={openConnectionDrawer}>
+            </Button>
           </Space>
           <Space size={4}>
+            <Button
+              icon={<SaveOutlined />}
+              onClick={() => console.log("Saving...")}
+              disabled={sqlValue === ""}
+            ></Button>
             <Tooltip title="Run">
               <Button
-                // type="default"
-                // size="small"
                 icon={<CaretRightOutlined />}
                 onClick={runQuery}
                 disabled={sqlValue === ""}
@@ -172,6 +186,10 @@ const AceEditorComponent = ({ setResult }: any) => {
           style={{ overflow: "hidden" }}
         />
       </div>
+      <Drawer open={open} closable onClose={()=> setOpen(false)}>
+        <Title level={5}>Database</Title>
+        <Title level={5}>Tables</Title>
+      </Drawer>
     </div>
   );
 };

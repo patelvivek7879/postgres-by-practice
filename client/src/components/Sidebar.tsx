@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
-import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import {
-  Button,
   Card,
+  Col,
+  Divider,
   Layout,
   Progress,
   Row,
   Space,
+  Statistic,
   Tooltip,
   Typography,
 } from "antd";
+import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons";
 
 const { Sider } = Layout;
 const { Title } = Typography;
 
 const Sidebar = ({ loggedInUser }: any) => {
-  const [collapsed, setCollapsed] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     const p = JSON.parse(localStorage.getItem("userProfile") ?? "{}").progress;
@@ -25,83 +27,42 @@ const Sidebar = ({ loggedInUser }: any) => {
 
   return (
     <Sider
-      theme="light"
-      trigger={
-        <Button
-          type="text"
-          size="small"
-          shape="circle"
-          className={collapsed ? `expand-btn` : ""}
-          style={{ background: "transparent" }}
-          icon={
-            collapsed ? (
-              <Tooltip
-                title={"Expand"}
-                getPopupContainer={() => document.body}
-                getTooltipContainer={() => document.body}
-              >
-                <RightCircleOutlined color="#f5f5f5" />
-              </Tooltip>
-            ) : (
-              <Tooltip
-                title="Collapse"
-                getPopupContainer={() => document.body}
-                getTooltipContainer={() => document.body}
-              >
-                <LeftCircleOutlined color="#f5f5f5" />
-              </Tooltip>
-            )
-          }
-        />
+      theme={
+        localStorage.getItem("prefferedTheme") === "dark" ? "dark" : "light"
       }
-      style={{ height: "100vh", minWidth: "200px" }}
+      width={280}
       collapsible
-      collapsed={collapsed}
-      collapsedWidth={0}
-      onCollapse={() => setCollapsed(!collapsed)}
-      zeroWidthTriggerStyle={{
-        background: "none",
-        position: "absolute",
-        border: "none",
-        ...(!collapsed ? { inset: `64px 180px` } : { inset: `64px -12px` }),
+      className="d-flex"
+      onCollapse={(collapsed: any, type: any) => {
+        setIsSidebarCollapsed(collapsed);
       }}
-      className="d-flex flex-column justify-even"
     >
-      <Row style={{ height: "100%", width: "100%" }}>
-        <Card title={null} size="small" className="w-full">
-          <Title level={5}>Progress</Title>
-          <Space
-            style={{ width: "100%" }}
-            size={"middle"}
-            className="d-flex flex-row justify-center mt-4"
-          >
-            <Progress type="circle" percent={progress} size="small" />2 / 30
-          </Space>
-        </Card>
-      </Row>
-      {/* <Menu
-        theme="light"
-        mode="inline"
-        defaultSelectedKeys={["1"]}
-        items={[
-          {
-            key: "1",
-            icon: <UserOutlined />,
-            label: "nav 1",
-          },
-          {
-            key: "2",
-            icon: <VideoCameraOutlined />,
-            label: "nav 2",
-          },
-          {
-            key: "3",
-            icon: <UploadOutlined />,
-            label: "nav 3",
-          },
-        ]}
-        style={{ height: "100%", width: "100%" }}
-      /> */}
+      <Space direction="vertical" className="w-full p-4">
+        {/* <Title level={5}>Details</Title>
+        <Divider className="m-0"/> */}
+        {!isSidebarCollapsed ? (
+          <Card title="Progress" size="small">
+            <Progress type="line" percent={progress || 30} />
+          </Card>
+        ) : (
+          <Card size="small">
+            <Tooltip title={"Progress"}>
+            <AreaChartOutlined className="flex justify-center" />
+            </Tooltip>
+          </Card>
+        )}
+        {!isSidebarCollapsed ? (
+          <Card title="Modules" size="small">
+            <Statistic title="" value={93} suffix="/ 100" />
+          </Card>
+        ) : (
+          <Card size="small">
+            <Tooltip title={"Modules"}>
+            <PieChartOutlined className="flex justify-center"/>
+            </Tooltip>
+          </Card>
+        )}
+      </Space>
     </Sider>
   );
 };

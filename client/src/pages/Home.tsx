@@ -18,11 +18,6 @@ import {
 } from "antd";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import {
-  UserOutlined,
-  LogoutOutlined,
-  BranchesOutlined,
-} from "@ant-design/icons";
 import QuestionsComponent from "@/components/QuestionsComponent";
 import ResultComponent from "@/components/ResultComponent";
 import AceEditorComponent from "@/components/AceEditorComponents";
@@ -30,11 +25,11 @@ import Sidebar from "@/components/Sidebar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SendOutlined, SettingOutlined } from "@ant-design/icons";
-import ThemeSwitch from "@/components/ThemeSwitch";
-import NavbarTitleLogo from "@/components/NavbarTitleLogo";
 import Loading from "@/common/Loading";
+import Navbar from "@/common/Navbar";
+import FooterComponent from "@/components/FooterComponent";
 
-const { Header } = Layout;
+const { Header, Content } = Layout;
 
 const Home = ({ setThemeVal, loggedInUser }: any) => {
   const [sizesParent, setSizesParent] = useState([1, 1, 200]);
@@ -73,56 +68,6 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
     }
   }, [loggedInUser]);
 
-  const logout = async () => {
-    try {
-      localStorage.removeItem("userProfile");
-      const response = await fetch("/api/v1/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: "",
-      });
-      console.log(JSON.stringify(response));
-      if (response.status === 200) {
-        navigate("/login", { replace: true });
-      }
-    } catch (error) {
-      console.log("   logout error   ", error);
-    }
-  };
-
-  const items: MenuProps["items"] = [
-    {
-      key: "email",
-      label: (
-        <Space style={{ minWidth: 100 }}>
-          <UserOutlined /> {(loggedInUser as any)?.username}
-        </Space>
-      ),
-    },
-    {
-      key: "logout",
-      label: (
-        <Space onClick={logout} style={{ minWidth: 100 }}>
-          <LogoutOutlined /> {"Log out"}
-        </Space>
-      ),
-      disabled: false,
-    },
-    {
-      type: "divider",
-    },
-    {
-      key: "version",
-      label: (
-        <Space onClick={logout} style={{ minWidth: 100 }}>
-          <BranchesOutlined /> {version}
-        </Space>
-      ),
-      disabled: true,
-    },
-  ];
 
   const sendFeedback = async () => {
     setSending(true);
@@ -187,7 +132,9 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
   }
 
   return (
-    <Layout style={{ minHeight: "calc(100vh - 64px)" }}>
+    <Layout 
+      style={{ minHeight: "calc(100vh)" }}
+    >
       {showFeedbackBtn ? (
         <Popover
           style={{ marginRight: 24 }}
@@ -247,87 +194,23 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
         >
           <Tooltip title={"Drop feedback"} placement="left">
             <FloatButton
+              // rootClassName="feedback-btn"
+              type="primary"
               style={{ marginRight: "50px" }}
             />
           </Tooltip>
         </Popover>
       ) : null}
-      <Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #e8e8e8",
-        }}
-      >
-        <NavbarTitleLogo />
-        <Space size={"small"} align="center">
-          <ThemeSwitch setThemeVal={setThemeVal} />
-          <Dropdown
-            menu={{
-              items: [
-                {
-                  key: "feedback-switch",
-                  label: (
-                    <Row justify={"space-between"} align={"middle"}>
-                      <Space>
-                        <Typography.Text>Feedback enable:</Typography.Text>
-                        <Switch
-                          size={"small"}
-                          value={showFeedbackBtn}
-                          onClick={(e) => {
-                            setShowFeedbackBtn(e);
-                          }}
-                        />
-                      </Space>
-                    </Row>
-                  ),
-                  disabled: false,
-                },
-              ],
-            }}
-            trigger={["click"]}
-          >
-            <Button type="text" icon={<SettingOutlined />} />
-          </Dropdown>
-          <Dropdown menu={{ items }}>
-            {/* TODO: google image  */}
-            {(loggedInUser as any)?.picture ? (
-              <Avatar
-                size={32}
-                src={
-                  <img
-                    src={(loggedInUser as any)?.picture}
-                    alt={"user image"}
-                  />
-                }
-              />
-            ) : (
-              <Avatar
-                size={32}
-                src={
-                  <img
-                    src={
-                      (loggedInUser as any)?.picture ||
-                      JSON.parse(localStorage.getItem("userProfile") ?? "{}")
-                        ?.picture
-                    }
-                  />
-                }
-                icon={<UserOutlined size={32} />}
-              />
-            )}
-          </Dropdown>
-        </Space>
-      </Header>
-      <Layout>
-        <Sidebar loggedInUser={loggedInUser} />
+      <Navbar setThemeVal={setThemeVal} loggedInUser={loggedInUser} isAdminRoute={false} />
+      <Layout className="w-full h-full">
+        <Sidebar loggedInUser={loggedInUser}/>
         <Layout
-          className="m-2 p-4"
+          className="w-full"
           style={{
-            height: "calc(100vh-64px)",
+            height: "calc(100vh-48px)",
           }}
         >
+          <Content>
           <SplitPane
             split="vertical"
             sizes={sizes}
@@ -336,7 +219,7 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
               return (
                 <Divider
                   type="vertical"
-                  style={{ height: "100vh", margin: 2 }}
+                  style={{ height: "100%", margin: 2 }}
                 />
               );
             }}
@@ -370,6 +253,8 @@ const Home = ({ setThemeVal, loggedInUser }: any) => {
               </SplitPane>
             </Pane>
           </SplitPane>
+          </Content>
+          <FooterComponent />
         </Layout>
       </Layout>
     </Layout>

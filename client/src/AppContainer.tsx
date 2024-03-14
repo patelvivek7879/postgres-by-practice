@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Register from './components/Register';
 import { useEffect, useState } from 'react';
 import Landing from './pages/Landing';
+import Feedbacks from './pages/Feedbacks';
 
 const AppContainer = ({setThemeVal}: any) => {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -32,6 +33,7 @@ const AppContainer = ({setThemeVal}: any) => {
         <Route path="/register" element={  <Register />} />
         <Route path="/login" element={ <Login />} />
         <Route path="/home" element={ loggedInUser && <Home setThemeVal={setThemeVal} loggedInUser={loggedInUser} />} />
+        <Route path="/admin/feedbacks" element={ loggedInUser && <Feedbacks setThemeVal={setThemeVal} loggedInUser={loggedInUser} />} />
     </Routes>
   )
 }

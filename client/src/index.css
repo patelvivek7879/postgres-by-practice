@@ -19,6 +19,10 @@ expand-btn:hover {
   scale: 1.5;
 }
 
+.feedback-btn > div {
+  background-color: #1890ff !important;
+}
+
 .feedback-popover .ant-popover-content {
   margin-right: 24px !important;
 }
