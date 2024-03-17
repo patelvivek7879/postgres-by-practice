@@ -120,11 +120,14 @@ const AceEditorComponent = ({ setResult }: any) => {
               <small>Database:</small>
               <Select
                 className="w-28"
+                defaultActiveFirstOption
                 options={[
                   {
-                    label: "JSON",
-                    value: "json",
+                    value: "postgres",
                   },
+                  {
+                    value: "vivekpatel",
+                  }
                 ]}
               ></Select>
             </>
@@ -134,10 +137,10 @@ const AceEditorComponent = ({ setResult }: any) => {
                 className="w-28"
                 options={[
                   {
-                    label: "JSON",
-                    value: "json",
+                    value: "cars",
                   },
                 ]}
+                defaultActiveFirstOption
               ></Select>
             </>
             <Button type="text" icon={<InfoCircleOutlined />} onClick={openConnectionDrawer}>
