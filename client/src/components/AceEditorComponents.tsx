@@ -108,8 +108,8 @@ const AceEditorComponent = ({ setResult }: any) => {
 
   return (<div className="w-full h-full">
     <Title level={4} className="pl-4">Editor</Title>
-    <div className="p-4 mb-2">
-      <Header className="py-0 px-2 h-10" style={{ borderRadius: 5}}>
+    <div className="p-4 mb-2" style={{ lineHeight: 3, borderRadius: 5 }}>
+      <Header className="py-0 px-2 h-10">
         <Row
           justify={"space-between"}
           align={"middle"}
@@ -185,7 +185,7 @@ const AceEditorComponent = ({ setResult }: any) => {
           value={sqlValue}
           width="100%"
           height="100%"
-          style={{ overflow: "auto", height: "300px" }}
+          style={{ overflow: "auto", height: "300px", borderRadius: '5px' }}
         />
       </div>
       <Drawer
