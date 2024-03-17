@@ -1,8 +1,6 @@
 import AppContainer from "./AppContainer";
-import { ConfigProvider, FloatButton, theme } from "antd";
+import { ConfigProvider, theme } from "antd";
 import { useState } from "react";
-
-import "split-pane-react/esm/themes/default.css";
 
 function App() {
 

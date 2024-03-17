@@ -8,14 +8,14 @@ const { Title } = Typography
 
 const ResultComponent = ({result}:{result: any}) => {
   return (
-    <Layout className="p-4">
-      <Title level={5}>Results</Title>
+    <div className="p-4 h-full">
+      <Title level={5} className="m-0">Results</Title>
       <JSONPretty 
         theme={JSONPrettyMon}
-        style={{ height: '300px', overflowY: 'scroll'}} 
+        style={{ height: '150px', overflowY: 'scroll'}} 
         id="json-pretty" 
         data={result}></JSONPretty>
-    </Layout>
+    </div>
   )
 }
 

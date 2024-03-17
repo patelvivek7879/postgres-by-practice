@@ -16,6 +16,7 @@ import {
   UserOutlined,
   BranchesOutlined,
   LogoutOutlined,
+  LinkOutlined
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -159,6 +160,15 @@ const Navbar = ({
                         },
                       ]
                     : []),
+                    {
+                      key: 'references',
+                      label: (
+                        <Typography.Link href="https://www.postgresqltutorial.com/" target="_blank">
+                            <Row justify={"space-between"} align={"middle"}>
+                            References <LinkOutlined />
+                            </Row>
+                        </Typography.Link>)
+                    }
                 ],
               }}
               trigger={["click"]}

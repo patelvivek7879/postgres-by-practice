@@ -73,8 +73,6 @@ const AceEditorComponent = ({ setResult }: any) => {
 
       const result = await response.json();
 
-      console.log(result);
-
       if (result.success) {
         setResult(result.data);
         notification.success({
@@ -108,9 +106,9 @@ const AceEditorComponent = ({ setResult }: any) => {
     setOpen(true);
   }
 
-  return (<>
+  return (<div className="w-full h-full">
     <Title level={4} className="pl-4">Editor</Title>
-    <div className="h-screen p-4 mb-2">
+    <div className="p-4 mb-2">
       <Header className="py-0 px-2 h-10" style={{ borderRadius: 5}}>
         <Row
           justify={"space-between"}
@@ -170,7 +168,7 @@ const AceEditorComponent = ({ setResult }: any) => {
           </Space>
         </Row>
       </Header>
-      <div className="mt-2 h-full">
+      <div className="h-full mt-2">
         <AceEditor
           theme={
             localStorage.getItem("preferredTheme") === "light"
@@ -184,7 +182,7 @@ const AceEditorComponent = ({ setResult }: any) => {
           value={sqlValue}
           width="100%"
           height="100%"
-          style={{ overflow: "hidden" }}
+          style={{ overflow: "auto", height: "300px" }}
         />
       </div>
       <Drawer
@@ -215,7 +213,7 @@ const AceEditorComponent = ({ setResult }: any) => {
         <Title level={5}>Tables</Title>
       </Drawer>
     </div>
-    </>
+    </div>
   );
 };
 

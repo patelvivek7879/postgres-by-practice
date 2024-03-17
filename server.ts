@@ -19,6 +19,7 @@ import feedbackService from './routes/feedback';
 import { logger } from './utils/logger';
 import githubRoutes from './routes/github-api';
 import { rateLimiter } from './middleware/rateLimiter';
+import progressRoutes from './routes/progress';
 
 
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -105,6 +106,7 @@ app.use(runQuery);
 app.use(usersRoutes);
 app.use(feedbackService)
 app.use(githubRoutes);
+app.use(progressRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

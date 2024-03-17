@@ -15,7 +15,6 @@ const useFetch = (url: any, options = {}) => {
           setLoading(true);
           try {
             const response = await fetch(url, options);
-            console.log(response)
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }

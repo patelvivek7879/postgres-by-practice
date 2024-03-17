@@ -12,6 +12,11 @@ const ThemeSwitch = ({setThemeVal}: any) => {
   const changeTheme = (e: any) => {
     setThemeVal(e);
     setTheme(e ? "dark" : "light");
+    if(theme === "dark") {
+      localStorage.setItem("preferredTheme", 'dark' );
+    }else{
+      localStorage.setItem("preferredTheme", 'light' );
+    }
   };
 
   useEffect(() => {
