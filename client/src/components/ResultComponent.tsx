@@ -20,7 +20,7 @@ const ResultComponent = ({ result }: { result: any }) => {
       ) : (
         <JSONPretty
           theme={JSONPrettyMon}
-          style={{ height: "260px", overflowY: "scroll" }}
+          style={{ height: "240px", overflowY: "scroll" }}
           id="json-pretty"
           data={result}
         ></JSONPretty>
