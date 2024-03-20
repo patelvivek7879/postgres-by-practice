@@ -3,13 +3,16 @@ import {
   Card,
   Layout,
   Progress,
+  Row,
   Space,
   Statistic,
   Tooltip,
+  Typography,
 } from "antd";
 import { CodeSandboxOutlined, StockOutlined } from "@ant-design/icons";
 
 const { Sider } = Layout;
+const { Text } = Typography;
 
 const Sidebar = ({ loggedInUser }: any) => {
   const [progress, setProgress] = useState(0);
@@ -48,7 +51,10 @@ const Sidebar = ({ loggedInUser }: any) => {
         )}
         {!isSidebarCollapsed ? (
           <Card title="Modules" size="small">
-            <Statistic title="" value={93} suffix="/ 100" />
+            <Space size={56}>
+            <Statistic title={<Text>Practice</Text>} value={93} suffix="/ 100" valueStyle={{ fontSize: 18}} />
+            <Statistic title={<Text>Theory</Text>} value={93} suffix="/ 100" valueStyle={{ fontSize: 18}}/>
+            </Space>
           </Card>
         ) : (
           <Card size="small">
