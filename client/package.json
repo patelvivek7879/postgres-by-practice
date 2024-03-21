@@ -6,7 +6,7 @@
   "homepage": "/pbyp",
   "scripts": {
     "dev": "vite",
-    "build": "npm install && npm install --prefix client && npm run build --prefix client && rm -rf ./public && mkdir ./public && cp -r client/dist/* ./public",
+    "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
