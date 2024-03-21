@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc",
+    "build":"npm install --prefix client && npm run build --prefix client && rm -rf ./public && mkdir ./public && cp -r client/dist/* ./public",
     "start": "node dist/server.js",
     "dev": "nodemon server.ts",
     "swagger": "tsoa spec"
