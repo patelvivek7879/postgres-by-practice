@@ -119,7 +119,7 @@ const Navbar = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        borderBottom: "1px solid #e8e8e8",
+        borderBottom: "1px solid rgba(232, 232, 232, 0.4)"
       }}
     >
       <NavbarTitleLogo />

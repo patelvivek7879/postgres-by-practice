@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Row,
   Tooltip,
@@ -7,7 +7,6 @@ import {
   Typography,
   Space,
   Layout,
-  Select,
   Drawer,
   Alert,
 } from "antd";
@@ -15,8 +14,9 @@ import {
   MenuUnfoldOutlined,
   CaretRightOutlined,
   SaveOutlined,
-  InfoCircleOutlined,
-  CloseOutlined
+  CloseOutlined,
+  MacCommandOutlined,
+  WindowsOutlined,
 } from "@ant-design/icons";
 import { format } from "sql-formatter";
 import AceEditor from "react-ace";
@@ -37,6 +37,8 @@ ace.config.setModuleUrl("ace/mode/json", modeJsonUrl);
 
 import themeChromeUrl from "ace-builds/src-noconflict/theme-chrome?url";
 import { useNavigate } from "react-router-dom";
+import React from "react";
+import { debounce } from "lodash";
 ace.config.setModuleUrl("ace/theme/chrome", themeChromeUrl);
 
 const { Title } = Typography;
@@ -48,6 +50,19 @@ const AceEditorComponent = ({ setResult }: any) => {
 
   const navigate = useNavigate();
 
+  const onKeyDownFn = (e: { keyCode: number; metaKey: any }) => {
+    if (e.keyCode === 13 && e.metaKey && sqlValue) {
+      runQuery();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDownFn);
+    return () => {
+      document.removeEventListener("keydown", onKeyDownFn);
+    };
+  });
+
   const formatSQLValue = (value: string) => {
     const formattedValue = format(value, {
       language: "postgresql",
@@ -58,7 +73,7 @@ const AceEditorComponent = ({ setResult }: any) => {
     setSQLValue(formattedValue);
   };
 
-  const runQuery = async () => {
+  const runQuery = debounce(async () => {
     try {
       const response = await fetch("/api/v1/execute/query", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -100,23 +115,26 @@ const AceEditorComponent = ({ setResult }: any) => {
     } catch (error) {
       console.log(error);
     }
+  },500)
+
+  const openConnectionDrawer = () => {
+    setOpen(true);
   };
 
-  const openConnectionDrawer = () =>{
-    setOpen(true);
-  }
-
-  return (<div className="w-full h-full">
-    <Title level={4} className="pl-4">Editor</Title>
-    <div className="p-4 mb-2" style={{ lineHeight: 3, borderRadius: 5 }}>
-     {/* TODO: have to give user a feature from where user can change connection */}
-      <Header className="py-0 px-2 h-10">
-        <Row
-          justify={"space-between"}
-          align={"middle"}
-          style={{ lineHeight: 3 }}
-        >
-          {/* <Space>
+  return (
+    <div className="w-full h-full">
+      <Title level={4} className="pl-4">
+        Editor
+      </Title>
+      <div className="p-4 mb-2" style={{ lineHeight: 3, borderRadius: 5 }}>
+        {/* TODO: have to give user a feature from where user can change connection */}
+        <Header className="py-0 px-2 h-10">
+          <Row
+            justify={"space-between"}
+            align={"middle"}
+            style={{ lineHeight: 3 }}
+          >
+            {/* <Space>
             <>
               <small>Database:</small>
               <Select
@@ -147,77 +165,91 @@ const AceEditorComponent = ({ setResult }: any) => {
             <Button type="text" icon={<InfoCircleOutlined />} onClick={openConnectionDrawer}>
             </Button>
           </Space> */}
-          <span></span>
-          <Space size={4}>
-            <Button
-              icon={<SaveOutlined />}
-              onClick={() => console.log("Saving...")}
-              disabled={sqlValue === ""}
-            ></Button>
-            <Tooltip title="Run">
+            <span></span>
+            <Space size={4}>
               <Button
-                icon={<CaretRightOutlined />}
-                onClick={runQuery}
+                icon={<SaveOutlined />}
+                onClick={() => console.log("Saving...")}
                 disabled={sqlValue === ""}
+              ></Button>
+              <Tooltip
+                title={
+                  <small>
+                    {navigator?.userAgentData?.platform === "macOS" ? (
+                      <MacCommandOutlined />
+                    ) : (
+                      <WindowsOutlined />
+                    )}
+                    {" "} + Enter
+                  </small>
+                }
               >
-                Run
-              </Button>
-            </Tooltip>
-            <Tooltip title="Format">
-              <Button
-                type="text"
-                onClick={() => formatSQLValue(sqlValue)}
-                icon={<MenuUnfoldOutlined />}
-              />
-            </Tooltip>
-          </Space>
-        </Row>
-      </Header>
-      <div className="h-full mt-2">
-        <AceEditor
-          theme={
-            localStorage.getItem("preferredTheme") === "light"
-              ? "crimson_editor"
-              : "nord_dark"
-          }
-          mode="sql"
-          onChange={(val) => setSQLValue(val)}
-          name="UNIQUE_ID_OF_DIV"
-          editorProps={{ $blockScrolling: true }}
-          value={sqlValue}
-          width="100%"
-          height="100%"
-          style={{ overflow: "auto", height: "300px", borderRadius: '5px' }}
-        />
+                <Button
+                  icon={<CaretRightOutlined />}
+                  onClick={runQuery}
+                  disabled={sqlValue === ""}
+                >
+                  Run
+                </Button>
+              </Tooltip>
+              <Tooltip title="Format">
+                <Button
+                  type="text"
+                  onClick={() => formatSQLValue(sqlValue)}
+                  icon={<MenuUnfoldOutlined />}
+                />
+              </Tooltip>
+            </Space>
+          </Row>
+        </Header>
+        <div className="h-full mt-2">
+          <AceEditor
+            theme={
+              localStorage.getItem("preferredTheme") === "light"
+                ? "crimson_editor"
+                : "nord_dark"
+            }
+            mode="sql"
+            onChange={(val) => setSQLValue(val)}
+            name="UNIQUE_ID_OF_DIV"
+            editorProps={{ $blockScrolling: true }}
+            value={sqlValue}
+            width="100%"
+            height="100%"
+            style={{ overflow: "auto", height: "300px", borderRadius: "5px" }}
+          />
+        </div>
+        <Drawer
+          title={<>Database Details</>}
+          open={open}
+          closeIcon={null}
+          closable={false}
+          maskClosable={true}
+          onClose={() => setOpen(false)}
+          width={"35%"}
+          destroyOnClose
+          extra={<CloseOutlined onClick={() => setOpen(false)} />}
+          forceRender
+        >
+          <Alert
+            message="Note:"
+            description={
+              <Space size={1} direction="vertical">
+                <Typography.Paragraph className="mb-0">
+                  Max 3 databases can be created{" "}
+                </Typography.Paragraph>
+                <Typography.Paragraph className="mb-0">
+                  Max 5 tables can be created for each database
+                </Typography.Paragraph>
+              </Space>
+            }
+            type="info"
+            showIcon
+          />
+          <Title level={5}>Database</Title>
+          <Title level={5}>Tables</Title>
+        </Drawer>
       </div>
-      <Drawer
-        title={<>
-          Database Details
-        </>} 
-        open={open} 
-        closeIcon={null}
-        closable={false}
-        maskClosable={true}
-        onClose={()=> setOpen(false)} 
-        width={"35%"} 
-        destroyOnClose
-        extra={
-          <CloseOutlined onClick={()=> setOpen(false)} />
-        }
-        forceRender
-      >
-      <Alert 
-        message="Note:" 
-        description={<Space size={1} direction="vertical">
-        <Typography.Paragraph className="mb-0">Max 3 databases can be created </Typography.Paragraph>
-        <Typography.Paragraph className="mb-0">Max 5 tables can be created for each database</Typography.Paragraph>
-        </Space>} 
-        type="info" showIcon 
-      />
-        <Title level={5}>Database</Title>
-        <Title level={5}>Tables</Title>
-      </Drawer>
-    </div>
     </div>
   );
 };

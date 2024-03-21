@@ -7,7 +7,7 @@ const { Text} = Typography;
 
 const FooterComponent = () => {
   return (
-    <Footer className='shadow-lg' style={{ borderTop: '1px solid #fff'}}>
+    <Footer className='shadow-lg' style={{ borderTop: "1px solid rgba(232, 232, 232, 0.4)"}}>
     <Row justify={"center"} align={"middle"}>
       <Text type="secondary">
       {getCurrentYear()} Practice Postgres ™️, All Rights Reserved
