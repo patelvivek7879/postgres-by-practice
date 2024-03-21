@@ -124,6 +124,11 @@ const Navbar = ({
     >
       <NavbarTitleLogo />
       <Space size={"small"} align="center">
+        <div className="mt-6">
+        <a href="https://www.buymeacoffee.com/patelviveku" target="_blank">
+        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style={{ height: "36px"}}/>
+        </a>
+        </div>
         <ThemeSwitch setThemeVal={setThemeVal} />
         {isEmpty(loggedInUser) || !localStorage.getItem('userProfile') ? (
           <>

@@ -3,7 +3,6 @@ import {
   Card,
   Layout,
   Progress,
-  Row,
   Space,
   Statistic,
   Tooltip,
@@ -40,7 +39,7 @@ const Sidebar = ({ loggedInUser }: any) => {
         <Divider className="m-0"/> */}
         {!isSidebarCollapsed ? (
           <Card title="Progress" size="small">
-            <Progress type="line" percent={progress || 30} />
+            <Progress type="line" percent={ progress || Math.floor((6/14)*100)} />
           </Card>
         ) : (
           <Card size="small">
@@ -52,8 +51,8 @@ const Sidebar = ({ loggedInUser }: any) => {
         {!isSidebarCollapsed ? (
           <Card title="Modules" size="small">
             <Space size={56}>
-            <Statistic title={<Text>Practice</Text>} value={93} suffix="/ 100" valueStyle={{ fontSize: 18}} />
-            <Statistic title={<Text>Theory</Text>} value={93} suffix="/ 100" valueStyle={{ fontSize: 18}}/>
+            <Statistic title={<Text>Practice</Text>} value={4} suffix="/ 10" valueStyle={{ fontSize: 18}} />
+            <Statistic title={<Text>Theory</Text>} value={2} suffix="/ 4" valueStyle={{ fontSize: 18}}/>
             </Space>
           </Card>
         ) : (

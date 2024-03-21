@@ -8,6 +8,7 @@ generator client {
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
+
 model users {
   user_id   String? @unique
   username  String?
@@ -19,6 +20,8 @@ model users {
   picture String?
   accesstoken String?
   new_user Boolean?
+  practice Int?
+  theory Int?
 }
 
 model feedbacks {
