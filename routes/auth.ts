@@ -28,6 +28,8 @@ export async function passportGoogleStrategyHandler(
   try{
   const {email, picture, name} = profile && profile._json;
 
+  console.log("email===>>", email)
+
   const user = await prisma.users.findFirst({
     where: {
       email: email,
