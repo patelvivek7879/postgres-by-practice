@@ -19,7 +19,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const googleLoginHandler = () => {
-    window.location.href = "http://localhost:5000/api/v1/auth/google";
+    window.location.href = `${import.meta.env.VITE_BASE_URL}/api/v1/auth/google`;
   };
 
   return (
