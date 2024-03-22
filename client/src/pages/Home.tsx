@@ -195,7 +195,7 @@ const Home = ({ setThemeVal }: any) => {
               <Col span={1} flex={'none'}>
               <Divider type="vertical" className="w-0 h-full m-0"/>
               </Col>
-              <Col span={13}>
+              <Col span={13} style={{height: `calc(100vh - 160px)`}}>
                 <Space
                   direction="vertical"
                   size={2}

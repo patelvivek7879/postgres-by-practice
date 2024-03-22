@@ -13,5 +13,8 @@ CREATE TABLE IF NOT EXISTS users (
     progress INTEGER,
     dob DATE,
     picture TEXT,
-    accesstoken TEXT
+    accesstoken TEXT,
+    new_user BOOLEAN DEFAULT TRUE,
+    practice INTEGER,
+    theory INTEGER
 );

@@ -12,8 +12,8 @@ function App() {
       algorithm: themeVal ? theme.darkAlgorithm : theme.defaultAlgorithm,
       components: {
         Layout: {
-          headerBg: themeVal ? '#000' : '#fff',
-          footerBg: themeVal? '#000' : '#fff',
+          headerBg: themeVal ? '#222' : '#fff',
+          footerBg: themeVal? '#222' : '#fff',
         },
     }
     }}
