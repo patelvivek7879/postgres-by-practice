@@ -120,11 +120,16 @@ app.use(
   }),
 );
 
-app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'), {
-      headers: { 'Cache-Control': 'no-cache, private' },
-  });
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+// app.use('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'), {
+//       headers: { 'Cache-Control': 'no-cache, private' },
+//   });
+// });
 
 app.listen(port, () => {
   logger.info(`Server is up at http://localhost:${port}`);
