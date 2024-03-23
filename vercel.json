@@ -1,1 +1,1 @@
-{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/pbyp/index.html" }] }
+{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/" }] }
