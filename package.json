@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Platform where user can learn Postgres SQL  by practice",
   "main": "server.ts",
+  "homepage": "/pbyp",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build":"npm install --prefix client && npm run build --prefix client && rm -rf ./public && mkdir ./public && cp -r client/dist/* ./public",
