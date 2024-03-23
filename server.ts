@@ -98,6 +98,11 @@ passport.deserializeUser(async (loggedInUser: any, done) => {
   }
 });
 
+
+app.get('/', (req, res) => {
+  res.redirect('/pbyp');
+})
+
 // Routes 
 app.use(authRoutes);
 
