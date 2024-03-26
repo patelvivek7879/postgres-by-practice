@@ -1,5 +1,15 @@
 {
   "version": 2,
-  "basePath": "/pbyp",
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/pbyp"
+    }
+  ]
 }
