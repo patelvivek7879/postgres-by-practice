@@ -5,20 +5,33 @@ const ThemeContext = createContext(null);
 
 // Create a provider component
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light'); // Default theme is light
+  const [theme, setTheme] = useState<string>(
+    localStorage.getItem("preferredTheme") === "dark" ? "dark" : "light",
+  );
   
-  const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  const toggleTheme = (theme: string) => {
+    // setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+
+    setTheme(theme);
+    if(theme === "dark") {
+      localStorage.setItem("preferredTheme", 'dark' );
+    }else{
+      localStorage.setItem("preferredTheme", 'light' );
+    }
   };
 
+  const themeContext = {
+    theme,
+    toggleTheme,
+  }
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={themeContext}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
+
 // Custom hook to consume the theme context
-export const useTheme = () => {
-  return useContext(ThemeContext);
-};
+export const useThemeContext = () =>  useContext(ThemeContext);

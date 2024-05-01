@@ -12,12 +12,14 @@ import {
 } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "@/AuthProvider";
 
 const { Title } = Typography;
 
 const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const { setLoggedInUser }: any = useAuthContext();
 
   const localLogin = async (values: any) => {
     try {
@@ -42,7 +44,10 @@ const Login = () => {
       const jsonResponse = await response.json();
 
       if (jsonResponse.status === 200) {
-        navigate("/");
+        console.log(jsonResponse);
+        localStorage.setItem("userProfile", JSON.stringify(jsonResponse?.user));
+        setLoggedInUser(jsonResponse.user);
+        navigate("/home");
         notification.success({
           message: "Login successful",
           placement: "bottomRight",
@@ -151,7 +156,7 @@ const Login = () => {
               size="small"
               onClick={() => navigate("/register")}
             >
-              register
+              Register
             </Button>
           </Space>
         </div>

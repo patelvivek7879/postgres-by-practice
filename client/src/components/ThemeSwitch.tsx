@@ -1,6 +1,7 @@
 import { Space, Switch, Typography } from "antd";
 import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { useThemeContext } from "@/providers/ThemeProvider";
 
 const { Text } = Typography;
 
@@ -9,14 +10,17 @@ const ThemeSwitch = ({setThemeVal}: any) => {
     localStorage.getItem("preferredTheme") === "dark" ? "dark" : "light",
   );
 
+  const { theme: gTheme, toggleTheme } = useThemeContext();
+
   const changeTheme = (e: any) => {
     setThemeVal(e);
     setTheme(e ? "dark" : "light");
-    if(theme === "dark") {
-      localStorage.setItem("preferredTheme", 'dark' );
-    }else{
-      localStorage.setItem("preferredTheme", 'light' );
-    }
+    toggleTheme(e ? "dark" : "light");
+    // if(theme === "dark") {
+    //   localStorage.setItem("preferredTheme", 'dark' );
+    // }else{
+    //   localStorage.setItem("preferredTheme", 'light' );
+    // }
   };
 
   useEffect(() => {

@@ -20,6 +20,9 @@ const AppContainer = ({setThemeVal}: any) => {
     }
   }, [loggedInUser]);
 
+
+  console.log("loggedInUser ====>>>",loggedInUser);
+
   return (
     <Routes>
         <Route path="/" element={ <Landing setThemeVal={setThemeVal} loggedInUser={loggedInUser}/>} />

@@ -5,6 +5,7 @@ import {
   Form,
   Input,
   Layout,
+  notification,
   Row,
   Space,
   Typography,
@@ -21,6 +22,57 @@ const Register = () => {
   const googleLoginHandler = () => {
     window.location.href = `${import.meta.env.VITE_BASE_URL}/api/v1/auth/google`;
   };
+
+  const localStrategySignUp = async (values: any) => {
+    try {
+      const response = await fetch("/api/v1/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      if (response.status === 401) {
+        notification.error({
+          message: "Unauthorized",
+          placement: "bottomRight",
+          duration: 3,
+        });
+        form.resetFields();
+        navigate("/login");
+        return;
+      }
+
+      const jsonResponse = await response.json();
+
+      if (jsonResponse.status === 200) {
+        navigate("/");
+        notification.success({
+          message: "Login successful",
+          placement: "bottomRight",
+          duration: 3,
+        });
+      } else {
+        notification.error({
+          message: "Error",
+          description: jsonResponse.message,
+          placement: "bottomRight",
+          duration: 3,
+        });
+        navigate("/login");
+      }
+    } catch (err: any) {
+      console.log(err);
+      form.resetFields();
+      notification.error({
+        message: "Error",
+        description: err.message,
+        placement: "bottomRight",
+        duration: 3,
+      });
+    }
+  };
+
 
   return (
     <Layout className="w-full h-screen d-flex justify-center align-middle">
@@ -54,7 +106,7 @@ const Register = () => {
         <Form
           form={form}
           layout={"vertical"}
-          onFinish={(values) => console.log(values)}
+          onFinish={(values) => localStrategySignUp(values)}
           id="form-signup"
         >
           <Form.Item

@@ -47,6 +47,11 @@ const { Header } = Layout;
 const AceEditorComponent = ({ setResult }: any) => {
   const [sqlValue, setSQLValue] = useState("");
   const [open, setOpen] = useState(false);
+  const [running, setRunning] = useState(false);
+
+  const theme = localStorage.getItem("preferredTheme") === "light"
+                ? "crimson_editor"
+                : "nord_dark"
 
   const navigate = useNavigate();
 
@@ -74,6 +79,7 @@ const AceEditorComponent = ({ setResult }: any) => {
   };
 
   const runQuery = debounce(async () => {
+    setRunning(true);
     try {
       const response = await fetch("/api/v1/execute/query", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -114,8 +120,10 @@ const AceEditorComponent = ({ setResult }: any) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setRunning(false);
     }
-  },500)
+  }, 500);
 
   const openConnectionDrawer = () => {
     setOpen(true);
@@ -179,15 +187,16 @@ const AceEditorComponent = ({ setResult }: any) => {
                       <MacCommandOutlined />
                     ) : (
                       <WindowsOutlined />
-                    )}
-                    {" "} + Enter
+                    )}{" "}
+                    + Enter
                   </small>
                 }
               >
                 <Button
                   icon={<CaretRightOutlined />}
                   onClick={runQuery}
-                  disabled={sqlValue === ""}
+                  disabled={sqlValue === "" || running}
+                  loading={running}
                 >
                   Run
                 </Button>
@@ -204,11 +213,7 @@ const AceEditorComponent = ({ setResult }: any) => {
         </Header>
         <div className="h-full mt-2">
           <AceEditor
-            theme={
-              localStorage.getItem("preferredTheme") === "light"
-                ? "crimson_editor"
-                : "nord_dark"
-            }
+            theme={theme}
             mode="sql"
             onChange={(val) => setSQLValue(val)}
             name="UNIQUE_ID_OF_DIV"

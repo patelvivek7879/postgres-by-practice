@@ -1,6 +1,7 @@
 import AppContainer from "./AppContainer";
 import { ConfigProvider, theme } from "antd";
 import { useState } from "react";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
 function App() {
 
@@ -18,7 +19,9 @@ function App() {
     }
     }}
     >
-    <AppContainer setThemeVal={setThemeVal}/>
+    <ThemeProvider>
+      <AppContainer setThemeVal={setThemeVal}/>
+    </ThemeProvider>
     </ConfigProvider>
   )
 }

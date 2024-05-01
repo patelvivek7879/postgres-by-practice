@@ -6,7 +6,7 @@
   "homepage": "/pbyp",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"npm install --prefix client && npm run build --prefix client && rm -rf ./public && mkdir ./public && cp -r client/dist/* ./public",
+    "build": "npm install --prefix client && npm run build --prefix client && rm -rf ./public && mkdir ./public && cp -r client/dist/* ./public",
     "start": "node dist/server.js",
     "dev": "nodemon server.ts",
     "swagger": "tsoa spec"
@@ -28,6 +28,7 @@
   "dependencies": {
     "@prisma/client": "^5.10.2",
     "axios": "^1.6.7",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "config": "^3.3.11",
     "cors": "^2.8.5",
@@ -50,6 +51,7 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/config": "^3.3.3",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",

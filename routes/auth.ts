@@ -6,9 +6,10 @@ import axios from "axios";
 import { Strategy as LocalStrategy } from "passport-local";
 import { prisma } from "../repository/User";
 import passport, { session } from "passport";
-import { Strategy as PassportGoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as PassportGoogleStrategy } from "passport-google-oauth20";
 import { logger } from "../utils/logger";
 import { mustBeAuthenticated } from "../middleware/authetication";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -25,62 +26,65 @@ export async function passportGoogleStrategyHandler(
   profile: any,
   done: any
 ) {
-  try{
-  const {email, picture, name} = profile && profile._json;
+  try {
+    const { email, picture, name } = profile && profile._json;
 
-  console.log("email===>>", email)
-
-  const user = await prisma.users.findFirst({
-    where: {
-      email: email,
-    },
-  });
-
-  if (!user) {
-    const createdUser = await prisma.users.create({
-      data: {
-        username: getUsernameFromEmail(email) as string,
+    const user = await prisma.users.findFirst({
+      where: {
         email: email,
-        name: name,
-        password: "",
-        progress: 0,
-        dob: null,
-        picture: picture,
-        accesstoken: accessToken
       },
     });
 
-    if (createdUser) {
-      const user = await prisma.users.findFirst({
-        where: {
-          email: email,
-        },
-      });
-      return done(null, user);
-    }
-    return done(null, createdUser);
-  }
-
-  if (user.email === email) {
-    if (user.picture !== picture || user.accesstoken !== accessToken) {
-      const updatedUser = await prisma.users.update({
+    if (!user) {
+      const createdUser = await prisma.users.create({
         data: {
+          username: getUsernameFromEmail(email) as string,
+          email: email,
+          name: name,
+          password: "",
+          progress: 0,
+          dob: null,
           picture: picture,
           accesstoken: accessToken,
-          new_user: false
-        },
-        where: {
-          email: email,
         },
       });
-      return done(null, updatedUser);
+
+      if (createdUser) {
+        const user = await prisma.users.findFirst({
+          where: {
+            email: email,
+          },
+        });
+        return done(null, user);
+      }
+      return done(null, createdUser);
     }
-    return done(null, user);
-  } else {
-    return done(null, false, { message: "wrong email or password" });
-  }
-  }catch(err){
-    return done(null, false, { message: "Something went wrong" }, `error: ${err}`);
+
+    if (user.email === email) {
+      if (user.picture !== picture || user.accesstoken !== accessToken) {
+        const updatedUser = await prisma.users.update({
+          data: {
+            picture: picture,
+            accesstoken: accessToken,
+            new_user: false,
+          },
+          where: {
+            email: email,
+          },
+        });
+        return done(null, updatedUser);
+      }
+      return done(null, user);
+    } else {
+      return done(null, false, { message: "wrong email or password" });
+    }
+  } catch (err) {
+    return done(
+      null,
+      false,
+      { message: "Something went wrong" },
+      `error: ${err}`
+    );
   }
 }
 
@@ -100,11 +104,14 @@ export const localPassportStrategy = new LocalStrategy(
         }
 
         if (user.email === email) {
-          if (user.password === password) {
-            return done(null, user);
-          } else {
-            return done(null, false, { message: "Incorrect password" });
-          }
+          bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+              return done(null, user);
+            } else {
+              return done(null, false, { message: "Incorrect password." });
+            }
+          });
         } else {
           return done(null, false, { message: "wrong email or password" });
         }
@@ -125,37 +132,40 @@ export const googlePassportStrategy = new PassportGoogleStrategy(
     callbackURL: process.env.GOOGLE_REDIRECT_URI as string,
 
     // This option tells the strategy to use the userinfo endpoint instead
-    userProfileURL:
-      'https://www.googleapis.com/oauth2/v3/userinfo?alt=json',
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo?alt=json",
   },
   passportGoogleStrategyHandler
-)
+);
 
 function handleGoogleCallback(req: Request, res: Response, next: NextFunction) {
-  passport.authenticate('google', {
+  passport.authenticate("google", {
     // successRedirect:  process.env.SUCCESS_REDIRECT,
     failureRedirect: process.env.FAILURE_REDIRECT,
   })(req, res, next);
 }
 
 // for now just define routes here
-router.get("/api/v1/auth/google",passport.authenticate('google', { scope: ['profile email'] }),
+router.get(
+  "/api/v1/auth/google",
+  passport.authenticate("google", { scope: ["profile email"] }),
   async (req: Request, res: Response) => {
-     logger.info("google login request")
+    logger.info("google login request");
   }
 );
 
-router.get('/api/v1/auth/google/callback', handleGoogleCallback, async (req, res) =>{
-  return res.redirect(process.env.SUCCESS_REDIRECT as string);
-});
-
+router.get(
+  "/api/v1/auth/google/callback",
+  handleGoogleCallback,
+  async (req, res) => {
+    return res.redirect(process.env.SUCCESS_REDIRECT as string);
+  }
+);
 
 router.post(
   "/api/v1/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureMessage: true,
-    failureFlash: true,
   }),
   async (req: any, res: Response, next: NextFunction) => {
     await req.session.save((err: Error) => {
@@ -169,11 +179,46 @@ router.post(
       }
       res.status(200).json({
         status: 200,
-        user: req.User,
+        user: req.user,
       });
     });
   }
 );
+
+// Signup route
+router.post("/api/v1/register", async (req, res) => {
+  const { email, password, firstname, lastname } = req.body;
+
+  // Check if user already exists
+  // const existingUser = users.find(user => user.email === email);
+
+  const existingUser = await prisma.users.findFirst({
+    where: {
+      email: email,
+    },
+  });
+
+  if (existingUser) {
+    return res.status(400).json({ message: "User already exists." });
+  }
+
+  // Create new user
+  bcrypt.hash(password, 10, async (err, hash) => {
+    if (err) throw err;
+    const newUser = {
+      username: getUsernameFromEmail(email) as string,
+      email: email,
+      password: hash,
+      name: `${firstname} ${lastname}`,
+      progress: 0,
+      dob: null,
+    };
+    const createdUser = await prisma.users.create({
+      data: newUser,
+    });
+    res.status(201).json({ message: "User created successfully." });
+  });
+});
 
 router.post("/api/v1/logout", function (req, res, next) {
   if (!req.session) {
@@ -187,16 +232,15 @@ router.post("/api/v1/logout", function (req, res, next) {
   });
 });
 
-
-router.get('/api/v1/user/profile', mustBeAuthenticated, (req, res) => {
+router.get("/api/v1/user/profile", mustBeAuthenticated, (req, res) => {
   // Check if user is authenticated
   if (req.isAuthenticated()) {
-      // Access the logged-in user from the session
-      const user = req.user;
-      res.json({ user });
+    // Access the logged-in user from the session
+    const user = req.user;
+    res.json({ user });
   } else {
-      // User is not authenticated
-      res.status(401).json({ message: 'Unauthorized' });
+    // User is not authenticated
+    res.status(401).json({ message: "Unauthorized" });
   }
 });
 

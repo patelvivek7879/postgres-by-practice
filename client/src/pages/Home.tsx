@@ -167,6 +167,7 @@ const Home = ({ setThemeVal }: any) => {
               </Form>
             </div>
           }
+          // open={false} // on send feedback will close the popover
         >
           <Tooltip title={"Drop feedback"} placement="left">
             <FloatButton type="primary" style={{ marginRight: "50px" }} />
@@ -196,15 +197,22 @@ const Home = ({ setThemeVal }: any) => {
               <Divider type="vertical" className="w-0 h-full m-0"/>
               </Col>
               <Col span={13} style={{height: `calc(100vh - 160px)`}}>
-                <Space
+                {/* <Space
                   direction="vertical"
                   size={2}
                   split={<Divider className="m-0" />}
                   style={{ width: "100%" }}
-                >
+                > */}
+                <Row>
+                  <Col span={24}>
                   <AceEditorComponent setResult={setResult} />
+                  </Col>
+                  <Divider className="m-0"/>
+                  <Col span={24}>
                   <ResultComponent result={result} />
-                </Space>
+                  </Col>
+                  </Row>
+                {/* </Space> */}
               </Col>
             </Row>
             </Content>

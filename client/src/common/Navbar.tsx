@@ -199,11 +199,7 @@ const Navbar = ({
                   size={32}
                   src={
                     <img
-                      src={
-                        (loggedInUser as any)?.picture ||
-                        JSON.parse(localStorage.getItem("userProfile") ?? "{}")
-                          ?.picture
-                      }
+                        src={`https://api.dicebear.com/7.x/miniavs/svg?seed=1`}
                     />
                   }
                   icon={<UserOutlined size={32} />}
