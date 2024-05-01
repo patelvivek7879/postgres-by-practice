@@ -7,6 +7,7 @@ import Landing from './pages/Landing';
 import Feedbacks from './pages/Feedbacks';
 import { useAuthContext } from './AuthProvider';
 import { isEmpty } from 'lodash';
+import UserProfile from './pages/UserProfile';
 
 const AppContainer = ({setThemeVal}: any) => {
   const navigate = useNavigate();
@@ -20,15 +21,13 @@ const AppContainer = ({setThemeVal}: any) => {
     }
   }, [loggedInUser]);
 
-
-  console.log("loggedInUser ====>>>",loggedInUser);
-
   return (
     <Routes>
         <Route path="/" element={ <Landing setThemeVal={setThemeVal} loggedInUser={loggedInUser}/>} />
         <Route path="/register" element={  <Register />} />
         <Route path="/login" element={ <Login />} />
         <Route path="/home" element={ loggedInUser && <Home setThemeVal={setThemeVal} loggedInUser={loggedInUser} />} />
+        <Route path="/:username/profile" element={ loggedInUser && <UserProfile setThemeVal={setThemeVal} loggedInUser={loggedInUser} />} />
         <Route path="/admin/feedbacks" element={ loggedInUser && <Feedbacks setThemeVal={setThemeVal} loggedInUser={loggedInUser} />} />
     </Routes>
   )

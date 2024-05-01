@@ -1,4 +1,4 @@
-import { Typography, Layout, Table } from "antd";
+import { Typography, Layout, Table, Space } from "antd";
 import "react-json-pretty/themes/monikai.css";
 
 import { capitalize } from "lodash";
@@ -14,16 +14,16 @@ const ResultComponent = ({ result }: { result: any }) => {
   }))
 
   return (
-    <div className="p-4 h-full">
+    <Space direction="vertical" className="p-4 w-full h-full" style={{ width: '100%', height: '100%'}}>
       <Title level={5} className="m-0">
         Results
       </Title>
       {!result ? (
-        <Typography.Text type='secondary'>Nothing to show</Typography.Text>
+        <Typography.Text type='secondary'>{'No data available'}</Typography.Text>
       ) : (
-        <Table columns={dynamicCol} dataSource={result} size="small"/>
+        <Table columns={dynamicCol} dataSource={result} size="small" scroll={{ y: 200 }} pagination={false}/>
       )}
-    </div>
+     </Space>
   );
 };
 

@@ -83,7 +83,7 @@ const Navbar = ({
 
   const items: MenuProps["items"] = [
     {
-      key: "email",
+      key: "username",
       label: (
         <Space style={{ minWidth: 100 }}>
           <UserOutlined /> {(loggedInUser as any)?.username}
@@ -112,6 +112,13 @@ const Navbar = ({
       disabled: true,
     },
   ];
+
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+    if(e.key === 'username'){
+      navigate(`/${loggedInUser?.username}/profile`);
+    }
+  };
+
 
   return (
     <Header
@@ -180,7 +187,7 @@ const Navbar = ({
             >
               <Button type="text" icon={<SettingOutlined />} />
             </Dropdown>
-            <Dropdown menu={{ items }} trigger={["click"]}>
+            <Dropdown menu={{ items, onClick: handleMenuClick }} trigger={["click"]}>
               {/* TODO: google image  */}
               {(loggedInUser as any)?.picture ? (
                 <Avatar

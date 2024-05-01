@@ -197,22 +197,15 @@ const Home = ({ setThemeVal }: any) => {
               <Divider type="vertical" className="w-0 h-full m-0"/>
               </Col>
               <Col span={13} style={{height: `calc(100vh - 160px)`}}>
-                {/* <Space
-                  direction="vertical"
-                  size={2}
-                  split={<Divider className="m-0" />}
-                  style={{ width: "100%" }}
-                > */}
-                <Row>
-                  <Col span={24}>
+                  <Space direction="vertical" style={{ width: '100%'}}>
+                  {/* <Col span={24}> */}
                   <AceEditorComponent setResult={setResult} />
-                  </Col>
+                  {/* </Col> */}
                   <Divider className="m-0"/>
-                  <Col span={24}>
+                  {/* <Col span={24}> */}
                   <ResultComponent result={result} />
-                  </Col>
-                  </Row>
-                {/* </Space> */}
+                  {/* </Col> */}
+                  </Space>
               </Col>
             </Row>
             </Content>
