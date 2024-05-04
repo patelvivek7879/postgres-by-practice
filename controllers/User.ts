@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createUser, getAllUsers, getUser } from "../repository/User";
+import { createUser, getAllUsers, getUser, updateUser } from "../repository/User";
 import { logger } from "../utils/logger";
 
 export const getAllUsersController = async (req: Request, res: Response) => {
@@ -23,5 +23,14 @@ export const createUserController = async (req: Request, res: Response) => {
     const userData = req.body;
 
     const users = await createUser(userData)
+    res.status(200).json({users});
+}
+
+export const updateUserController = async (req: Request, res: Response) => {
+
+    logger.info(req.url)
+    const userData = req.body;
+
+    const users = await updateUser(userData)
     res.status(200).json({users});
 }

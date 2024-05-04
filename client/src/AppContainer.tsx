@@ -15,11 +15,11 @@ const AppContainer = ({setThemeVal}: any) => {
   const { loggedInUser }: any = useAuthContext();
   
 
-  useEffect(() => {
-    if (!isEmpty(loggedInUser)) {
-      navigate('/home');
-    }
-  }, [loggedInUser]);
+  // useEffect(() => {
+  //   if (!isEmpty(loggedInUser)) {
+  //     navigate('/home');
+  //   }
+  // }, [loggedInUser]);
 
   return (
     <Routes>

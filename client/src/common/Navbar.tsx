@@ -148,45 +148,6 @@ const Navbar = ({
           </>
         ) : (
           <>
-            <Dropdown
-              menu={{
-                items: [
-                  ...(!isAdminRoute
-                    ? [
-                        {
-                          key: "feedback-switch",
-                          label: (
-                            <Row justify={"space-between"} align={"middle"}>
-                              <Space>
-                                <Typography.Text>
-                                  Feedback enable:
-                                </Typography.Text>
-                                <Switch
-                                  size={"small"}
-                                  defaultValue={showFeedbackBtn}
-                                  onChange={(value: boolean)=> setShowFeedbackBtn(value)}
-                                />
-                              </Space>
-                            </Row>
-                          ),
-                        },
-                      ]
-                    : []),
-                    {
-                      key: 'references',
-                      label: (
-                        <Typography.Link href="https://www.postgresqltutorial.com/" target="_blank">
-                            <Row justify={"space-between"} align={"middle"}>
-                            References <LinkOutlined />
-                            </Row>
-                        </Typography.Link>)
-                    }
-                ],
-              }}
-              trigger={["click"]}
-            >
-              <Button type="text" icon={<SettingOutlined />} />
-            </Dropdown>
             <Dropdown menu={{ items, onClick: handleMenuClick }} trigger={["click"]}>
               {/* TODO: google image  */}
               {(loggedInUser as any)?.picture ? (

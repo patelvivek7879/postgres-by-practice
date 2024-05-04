@@ -43,7 +43,7 @@ app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use((err: any, req: any, res: Response, next: NextFunction) => {
+app.use("/feedback",(err: any, req: any, res: Response, next: NextFunction) => {
   if (err instanceof rateLimiter) {
     res.status(429).send('Too many requests, please try again later.');
   } else {

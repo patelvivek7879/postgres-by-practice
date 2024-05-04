@@ -28,6 +28,24 @@ const createUser = async (userData: User) => {
   return user;
 };
 
+const updateUser = async (userData: User) => {
+  const {  email, name, dob } = userData;
+
+  // const isUserExist = await prisma.users.findUnique({
+  //   where:{
+  //       email: email,
+  //   }
+  // })
+
+  const user = await prisma.users.update({
+    where:{
+      email: email,
+    },
+    data: { ...userData }
+  });
+  return user;
+};
+
 const getUser = async (userId: string) => {
     try {
       const user = await prisma.users.findFirstOrThrow({
@@ -50,4 +68,4 @@ const getAllUsers = async () => {
   }
 };
 
-export { getAllUsers, createUser, getUser };
+export { getAllUsers, createUser, getUser, updateUser };

@@ -21,7 +21,7 @@ const ResultComponent = ({ result }: { result: any }) => {
       {!result ? (
         <Typography.Text type='secondary'>{'No data available'}</Typography.Text>
       ) : (
-        <Table columns={dynamicCol} dataSource={result} size="small" scroll={{ y: 200 }} pagination={false}/>
+        <Table columns={dynamicCol} dataSource={result} size="small" scroll={{ y: 156 }} pagination={false}/>
       )}
      </Space>
   );
