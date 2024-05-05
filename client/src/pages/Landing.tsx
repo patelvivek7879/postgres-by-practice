@@ -22,7 +22,7 @@ const Landing = ({setThemeVal}: any) => {
       <Content
         hasSider={false}
         className="w-full"
-        style={{ height: `calc(100vh - ${64 + 84}px)` }}
+        style={{ height: `calc(100vh - ${64 + 45}px)` }}
       >
         <Row className="w-full h-full">
           <Col span={8} offset={2} className="flex mt-24">

@@ -1,4 +1,5 @@
 import {
+  App,
   Button,
   Card,
   Divider,
@@ -8,7 +9,6 @@ import {
   Row,
   Space,
   Typography,
-  notification,
 } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,7 @@ const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { setLoggedInUser }: any = useAuthContext();
+  const {notification} = App.useApp();
 
   const localLogin = async (values: any) => {
     try {

@@ -3,12 +3,13 @@ import {
   Row,
   Tooltip,
   Button,
-  notification,
+  // notification,
   Typography,
   Space,
   Layout,
   Drawer,
   Alert,
+  App
 } from "antd";
 import {
   MenuUnfoldOutlined,
@@ -48,6 +49,7 @@ const AceEditorComponent = ({ setResult }: any) => {
   const [sqlValue, setSQLValue] = useState("");
   const [open, setOpen] = useState(false);
   const [running, setRunning] = useState(false);
+  const { notification } = App.useApp();
 
   const theme = localStorage.getItem("preferredTheme") === "light"
                 ? "crimson_editor"
@@ -96,6 +98,7 @@ const AceEditorComponent = ({ setResult }: any) => {
 
       if (result.success) {
         setResult(result.data);
+
         notification.success({
           message: "Success",
           description: result.message,

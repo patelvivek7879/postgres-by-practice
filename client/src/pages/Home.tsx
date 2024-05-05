@@ -1,4 +1,5 @@
 import {
+  App,
   Button,
   Col,
   Divider,
@@ -11,7 +12,6 @@ import {
   Space,
   Tooltip,
   Typography,
-  notification,
 } from "antd";
 import QuestionsComponent from "@/components/QuestionsComponent";
 import ResultComponent from "@/components/ResultComponent";
@@ -27,6 +27,7 @@ import { useAuthContext } from "@/AuthProvider";
 const { Content } = Layout;
 
 const Home = ({ setThemeVal }: any) => {
+  const {notification} = App.useApp();
   const [result, setResult] = useState(null);
   const [showFeedbackBtn, setShowFeedbackBtn] = useState(true);
 
@@ -34,6 +35,7 @@ const Home = ({ setThemeVal }: any) => {
 
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -68,9 +70,10 @@ const Home = ({ setThemeVal }: any) => {
           const resJson = await res.json();
 
           if (resJson.status === 200) {
+            setOpen(false);
             notification.success({
               message: "Feedback sent successfully",
-              placement: "topRight",
+              placement: "bottomRight",
               duration: 3,
             });
           } else if (resJson.status === 429) {
@@ -112,6 +115,7 @@ const Home = ({ setThemeVal }: any) => {
       {showFeedbackBtn ? (
         <Popover
           style={{ marginRight: 24 }}
+          open={open}
           overlayClassName="feedback-popover"
           trigger={"click"}
           title={
@@ -170,7 +174,7 @@ const Home = ({ setThemeVal }: any) => {
           // open={false} // on send feedback will close the popover
         >
           <Tooltip title={"Drop feedback"} placement="left">
-            <FloatButton type="primary" style={{ marginRight: "50px" }} />
+            <FloatButton type="primary" style={{ marginRight: "50px" }}  onClick={()=> setOpen(true)}/>
           </Tooltip>
         </Popover>
       ) : null}

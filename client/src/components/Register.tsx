@@ -1,11 +1,11 @@
 import {
+  App,
   Button,
   Card,
   Divider,
   Form,
   Input,
   Layout,
-  notification,
   Row,
   Space,
   Typography,
@@ -18,6 +18,7 @@ const { Title } = Typography;
 const Register = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const {notification} = App.useApp();
 
   const googleLoginHandler = () => {
     window.location.href = `${import.meta.env.VITE_BASE_URL}/api/v1/auth/google`;

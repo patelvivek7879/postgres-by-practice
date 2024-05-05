@@ -33,7 +33,7 @@ const UserProfileTab = () => {
   }
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center pb-3" style={{ maxHeight: 600, height: 480, overflowY: 'scroll', scrollBehavior: "smooth", scrollbarColor: '#bfbfbf transparent', scrollbarWidth: 'thin'}}>
       <Form
         className="w-full flex flex-col justify-center mt-4"
         // {...formItemLayout}

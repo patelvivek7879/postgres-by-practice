@@ -1,4 +1,4 @@
-import { Space, Switch, Typography } from "antd";
+import { Button, Space, Switch, Typography } from "antd";
 import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useThemeContext } from "@/providers/ThemeProvider";
@@ -34,6 +34,7 @@ const ThemeSwitch = ({setThemeVal}: any) => {
   return (
     <Space>
       <Text>Light</Text>
+      {/* <Button icon={<MoonOutlined size={32} } />} */}
       <Switch
         checkedChildren={<MoonOutlined size={32} />}
         unCheckedChildren={<SunOutlined size={32} />}
