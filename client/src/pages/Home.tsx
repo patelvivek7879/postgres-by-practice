@@ -187,7 +187,7 @@ const Home = ({ setThemeVal }: any) => {
           className="w-full h-full"
         >
           <Content style={{
-            height: `calc(100vh - 160px)`,
+            height: `calc(100vh - 110px)`,
           }}>
             <Row>
               <Col span={10} className="h-full">

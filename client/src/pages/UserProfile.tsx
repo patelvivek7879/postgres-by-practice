@@ -18,6 +18,8 @@ import type { TabsProps, UploadProps } from "antd";
 import UserProfileTab from "@/components/UserProfileTab";
 import UserSettingTab from "@/components/UserSettingTab";
 import { useState } from "react";
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { useNavigate } from "react-router-dom";
 
 const { Text } = Typography;
 const { Content } = Layout;
@@ -25,6 +27,8 @@ const { Content } = Layout;
 const UserProfile = ({ setThemeVal }: any) => {
   const { loggedInUser }: any = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const items: TabsProps["items"] = [
     {
@@ -66,14 +70,16 @@ const UserProfile = ({ setThemeVal }: any) => {
           <Layout className="w-full h-full">
             <Content
               style={{
-                height: `calc(100vh - 160px)`,
+                height: `calc(100vh - 110px)`,
                 width: "1440px",
                 minWidth: "1024px",
+                overflow: 'auto'
               }}
               className="p-4 ml-auto mr-auto"
             >
               <div className="w-full ml-auto mr-auto" style={{ width: 960 }}>
                 <Row className="h-full">
+                <Button type="text" icon={<ArrowLeftOutlined />} onClick={()=> navigate(-1)}></Button>
                   <Space className="h-full" style={{ width: "100%" }}>
                     <Image
                       width={200}
