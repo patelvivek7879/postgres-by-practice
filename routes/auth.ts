@@ -29,6 +29,8 @@ export async function passportGoogleStrategyHandler(
   try {
     const { email, picture, name } = profile && profile._json;
 
+    console.log("PassportGoogleStrategyHandler called", email);
+
     const user = await prisma.users.findFirst({
       where: {
         email: email,
@@ -91,6 +93,7 @@ export async function passportGoogleStrategyHandler(
 export const localPassportStrategy = new LocalStrategy(
   { usernameField: "email", passwordField: "password" },
   async (email, password, done) => {
+    console.log(" email ====>>>>> ",email);
     try {
       try {
         const user = await prisma.users.findFirst({
