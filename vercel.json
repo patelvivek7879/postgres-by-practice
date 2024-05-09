@@ -4,10 +4,6 @@
     {
       "source": "/(.*)",
       "destination": "/"
-    },
-    {
-      "src": "/api/v1/(.*)",
-      "dest": "./dist/server.js"
     }
   ],
   "redirects": [
