@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/pbyp"
-    }
+  "builds": [
+      {
+          "src": "server.ts",
+          "use": "@now/node"
+      }
   ],
   "routes": [
-    {
-        "src": "/(.*)",
-        "dest": "server.ts"
-    }
-]
+      {
+          "src": "/(.*)",
+          "dest": "server.ts"
+      }
+  ]
 }
