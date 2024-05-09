@@ -1,15 +1,22 @@
 {
-  "version": 2,
-  "builds": [
+    "version": 2,
+    "rewrites": [
       {
-          "src": "server.ts",
-          "use": "@now/node"
+        "source": "/(.*)",
+        "destination": "/"
       }
-  ],
-  "routes": [
+    ],
+    "redirects": [
       {
-          "src": "/(.*)",
-          "dest": "server.ts"
+        "source": "/",
+        "destination": "/pbyp"
+      }
+    ],
+    "routes": [
+      {
+          "src": "/api/v1/(.*)",
+          "dest": "./dist/server.js"
       }
   ]
-}
+  }
+  
