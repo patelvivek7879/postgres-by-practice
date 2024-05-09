@@ -4,6 +4,10 @@
     {
       "source": "/(.*)",
       "destination": "/"
+    },
+    {
+      "source": "/api/v1/(.*)",
+      "destination": "/server.ts"
     }
   ],
   "redirects": [
@@ -11,8 +15,5 @@
       "source": "/",
       "destination": "/pbyp"
     }
-  ],
-  "routes": [
-    { "src": "/api/v1","methods": ["GET","POST","PATCH","PUT","OPTIONS"] , "dest": "/server.js" }
   ]
 }
