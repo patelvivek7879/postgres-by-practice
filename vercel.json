@@ -1,22 +1,19 @@
 {
-    "version": 2,
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/"
-      }
-    ],
-    "redirects": [
-      {
-        "source": "/",
-        "destination": "/pbyp"
-      }
-    ],
-    "routes": [
-      {
-          "src": "/api/v1/(.*)",
-          "dest": "./dist/server.js"
-      }
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    },
+    {
+      "src": "/api/v1/(.*)",
+      "dest": "./dist/server.js"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/pbyp"
+    }
   ]
-  }
-  
+}
