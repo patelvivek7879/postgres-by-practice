@@ -4,19 +4,13 @@
     {
       "source": "/(.*)",
       "destination": "/"
-    }
+    },
+    { "source": "/api/v1/(.*)", "destination": "/api/v1/$1" }
   ],
   "redirects": [
     {
       "source": "/",
       "destination": "/pbyp"
     }
-  ],
-  "builds": [
-    { "src": "server.ts", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/api/v1/(.*)", "dest": "/server.ts" },
-    { "handle": "filesystem" }
   ]
 }
