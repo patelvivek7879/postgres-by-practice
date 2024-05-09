@@ -17,6 +17,7 @@
     "antd": "^5.15.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.344.0",
     "oidc-react": "^3.2.2",
     "query-string": "^9.0.0",
