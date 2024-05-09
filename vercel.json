@@ -3,10 +3,17 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/"
+      "destination": "/server.ts"
     },
     { 
       "source": "/api/v1/(.*)", "destination": "/api/v1/$1" 
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.ts",
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTION"]
     }
   ],
   "redirects": [
