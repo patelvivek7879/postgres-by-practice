@@ -78,7 +78,7 @@ const Register = () => {
   return (
     <Layout className="w-full h-screen d-flex justify-center align-middle">
        <Row justify={"center"} align={"middle"}>
-        <Title level={3} className="flex justify-center align-middle mt-4 mb-0" onClick={()=> navigate("/")}>
+        <Title level={3} className="flex justify-center align-middle mt-4 mb-0 cursor-pointer" onClick={()=> navigate("/")}>
           Practice Postgres
         </Title>
       </Row>
