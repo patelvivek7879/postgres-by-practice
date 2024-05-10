@@ -1,15 +1,7 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/pbyp"
-    }
-  ]
+  "routes":[{
+    "source": "/(.*)",
+    "destination": "/"
+  }]
 }
