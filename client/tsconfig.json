@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react",
 
     /* Linting */
     "strict": true,
@@ -27,6 +27,6 @@
     },
     "types": ["node"]
   },
-  "include": ["src"],
+  "include": ["src", "./src/**/*.ts", "./src/**/*.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
