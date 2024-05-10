@@ -1,7 +1,16 @@
 {
-  "version": 2,
-  "routes":[{
-    "source": "/(.*)",
-    "destination": "/"
-  }]
-}
+    "version": 2,
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/server.ts"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/pbyp"
+      }
+    ]
+  }
+  
