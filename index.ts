@@ -29,7 +29,7 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 dotenv.config();
 
 const app: Application = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json())
 app.use(cors())
