@@ -13,21 +13,26 @@ const {
     databaseUser,
     databasePassword,
     databasePort,
+    dbUri,
   } : any= config;
   
- export const client = new Client({
-    host: databaseHost,
-    port: databasePort,
-    database: databaseName,
-    user: databaseUser,
-    password: databasePassword,
-  });
+  console.log(" Database URI =====>>>>> ",dbUri);
+
+  export const client = new Client(dbUri);
+  // {
+  //   host: databaseHost,
+  //   port: databasePort,
+  //   database: databaseName,
+  //   user: databaseUser,
+  //   password: databasePassword,
+  // }
 
 export const connectToDatabase = async () => {
     try{
       await client.connect();
       logger.info("Connection established successfully ..."); 
     }catch(err){
-        logger.error("Error connecting to PostgreSQL database", err);
+        logger.error("Error connecting to PostgreSQL database");
+        console.log("Error : ",err)
     }
   }
