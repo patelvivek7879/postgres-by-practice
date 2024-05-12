@@ -49,7 +49,7 @@ const Navbar = ({
         return response.json();
       })
       .then((jsonRes) => {
-        setVersion(jsonRes.latestTag);
+        setVersion(jsonRes?.latestTag || jsonRes.name);
       })
       .catch((error) => {
         console.log("error", error);
