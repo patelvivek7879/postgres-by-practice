@@ -9,6 +9,7 @@ import {
   Typography,
 } from "antd";
 import { CodeSandboxOutlined, StockOutlined } from "@ant-design/icons";
+import React from "react";
 
 const { Sider } = Layout;
 const { Text } = Typography;
@@ -16,6 +17,8 @@ const { Text } = Typography;
 const Sidebar = ({ loggedInUser }: any) => {
   const [progress, setProgress] = useState(0);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const { practice, theory }: { practice: number, theory: number } = loggedInUser;
 
   useEffect(() => {
     const p = JSON.parse(localStorage.getItem("userProfile") ?? "{}").progress;
@@ -51,8 +54,8 @@ const Sidebar = ({ loggedInUser }: any) => {
         {!isSidebarCollapsed ? (
           <Card title="Modules" size="small">
             <Space size={56}>
-            <Statistic title={<Text>Practice</Text>} value={4} suffix="/ 10" valueStyle={{ fontSize: 18}} />
-            <Statistic title={<Text>Theory</Text>} value={2} suffix="/ 4" valueStyle={{ fontSize: 18}}/>
+            <Statistic title={<Text>Practice</Text>} value={practice} suffix="/ 10" valueStyle={{ fontSize: 18}} />
+            <Statistic title={<Text>Theory</Text>} value={theory} suffix="/ 4" valueStyle={{ fontSize: 18}}/>
             </Space>
           </Card>
         ) : (
