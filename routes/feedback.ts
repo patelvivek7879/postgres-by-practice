@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.get(
   "/api/v1/feedback",
-  // mustBeAuthenticated,
+  mustBeAuthenticated,
   async (req: Request, res: Response) => {
     const { offset, size, search } = req.query;
 
