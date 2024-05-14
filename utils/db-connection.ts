@@ -15,8 +15,6 @@ const {
     databasePort,
     dbUri,
   } : any= config;
-  
-  console.log(" Database URI =====>>>>> ",dbUri);
 
   export const client = new Client(dbUri);
   // {

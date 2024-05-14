@@ -87,7 +87,6 @@ const Home = ({ setThemeVal }: any) => {
           }
           setSending(false);
         } catch (error) {
-          console.log(" Failed to send feedback ", error);
           setSending(false);
           notification.error({
             message: error as any,
@@ -97,7 +96,6 @@ const Home = ({ setThemeVal }: any) => {
         }
       }
     } catch (error) {
-      console.log("Failed to validate values : ", error);
       setSending(false);
     }
   };

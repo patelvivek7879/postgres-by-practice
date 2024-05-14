@@ -24,11 +24,10 @@ const UserProfileTab = () => {
       },
       body: JSON.stringify(body),
     });
-    console.log(" updatedUserDetails ======>>>>>>>>> ",await updatedUserDetails.json());
 
     return await updatedUserDetails.json()
   } catch (error) {
-   console.log("Error while updating user ===>>>>", error);   
+   console.error("Error while updating user ", error);   
   }
   }
 

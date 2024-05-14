@@ -76,7 +76,6 @@ const Login = () => {
   };
 
   const googleLoginHandler = () => {
-    console.log("+++++++++++++++++ google login +++++++++++++++++++++++++++++++++");
     window.location.href = `${import.meta.env.VITE_BASE_URL}/api/v1/auth/google`;
   };
 

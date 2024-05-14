@@ -180,7 +180,6 @@ const AceEditorComponent = ({ setResult }: any) => {
             <Space size={4}>
               <Button
                 icon={<SaveOutlined />}
-                onClick={() => console.log("Saving...")}
                 disabled={sqlValue === ""}
               ></Button>
               <Tooltip

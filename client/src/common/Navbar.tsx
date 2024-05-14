@@ -52,7 +52,6 @@ const Navbar = ({
         setVersion(jsonRes?.latestTag || jsonRes.name);
       })
       .catch((error) => {
-        console.log("error", error);
         setVersion(null);
       });
   };
@@ -72,12 +71,12 @@ const Navbar = ({
         },
         body: "",
       });
-      console.log(JSON.stringify(response));
+      
       if (response.status === 200) {
         navigate("/login", { replace: true });
       }
     } catch (error) {
-      console.log("   logout error   ", error);
+      console.error("Error while logging out ", error);
     }
   };
 

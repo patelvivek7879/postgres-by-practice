@@ -29,8 +29,6 @@ export async function passportGoogleStrategyHandler(
   try {
     const { email, picture, name } = profile && profile._json;
 
-    console.log("PassportGoogleStrategyHandler called", email);
-
     const user = await prisma.users.findFirst({
       where: {
         email: email,
@@ -93,7 +91,6 @@ export async function passportGoogleStrategyHandler(
 export const localPassportStrategy = new LocalStrategy(
   { usernameField: "email", passwordField: "password" },
   async (email, password, done) => {
-    console.log(" email ====>>>>> ",email);
     try {
       try {
         const user = await prisma.users.findFirst({
@@ -119,11 +116,9 @@ export const localPassportStrategy = new LocalStrategy(
           return done(null, false, { message: "wrong email or password" });
         }
       } catch (error) {
-        console.log("Catch 1 : ", error);
         return done(null, false, { message: "Something went wrong" });
       }
     } catch (e) {
-      console.log("Catch 2 : ", e);
       return done(e);
     }
   }
@@ -176,7 +171,6 @@ router.post(
     await req.session.save((err: Error) => {
       if (err) {
         logger.error(err);
-        console.log("/api/v1/login",err);
         res.status(500).json({
           status: 500,
           user: null,
