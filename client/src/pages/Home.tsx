@@ -39,7 +39,7 @@ const Home = ({ setThemeVal }: any) => {
   const [open, setOpen] = useState(false);
   const [moduleProgress, setModuleProgress] = useState<Array<{[key: string]: string | number}>>({});
 
-  const practiceModuleProgress = Object.values(moduleProgress).reduce((acc: number ,current: any)=> {
+  const practiceModuleProgress =  moduleProgress && Object.values(moduleProgress).reduce((acc: number ,current: any)=> {
    if(typeof current === 'number'){
     return acc + current
    }else{

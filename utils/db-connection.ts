@@ -16,6 +16,7 @@ const {
     dbUri,
   } : any= config;
 
+  // admin clinet
   export const client = new Client(dbUri);
   // {
   //   host: databaseHost,

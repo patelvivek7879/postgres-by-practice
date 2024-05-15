@@ -55,6 +55,26 @@ export async function passportGoogleStrategyHandler(
             email: email,
           },
         });
+
+        // When user in new
+        const initProgressData = {
+          "user_email": email,
+          "qryngdt": 0,
+          "fltrngdt": 0,
+          "jns": 0,
+          "grpngdt": 0,
+          "sbqry": 0,
+          "mdfyngdt": 0,
+          "transactions": 0,
+          "mngngtblcol": 0,
+          "psqlcntrnts": 0,
+          "dttyps": 0
+        }
+
+       await prisma.progress.create({
+        data: initProgressData,
+      });
+
         return done(null, user);
       }
       return done(null, createdUser);
@@ -72,6 +92,32 @@ export async function passportGoogleStrategyHandler(
             email: email,
           },
         });
+
+        const userProgressModule = await prisma.progress.findUnique({
+          where: {
+            user_email: email,
+          },
+        });
+        if(!userProgressModule){
+          const initProgressData = {
+            "user_email": email,
+            "qryngdt": 0,
+            "fltrngdt": 0,
+            "jns": 0,
+            "grpngdt": 0,
+            "sbqry": 0,
+            "mdfyngdt": 0,
+            "transactions": 0,
+            "mngngtblcol": 0,
+            "psqlcntrnts": 0,
+            "dttyps": 0
+          }
+  
+         await prisma.progress.create({
+          data: initProgressData,
+        });
+        }
+
         return done(null, updatedUser);
       }
       return done(null, user);
