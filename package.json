@@ -11,7 +11,7 @@
     "swagger": "tsoa spec",
     "build:client": "npm install --prefix client && npm run build --prefix client && rm -rf ./public && mkdir ./public && cp -r client/dist/* ./public",
     "build:server": "npm install && tsc && rm -rf dist/public &&  mkdir dist/public && cp -r public/* dist/public",
-    "build": "npm run build:client && npm run build:server"
+    "build": "prisma generate && npm run build:client &&  npm run build:server"
   },
   "repository": {
     "type": "git",
