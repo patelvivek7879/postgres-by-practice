@@ -1,11 +1,17 @@
+import React, { useEffect, useState } from "react";
 import { CaretRightOutlined } from "@ant-design/icons";
-import React from "react";
 import { Collapse, Tabs, Typography, theme } from "antd";
 import { getTheoryItems } from "./TheoryDataComponentFn";
 import { getItems } from "./PracticeTabItems";
 
-const QuestionsComponent = () => {
+type Props = {
+  moduleProgress: Array<{[key: string]: string | number}>
+  setModuleProgress: (value: Array<{[key: string]: string | number}>) => void;
+}
+
+const QuestionsComponent = ({moduleProgress, setModuleProgress}: Props) => {
   const { token } = theme.useToken();
+  
 
   const panelStyle: React.CSSProperties = {
     marginBottom: 12,
@@ -14,10 +20,34 @@ const QuestionsComponent = () => {
     border: "none",
   };
 
+  const getCurrentModuleStatus = async () => {
+    try {
+      // updating a single module status
+      const updatedUserProgressModule = await fetch("/api/v1/progress", {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const res = await updatedUserProgressModule.json();
+
+      if (res.status === 200) {
+        setModuleProgress(res?.userProgress)
+      }
+    } catch (err) {
+      console.log("Error while getting module progress", err);
+    }
+  };
+
+  useEffect(()=>{
+    getCurrentModuleStatus();
+  },[]);
+
   return (
     <>
       <Typography.Title level={4} className="pl-4">
-        Course Content
+        {'Course Content'}
       </Typography.Title>
       <Tabs
         type="card"
@@ -35,7 +65,7 @@ const QuestionsComponent = () => {
                     <CaretRightOutlined rotate={isActive ? 90 : 0} />
                   )}
                   // style={{ background: token.colorBgContainer }}
-                  items={getItems(panelStyle)}
+                  items={getItems(panelStyle, moduleProgress)}
                 />
               </div>
             ),

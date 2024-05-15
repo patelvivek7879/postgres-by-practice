@@ -8,22 +8,24 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import { CodeSandboxOutlined, StockOutlined } from "@ant-design/icons";
+import { CodeSandboxOutlined, StockOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import React from "react";
 
 const { Sider } = Layout;
 const { Text } = Typography;
 
-const Sidebar = ({ loggedInUser }: any) => {
-  const [progress, setProgress] = useState(0);
+const Sidebar = ({ loggedInUser, practiceModuleProgress }: any) => {
+  // const [progress, setProgress] = useState(0);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const { practice, theory }: { practice: number, theory: number } = loggedInUser;
+  // const { practice, theory }: { practice: number, theory: number } = loggedInUser;
 
-  useEffect(() => {
-    const p = JSON.parse(localStorage.getItem("userProfile") ?? "{}").progress;
-    setProgress(p ?? loggedInUser?.progress);
-  }, [localStorage.getItem("userProfile")]);
+  // useEffect(() => {
+  //   const p = JSON.parse(localStorage.getItem("userProfile") ?? "{}").progress;
+  //   setProgress(p ?? loggedInUser?.progress);
+  // }, [localStorage.getItem("userProfile")]);
+
+  const progressPercentage = (practiceModuleProgress * 100) / 10;
 
   return (
     <Sider
@@ -42,7 +44,7 @@ const Sidebar = ({ loggedInUser }: any) => {
         <Divider className="m-0"/> */}
         {!isSidebarCollapsed ? (
           <Card title="Progress" size="small">
-            <Progress type="line" percent={ progress || Math.floor((6/14)*100)} />
+            <Progress type="line" percent={ progressPercentage || 0} />
           </Card>
         ) : (
           <Card size="small">
@@ -52,10 +54,15 @@ const Sidebar = ({ loggedInUser }: any) => {
           </Card>
         )}
         {!isSidebarCollapsed ? (
-          <Card title="Modules" size="small">
+          <Card title={<Space>
+              {'Modules'} 
+            <Tooltip title={`Progress only "Practice" section`}>
+              <InfoCircleOutlined /> 
+            </Tooltip>
+          </Space>} size="small">
             <Space size={56}>
-            <Statistic title={<Text>Practice</Text>} value={practice} suffix="/ 10" valueStyle={{ fontSize: 18}} />
-            <Statistic title={<Text>Theory</Text>} value={theory} suffix="/ 4" valueStyle={{ fontSize: 18}}/>
+            <Statistic title={<Text>Practice</Text>} value={practiceModuleProgress || 0} suffix="/ 10" valueStyle={{ fontSize: 18}} />
+            {/* <Statistic title={<Text>Theory</Text>} value={theory || 0} suffix="/ 4" valueStyle={{ fontSize: 18}}/> */}
             </Space>
           </Card>
         ) : (

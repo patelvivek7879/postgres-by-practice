@@ -31,3 +31,17 @@ model feedbacks {
   message String?
   createdAt BigInt @unique
 }
+
+model progress {
+    user_email String @unique
+    qryngdt Int? @default(0)
+    fltrngdt Int? @default(0)
+    jns Int? @default(0)
+    grpngdt Int? @default(0)
+    sbqry Int? @default(0)
+    mdfyngdt Int? @default(0)
+    transactions Int? @default(0)
+    mngngtblcol Int? @default(0)
+    psqlcntrnts Int? @default(0)
+    dttyps Int? @default(0)
+}

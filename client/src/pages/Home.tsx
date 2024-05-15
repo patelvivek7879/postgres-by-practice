@@ -1,3 +1,4 @@
+import React from "react";
 import {
   App,
   Button,
@@ -36,6 +37,16 @@ const Home = ({ setThemeVal }: any) => {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [open, setOpen] = useState(false);
+  const [moduleProgress, setModuleProgress] = useState<Array<{[key: string]: string | number}>>({});
+
+  const practiceModuleProgress = Object.values(moduleProgress).reduce((acc: number ,current: any)=> {
+   if(typeof current === 'number'){
+    return acc + current
+   }else{
+    return 0;
+   }
+  }, 0)
+
 
   const [form] = Form.useForm();
 
@@ -184,7 +195,7 @@ const Home = ({ setThemeVal }: any) => {
         showFeedbackBtn={showFeedbackBtn}
       />
       <Layout className="w-full h-full">
-        <Sidebar loggedInUser={loggedInUser} />
+        <Sidebar loggedInUser={loggedInUser} practiceModuleProgress={practiceModuleProgress}/>
         <Layout
           className="w-full h-full"
         >
@@ -193,7 +204,7 @@ const Home = ({ setThemeVal }: any) => {
           }}>
             <Row>
               <Col span={10} className="h-full">
-                <QuestionsComponent />
+                <QuestionsComponent moduleProgress={moduleProgress} setModuleProgress={setModuleProgress}/>
               </Col>
               <Col span={1} flex={'none'}>
               <Divider type="vertical" className="w-0 h-full m-0"/>

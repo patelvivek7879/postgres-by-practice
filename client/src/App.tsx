@@ -1,3 +1,4 @@
+import React from "react";
 import AppContainer from "./AppContainer";
 import { ConfigProvider, theme, App as AntApp } from "antd";
 import { useState } from "react";
@@ -22,6 +23,7 @@ function App() {
     >
       <AntApp>
         <ThemeProvider>
+          {/*TODO: Progress Provider */}
           <AppContainer setThemeVal={setThemeVal} />
         </ThemeProvider>
       </AntApp>
