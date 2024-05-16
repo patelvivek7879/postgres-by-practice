@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { client } from "../utils/db-connection";
+import { publicClient } from "../utils/db-connection";
 import { mustBeAuthenticated } from "../middleware/authetication";
 import { logger } from "../utils/logger";
 
@@ -13,7 +13,7 @@ router.post(
     const query = req.body;
 
     try {
-      const result = await client.query(query);
+      const result = await publicClient.query(query);
       
       let operationFor = "Table";
 

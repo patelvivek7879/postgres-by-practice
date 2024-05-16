@@ -14,10 +14,12 @@ const {
     databasePassword,
     databasePort,
     dbUri,
+    publicDBURI,
   } : any= config;
 
   // admin clinet
   export const client = new Client(dbUri);
+  export const publicClient = new Client(publicDBURI);
   // {
   //   host: databaseHost,
   //   port: databasePort,
@@ -29,7 +31,8 @@ const {
 export const connectToDatabase = async () => {
     try{
       await client.connect();
-      logger.info("Connection established successfully ..."); 
+      await publicClient.connect();
+      logger.info("Private and Public Connection established successfully!!!!");
     }catch(err){
         logger.error("Error connecting to PostgreSQL database");
         console.log("Error : ",err)

@@ -178,10 +178,10 @@ const AceEditorComponent = ({ setResult }: any) => {
           </Space> */}
             <span></span>
             <Space size={4}>
-              <Button
+              {/* <Button
                 icon={<SaveOutlined />}
                 disabled={sqlValue === ""}
-              ></Button>
+              ></Button> */}
               <Tooltip
                 title={
                   <small>
