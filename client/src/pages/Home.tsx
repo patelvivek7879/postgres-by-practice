@@ -24,11 +24,12 @@ import Loading from "@/common/Loading";
 import Navbar from "@/common/Navbar";
 import FooterComponent from "@/components/FooterComponent";
 import { useAuthContext } from "@/AuthProvider";
+import { useProgressContext } from "@/providers/ProgressProvider";
 
 const { Content } = Layout;
 
 const Home = ({ setThemeVal }: any) => {
-  const {notification} = App.useApp();
+  const { notification } = App.useApp();
   const [result, setResult] = useState(null);
   const [showFeedbackBtn, setShowFeedbackBtn] = useState(true);
 
@@ -37,16 +38,18 @@ const Home = ({ setThemeVal }: any) => {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [open, setOpen] = useState(false);
-  const [moduleProgress, setModuleProgress] = useState<Array<{[key: string]: string | number}>>({});
 
-  const practiceModuleProgress =  moduleProgress && Object.values(moduleProgress).reduce((acc: number ,current: any)=> {
-   if(typeof current === 'number'){
-    return acc + current
-   }else{
-    return 0;
-   }
-  }, 0)
+  const { moduleProgress }: any = useProgressContext();
 
+  const practiceModuleProgress =
+    moduleProgress &&
+    Object.values(moduleProgress).reduce((acc: number, current: any) => {
+      if (typeof current === "number") {
+        return acc + current;
+      } else {
+        return 0;
+      }
+    }, 0);
 
   const [form] = Form.useForm();
 
@@ -183,7 +186,11 @@ const Home = ({ setThemeVal }: any) => {
           // open={false} // on send feedback will close the popover
         >
           <Tooltip title={"Drop feedback"} placement="left">
-            <FloatButton type="primary" style={{ marginRight: "50px" }}  onClick={()=> setOpen(true)}/>
+            <FloatButton
+              type="primary"
+              style={{ marginRight: "50px" }}
+              onClick={() => setOpen(true)}
+            />
           </Tooltip>
         </Popover>
       ) : null}
@@ -195,34 +202,37 @@ const Home = ({ setThemeVal }: any) => {
         showFeedbackBtn={showFeedbackBtn}
       />
       <Layout className="w-full h-full">
-        <Sidebar loggedInUser={loggedInUser} practiceModuleProgress={practiceModuleProgress}/>
-        <Layout
-          className="w-full h-full"
-        >
-          <Content style={{
-            height: `calc(100vh - 110px)`,
-          }}>
+        <Sidebar
+          loggedInUser={loggedInUser}
+          practiceModuleProgress={practiceModuleProgress}
+        />
+        <Layout className="w-full h-full">
+          <Content
+            style={{
+              height: `calc(100vh - 110px)`,
+            }}
+          >
             <Row>
               <Col span={10} className="h-full">
-                <QuestionsComponent moduleProgress={moduleProgress} setModuleProgress={setModuleProgress}/>
+                <QuestionsComponent />
               </Col>
-              <Col span={1} flex={'none'}>
-              <Divider type="vertical" className="w-0 h-full m-0"/>
+              <Col span={1} flex={"none"}>
+                <Divider type="vertical" className="w-0 h-full m-0" />
               </Col>
-              <Col span={13} style={{height: `calc(100vh - 160px)`}}>
-                  <Space direction="vertical" style={{ width: '100%'}}>
+              <Col span={13} style={{ height: `calc(100vh - 160px)` }}>
+                <Space direction="vertical" style={{ width: "100%" }}>
                   {/* <Col span={24}> */}
                   <AceEditorComponent setResult={setResult} />
                   {/* </Col> */}
-                  <Divider className="m-0"/>
+                  <Divider className="m-0" />
                   {/* <Col span={24}> */}
                   <ResultComponent result={result} />
                   {/* </Col> */}
-                  </Space>
+                </Space>
               </Col>
             </Row>
-            </Content>
-            <FooterComponent />
+          </Content>
+          <FooterComponent />
         </Layout>
       </Layout>
     </Layout>

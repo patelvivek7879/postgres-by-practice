@@ -5,6 +5,7 @@ import { darcula } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyOutlined, CheckOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { useProgressContext } from "@/providers/ProgressProvider";
 
 const QuestionsPanelComp = ({
   text,
@@ -19,17 +20,21 @@ const QuestionsPanelComp = ({
 }) => {
   const [isCopying, setIsCopying] = useState(false);
   const [isMarked, setIsMarked] = useState(false);
+  const { moduleProgress, updateModuleProgress }: any = useProgressContext();
 
   useEffect(()=>{
     setIsMarked((prev: boolean)=>{
-        return isMarkedCompleted?.[id] ? true : false
+        return moduleProgress?.[id] ? true : false
       });
   },[isMarkedCompleted])
+
+
 
   const updateCurrentModuleStatus = async (e: any ) => {
 
     const isChecked = e.target.checked;
     setIsMarked(isChecked);
+
     const status = isChecked ? 1 : 0;
     const moduleNameKey = id;
 
@@ -40,23 +45,7 @@ const QuestionsPanelComp = ({
 
     try {
       // updating a single module status
-      const updatedUserProgressModule = await fetch("/api/v1/progress", {
-        method: "PUT", // *GET, POST, PUT, DELETE, etc.
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const res = await updatedUserProgressModule.json();
-
-      if (res.status === 200) {
-        notification.success({
-          message: isChecked ? "Marked successfully" : "Unmarked successfully",
-          placement: "bottomRight",
-          duration: 3,
-        });
-      }
+      updateModuleProgress(data);
     } catch (err) {
       setIsMarked(false);
       console.log("Error while marking updatation", err)

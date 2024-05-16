@@ -3,15 +3,13 @@ import { CaretRightOutlined } from "@ant-design/icons";
 import { Collapse, Tabs, Typography, theme } from "antd";
 import { getTheoryItems } from "./TheoryDataComponentFn";
 import { getItems } from "./PracticeTabItems";
+import { useProgressContext } from "@/providers/ProgressProvider";
 
-type Props = {
-  moduleProgress: Array<{[key: string]: string | number}>
-  setModuleProgress: (value: Array<{[key: string]: string | number}>) => void;
-}
 
-const QuestionsComponent = ({moduleProgress, setModuleProgress}: Props) => {
+const QuestionsComponent = () => {
   const { token } = theme.useToken();
   
+  const { moduleProgress }: any = useProgressContext();
 
   const panelStyle: React.CSSProperties = {
     marginBottom: 12,
@@ -20,29 +18,6 @@ const QuestionsComponent = ({moduleProgress, setModuleProgress}: Props) => {
     border: "none",
   };
 
-  const getCurrentModuleStatus = async () => {
-    try {
-      // updating a single module status
-      const updatedUserProgressModule = await fetch("/api/v1/progress", {
-        method: "GET", // *GET, POST, PUT, DELETE, etc.
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const res = await updatedUserProgressModule.json();
-
-      if (res.status === 200) {
-        setModuleProgress(res?.userProgress)
-      }
-    } catch (err) {
-      console.log("Error while getting module progress", err);
-    }
-  };
-
-  useEffect(()=>{
-    getCurrentModuleStatus();
-  },[]);
 
   return (
     <>

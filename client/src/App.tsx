@@ -3,6 +3,7 @@ import AppContainer from "./AppContainer";
 import { ConfigProvider, theme, App as AntApp } from "antd";
 import { useState } from "react";
 import { ThemeProvider } from "./providers/ThemeProvider";
+import { ProgressProvider } from "./providers/ProgressProvider";
 
 function App() {
   const [themeVal, setThemeVal] = useState(
@@ -24,7 +25,9 @@ function App() {
       <AntApp>
         <ThemeProvider>
           {/*TODO: Progress Provider */}
+          <ProgressProvider>
           <AppContainer setThemeVal={setThemeVal} />
+          </ProgressProvider>
         </ThemeProvider>
       </AntApp>
     </ConfigProvider>
