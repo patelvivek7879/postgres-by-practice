@@ -35,11 +35,13 @@ router.post(
         res.status(200).json({
           success: true,
           message: `${operationFor} successfully updated`,
+          data: result?.rows,
         });
       } else if (result.command === "INSERT") {
         res.status(200).json({
           success: true,
           message: `Record successfully inserted`,
+          data: result?.rows,
         });
       } else if (result && result.rows && result.rows.length > 0) {
         res.status(200).json({

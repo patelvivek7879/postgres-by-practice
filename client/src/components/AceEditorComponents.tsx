@@ -9,12 +9,11 @@ import {
   Layout,
   Drawer,
   Alert,
-  App
+  App,
 } from "antd";
 import {
   MenuUnfoldOutlined,
   CaretRightOutlined,
-  SaveOutlined,
   CloseOutlined,
   MacCommandOutlined,
   WindowsOutlined,
@@ -51,9 +50,10 @@ const AceEditorComponent = ({ setResult }: any) => {
   const [running, setRunning] = useState(false);
   const { notification } = App.useApp();
 
-  const theme = localStorage.getItem("preferredTheme") === "light"
-                ? "crimson_editor"
-                : "nord_dark"
+  const theme =
+    localStorage.getItem("preferredTheme") === "light"
+      ? "crimson_editor"
+      : "nord_dark";
 
   const navigate = useNavigate();
 

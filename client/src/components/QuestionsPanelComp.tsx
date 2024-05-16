@@ -15,7 +15,7 @@ const QuestionsPanelComp = ({
 }: {
   text: string;
   traceable?: boolean;
-  id: string;
+  id?: string;
   isMarkedCompleted?: any;
 }) => {
   const [isCopying, setIsCopying] = useState(false);

@@ -1,17 +1,15 @@
-import { Typography, Layout, Table, Space } from "antd";
+import { Typography, Table, Space } from "antd";
 import "react-json-pretty/themes/monikai.css";
-
-import { capitalize } from "lodash";
 import React from "react";
 
 const { Title } = Typography;
 
 const ResultComponent = ({ result }: { result: any }) => {
   const dynamicCol =
-    result &&
+    result && result?.length &&
     Object.keys(result[0]).map((item) => ({
       key: item,
-      title: capitalize(item),
+      title: item,
       dataIndex: item,
     }));
 
@@ -40,6 +38,7 @@ const ResultComponent = ({ result }: { result: any }) => {
           size="small"
           scroll={{ y: 156 }}
           pagination={false}
+          rowKey={'name'}
         />
       )}
     </Space>

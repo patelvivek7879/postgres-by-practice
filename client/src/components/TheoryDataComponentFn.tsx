@@ -257,8 +257,7 @@ export const getTheoryItems = (panelStyle: CSSProperties = {}) => [
           <Paragraph>Used to retrieve data from one or more tables.</Paragraph>
           <Text strong>Example:</Text>
           <QuestionsPanelComp
-            text={"SELECT * FROM customers;"}
-          />
+            text={"SELECT * FROM customers;"} />
           <Text strong>• INSERT Query:</Text>
           <Paragraph>Used to insert new records into a table.</Paragraph>
           <Text strong>Example:</Text>
