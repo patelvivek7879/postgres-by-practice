@@ -20,6 +20,7 @@ import { logger } from './utils/logger';
 import githubRoutes from './routes/github-api';
 import { rateLimiter } from './middleware/rateLimiter';
 import progressRoutes from './routes/progress';
+import flash from 'connect-flash';
 
 
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -32,7 +33,8 @@ const app: Application = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json())
-app.use(cors())
+app.use(cors());
+app.use(flash());
 // app.use(cors({
 //   origin:"http://localhost:3100",
 //   methods:"GET,POST,PUT,DELETE",

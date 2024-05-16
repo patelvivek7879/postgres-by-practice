@@ -13,6 +13,7 @@ import {
 import { GoogleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/AuthProvider";
+import React from "react";
 
 const { Title } = Typography;
 
@@ -55,6 +56,8 @@ const Login = () => {
           duration: 3,
         });
       } else {
+        
+
         notification.error({
           message: "Error",
           description: jsonResponse.message,
@@ -64,11 +67,19 @@ const Login = () => {
         navigate("/login");
       }
     } catch (err: any) {
-      console.log(err);
+
+      const response = await fetch("/api/v1/flash", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const res = await  response.json();
+
       form.resetFields();
       notification.error({
-        message: "Error",
-        description: err.message,
+        message: res?.message?.error?.[0],
         placement: "bottomRight",
         duration: 3,
       });

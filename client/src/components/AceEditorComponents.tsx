@@ -3,7 +3,6 @@ import {
   Row,
   Tooltip,
   Button,
-  // notification,
   Typography,
   Space,
   Layout,
@@ -128,10 +127,6 @@ const AceEditorComponent = ({ setResult }: any) => {
     }
   }, 500);
 
-  const openConnectionDrawer = () => {
-    setOpen(true);
-  };
-
   return (
     <div className="w-full h-full">
       <Title level={4} className="pl-4">
@@ -145,43 +140,8 @@ const AceEditorComponent = ({ setResult }: any) => {
             align={"middle"}
             style={{ lineHeight: 3 }}
           >
-            {/* <Space>
-            <>
-              <small>Database:</small>
-              <Select
-                className="w-28"
-                defaultActiveFirstOption
-                options={[
-                  {
-                    value: "postgres",
-                  },
-                  {
-                    value: "vivekpatel",
-                  }
-                ]}
-              ></Select>
-            </>
-            <>
-              <small>Table:</small>
-              <Select
-                className="w-28"
-                options={[
-                  {
-                    value: "cars",
-                  },
-                ]}
-                defaultActiveFirstOption
-              ></Select>
-            </>
-            <Button type="text" icon={<InfoCircleOutlined />} onClick={openConnectionDrawer}>
-            </Button>
-          </Space> */}
             <span></span>
             <Space size={4}>
-              {/* <Button
-                icon={<SaveOutlined />}
-                disabled={sqlValue === ""}
-              ></Button> */}
               <Tooltip
                 title={
                   <small>
@@ -195,19 +155,23 @@ const AceEditorComponent = ({ setResult }: any) => {
                 }
               >
                 <Button
-                  icon={<CaretRightOutlined />}
+                  size="small"
                   onClick={runQuery}
                   disabled={sqlValue === "" || running}
                   loading={running}
                 >
-                  Run
+                  <Space size={1} align="center">
+                    <CaretRightOutlined style={{ fontSize: 13 }} />
+                    {"Execute "}
+                  </Space>
                 </Button>
               </Tooltip>
-              <Tooltip title="Format">
+              <Tooltip title="Format query">
                 <Button
                   type="text"
                   onClick={() => formatSQLValue(sqlValue)}
                   icon={<MenuUnfoldOutlined />}
+                  size="small"
                 />
               </Tooltip>
             </Space>
@@ -219,6 +183,8 @@ const AceEditorComponent = ({ setResult }: any) => {
             mode="sql"
             onChange={(val) => setSQLValue(val)}
             name="UNIQUE_ID_OF_DIV"
+            showPrintMargin={false}
+            wrapEnabled={true}
             editorProps={{ $blockScrolling: true }}
             value={sqlValue}
             width="100%"
@@ -243,10 +209,10 @@ const AceEditorComponent = ({ setResult }: any) => {
             description={
               <Space size={1} direction="vertical">
                 <Typography.Paragraph className="mb-0">
-                  Max 3 databases can be created{" "}
+                  {"Max 3 databases can be created"}{" "}
                 </Typography.Paragraph>
                 <Typography.Paragraph className="mb-0">
-                  Max 5 tables can be created for each database
+                  {"Max 5 tables can be created for each database"}
                 </Typography.Paragraph>
               </Space>
             }

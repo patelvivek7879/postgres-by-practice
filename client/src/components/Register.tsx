@@ -12,6 +12,7 @@ import {
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { GoogleOutlined } from "@ant-design/icons";
+import React from "react";
 
 const { Title } = Typography;
 
@@ -46,28 +47,26 @@ const Register = () => {
 
       const jsonResponse = await response.json();
 
-      if (jsonResponse.status === 200) {
+      if (jsonResponse.status === 201) {
         navigate("/");
         notification.success({
-          message: "Login successful",
+          message: "User created successfully",
           placement: "bottomRight",
           duration: 3,
         });
       } else {
         notification.error({
-          message: "Error",
-          description: jsonResponse.message,
+          message: jsonResponse.message,
           placement: "bottomRight",
           duration: 3,
         });
-        navigate("/login");
+        navigate("/register");
       }
     } catch (err: any) {
       console.log(err);
       form.resetFields();
       notification.error({
-        message: "Error",
-        description: err.message,
+        message: err.message,
         placement: "bottomRight",
         duration: 3,
       });

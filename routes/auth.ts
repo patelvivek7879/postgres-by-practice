@@ -10,6 +10,8 @@ import { Strategy as PassportGoogleStrategy } from "passport-google-oauth20";
 import { logger } from "../utils/logger";
 import { mustBeAuthenticated } from "../middleware/authetication";
 import bcrypt from "bcrypt";
+import flash from 'connect-flash';
+
 
 const router = express.Router();
 
@@ -146,7 +148,7 @@ export const localPassportStrategy = new LocalStrategy(
         });
 
         if (!user) {
-          return done(null, false, { message: "User not registered!" });
+          return done(null, false, { message: "Incorrect email or password" });
         }
 
         if (user.email === email) {
@@ -159,7 +161,7 @@ export const localPassportStrategy = new LocalStrategy(
             }
           });
         } else {
-          return done(null, false, { message: "wrong email or password" });
+          return done(null, false, { message: "Incorrect email or password" });
         }
       } catch (error) {
         return done(null, false, { message: "Something went wrong" });
@@ -207,26 +209,36 @@ router.get(
   }
 );
 
+router.get('/api/v1/flash', (req, res) => {
+  res.json({
+      status: '200',
+      message: req.flash(''),
+  });
+});
+
 router.post(
   "/api/v1/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureMessage: true,
+    failureFlash: true,
   }),
   async (req: any, res: Response, next: NextFunction) => {
     await req.session.save((err: Error) => {
       if (err) {
+        next(err);
         logger.error(err);
         res.status(500).json({
           status: 500,
           user: null,
           message: err.message,
         });
+      }else{
+        res.status(200).json({
+          status: 200,
+          user: req.user,
+        });
       }
-      res.status(200).json({
-        status: 200,
-        user: req.user,
-      });
     });
   }
 );
@@ -234,9 +246,6 @@ router.post(
 // Signup route
 router.post("/api/v1/register", async (req, res) => {
   const { email, password, firstname, lastname } = req.body;
-
-  // Check if user already exists
-  // const existingUser = users.find(user => user.email === email);
 
   const existingUser = await prisma.users.findFirst({
     where: {
