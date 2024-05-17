@@ -189,7 +189,7 @@ const Home = ({ setThemeVal }: any) => {
             <FloatButton
               type="primary"
               style={{ marginRight: "50px" }}
-              onClick={() => setOpen(true)}
+              onClick={() => setOpen(!open)}
             />
           </Tooltip>
         </Popover>

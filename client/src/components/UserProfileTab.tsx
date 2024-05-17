@@ -72,16 +72,7 @@ const UserProfileTab = () => {
           <Input value={loggedInUser?.name} style={{ width: "100%" }} />
         </Form.Item>
 
-        <Form.Item label="Date of Birth"
-          // name="dob"
-          // rules={[{required: true}]}
-          >
-          <DatePicker />
-        </Form.Item>
-
-        <Form.Item 
-        // {...tailLayout}
-        >
+        <Form.Item>
           <Row justify="end">
             <Space>
             <Button type="primary" htmlType="submit">

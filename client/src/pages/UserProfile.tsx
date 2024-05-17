@@ -11,22 +11,20 @@ import {
   Row,
   Space,
   Tabs,
-  Typography,
-  Upload,
+  Typography
 } from "antd";
 import type { TabsProps, UploadProps } from "antd";
 import UserProfileTab from "@/components/UserProfileTab";
 import UserSettingTab from "@/components/UserSettingTab";
-import { useState } from "react";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 const { Text } = Typography;
 const { Content } = Layout;
 
 const UserProfile = ({ setThemeVal }: any) => {
   const { loggedInUser }: any = useAuthContext();
-  const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -83,13 +81,12 @@ const UserProfile = ({ setThemeVal }: any) => {
                   <Space className="h-full" style={{ width: "100%" }}>
                     <Image
                       width={200}
-                      style={{ borderRadius: "50%", cursor: "pointer" }}
+                      style={{ borderRadius: "50%" }}
                       src={
                         loggedInUser?.picture ||
                         `https://api.dicebear.com/7.x/miniavs/svg?seed=1`
                       }
                       preview={false}
-                      onClick={() => setIsOpen(true)}
                     />
                     <Divider
                       type="vertical"
@@ -127,16 +124,16 @@ const UserProfile = ({ setThemeVal }: any) => {
           </Layout>
         </Layout>
       </Layout>
-      <Modal
+      {/* <Modal
         title="Change Profile Picture"
         open={isOpen}
         footer={<>
         <Row className="flex flex-col">
-          <Button type="primary">Save Photo</Button>
+          <Button type="primary" onClick={()=>{ console.log()}}>Save Photo</Button>
         </Row>
           <Row>
           <Upload {...props} style={{ width: '100%'}}>
-            <Button  type="primary">Upload Photo</Button>
+            <Button  type="primary">{'Upload Photo'}</Button>
           </Upload>
           </Row>
           </>
@@ -157,7 +154,7 @@ const UserProfile = ({ setThemeVal }: any) => {
           />
           <Divider className="m-4"/>
         </Row>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

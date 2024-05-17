@@ -50,8 +50,8 @@ export const ProgressProvider = ({ children }: any) => {
         notification.success({
           message:
             data?.status !== 0
-              ? "Marked successfully"
-              : "Unmarked successfully",
+              ? "Marked"
+              : "Unmarked",
           placement: "bottomRight",
           duration: 3,
         });
