@@ -1,3 +1,4 @@
+import React from "react";
 import NavbarTitleLogo from "@/components/NavbarTitleLogo";
 import ThemeSwitch from "@/components/ThemeSwitch";
 import {
@@ -6,17 +7,12 @@ import {
   Dropdown,
   Layout,
   MenuProps,
-  Row,
   Space,
-  Switch,
-  Typography,
 } from "antd";
 import {
-  SettingOutlined,
   UserOutlined,
   BranchesOutlined,
   LogoutOutlined,
-  LinkOutlined
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -73,7 +69,7 @@ const Navbar = ({
       });
       
       if (response.status === 200) {
-        navigate("/login", { replace: true });
+        navigate("/", { replace: true });
       }
     } catch (error) {
       console.error("Error while logging out ", error);

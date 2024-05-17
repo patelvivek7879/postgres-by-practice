@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: any) => {
           (jsonRes.status === 401 || jsonRes.message === "Unauthorized") &&
           location.pathname !== "/"
         ) {
-          navigate("/login");
+          navigate("/");
         }
         localStorage.setItem("userProfile", JSON.stringify(jsonRes?.user));
         setLoggedInUser(jsonRes.user);
