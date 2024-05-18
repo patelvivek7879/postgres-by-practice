@@ -43,6 +43,17 @@ const AppContainer = ({ setThemeVal }: any) => {
         }
       />
       <Route
+        path="/:username/settings"
+        element={
+          loggedInUser && (
+            <UserProfile
+              setThemeVal={setThemeVal}
+              loggedInUser={loggedInUser}
+            />
+          )
+        }
+      />
+      <Route
         path="/admin/feedbacks"
         element={
           loggedInUser && (

@@ -7,18 +7,17 @@ import {
   Divider,
   Image,
   Layout,
-  Modal,
   Row,
   Space,
   Tabs,
   Typography
 } from "antd";
-import type { TabsProps, UploadProps } from "antd";
+import type { TabsProps } from "antd";
 import UserProfileTab from "@/components/UserProfileTab";
 import UserSettingTab from "@/components/UserSettingTab";
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { HomeOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 const { Content } = Layout;
@@ -27,6 +26,8 @@ const UserProfile = ({ setThemeVal }: any) => {
   const { loggedInUser }: any = useAuthContext();
 
   const navigate = useNavigate();
+
+  const [activeKey, setActiveKey] = useState("profile");
 
   const items: TabsProps["items"] = [
     {
@@ -42,17 +43,14 @@ const UserProfile = ({ setThemeVal }: any) => {
   ];
 
   const onChange = (e: string) => {
-    console.log("click ", e);
+    setActiveKey(e);
+    navigate(`/${loggedInUser?.username}/${e}`);
   };
 
-  const props: UploadProps = {
-    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-    onChange({ file, fileList }) {
-      if (file.status !== 'uploading') {
-        console.log(file, fileList);
-      }
-    },
-  };
+  useEffect(()=>{
+    if(location.pathname.endsWith("settings")) setActiveKey('settings');
+  },[location ])
+  
 
   return (
     <>
@@ -77,7 +75,7 @@ const UserProfile = ({ setThemeVal }: any) => {
             >
               <div className="w-full ml-auto mr-auto" style={{ width: 960 }}>
                 <Row className="h-full">
-                <Button type="text" icon={<ArrowLeftOutlined />} onClick={()=> navigate(-1)}></Button>
+                <Button type="text" icon={ <HomeOutlined />} onClick={()=> navigate(`/home`)}></Button>
                   <Space className="h-full" style={{ width: "100%" }}>
                     <Image
                       width={200}
@@ -109,7 +107,7 @@ const UserProfile = ({ setThemeVal }: any) => {
                 <Row justify={"center"}>
                   <Col span={24} className="h-full w-full">
                     <Tabs
-                      defaultActiveKey="profile"
+                      activeKey={activeKey}
                       items={items}
                       onChange={onChange}
                       centered

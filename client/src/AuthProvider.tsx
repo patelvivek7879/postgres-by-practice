@@ -28,6 +28,10 @@ export const AuthProvider = ({ children }: any) => {
         }
         localStorage.setItem("userProfile", JSON.stringify(jsonRes?.user));
         setLoggedInUser(jsonRes.user);
+        const {new_user: newUser, username}: any = jsonRes.user;
+        if(newUser){
+          navigate(`/${username}/settings`);
+        }
         setLoading(false);
       })
       .catch((error) => {

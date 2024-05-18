@@ -28,14 +28,8 @@ const createUser = async (userData: User) => {
   return user;
 };
 
-const updateUser = async (userData: User) => {
+const updateUser = async (userData: any) => {
   const {  email, name, dob } = userData;
-
-  // const isUserExist = await prisma.users.findUnique({
-  //   where:{
-  //       email: email,
-  //   }
-  // })
 
   const user = await prisma.users.update({
     where:{

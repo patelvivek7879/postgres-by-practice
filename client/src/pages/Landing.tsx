@@ -5,7 +5,9 @@ import FooterComponent from "@/components/FooterComponent";
 import Navbar from "@/common/Navbar";
 import { useAuthContext } from "@/AuthProvider";
 import React from "react";
-import CImg1 from "../assets/c-1.png";
+import CImg1 from "../assets/image-1.jpg";
+import CImg2 from "../assets/image-2.avif";
+import CImg3 from "../assets/image-3jpeg.jpeg";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -59,14 +61,14 @@ const Landing = ({ setThemeVal }: any) => {
             </Col>
             <Col span={13} style={{ height: '100%', backgroundColor: '#91d5ff' }} className="flex flex-col justify-center">
               <Carousel className="p-8" autoplay>
-                <div>
-                  <Image src={CImg1} alt="image-1" preview={false}/>
+                <div className="h-full">
+                  <Image wrapperStyle={{ height: '75vh', width: '100%' }} src={CImg1} alt="image-1" preview={false}/>
                 </div>
-                <div>
-                <Image src={CImg1} alt="image-2" preview={false}/>
+                <div className="h-full">
+                <Image wrapperStyle={{ height: '75vh', width: '100%', display: 'flex', justifyContent: 'center' }} src={CImg2} alt="image-2" preview={false}/>
                 </div>
-                <div>
-                <Image src={CImg1} alt="image-3" preview={false}/>
+                <div className="h-full">
+                <Image wrapperStyle={{ height: '75vh', width: '100%', display: 'flex', justifyContent: 'center' }} src={CImg3} alt="image-3" preview={false}/>
                 </div>
               </Carousel>
             </Col>

@@ -10,7 +10,6 @@ import { Strategy as PassportGoogleStrategy } from "passport-google-oauth20";
 import { logger } from "../utils/logger";
 import { mustBeAuthenticated } from "../middleware/authetication";
 import bcrypt from "bcrypt";
-import flash from 'connect-flash';
 
 
 const router = express.Router();
@@ -48,6 +47,7 @@ export async function passportGoogleStrategyHandler(
           dob: null,
           picture: picture,
           accesstoken: accessToken,
+          new_user: true,
         },
       });
 
