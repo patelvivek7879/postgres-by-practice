@@ -1,6 +1,7 @@
 import { mustBeAuthenticated } from './../middleware/authetication';
 import * as express from "express";
 import axios from "axios";
+import fs from 'fs';
 
 const router = express.Router();
 
@@ -23,13 +24,12 @@ async function getLatestTagLabel(owner: string, repo: string) {
 
 router.get("/api/v1/version", mustBeAuthenticated ,async (req, res) => {
   try {
-    const result = await getLatestTagLabel(
-      "patelvivek7879",
-      "postgres-by-practice"
-    );
+    
+    const version = JSON.parse(fs.readFileSync('./package.json', 'utf8'))['version'];
+
     res.status(200).json({
       status: 200,
-      latestTag: result,
+      latestTag: version,
     });
   } catch (error: any) {
     res.status(500).json({
