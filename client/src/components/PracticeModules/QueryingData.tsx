@@ -36,7 +36,7 @@ const QueryingData = () => {
             </Text>
           </Space>
           <Text strong>• Example</Text>
-          <Alert showIcon type="info" message="customers is predefined table" />
+          <Alert showIcon type="info" message="customer is predefined table" />
 
           <Text strong>
             1. Using PostgreSQL SELECT statement to query data from one column

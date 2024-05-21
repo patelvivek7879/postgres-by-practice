@@ -2,7 +2,7 @@ import { Typography, Table, Space } from "antd";
 import "react-json-pretty/themes/monikai.css";
 import React from "react";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const ResultComponent = ({ result }: { result: any }) => {
   const dynamicCol =
@@ -32,6 +32,7 @@ const ResultComponent = ({ result }: { result: any }) => {
           {"No data available"}
         </Typography.Text>
       ) : (
+        result?.length > 0 ? 
         <Table
           columns={dynamicCol}
           dataSource={result}
@@ -39,7 +40,9 @@ const ResultComponent = ({ result }: { result: any }) => {
           scroll={{ y: 156 }}
           pagination={false}
           rowKey={'name'}
-        />
+        /> : <Text type='secondary'>
+          {'No rows returned'}
+        </Text>
       )}
     </Space>
   );

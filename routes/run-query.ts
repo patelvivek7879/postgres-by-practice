@@ -49,9 +49,15 @@ router.post(
           message: "Query executed successfully",
           data: result.rows,
         });
+      } else if (result && result.rows && result.rows.length === 0) {
+        res.status(200).json({
+          success: true,
+          message: "Query executed successfully",
+          data: result.rows,
+        });
       } else {
         res.status(500).json({
-          message: `Query execution failed, ${result.error}`,
+          message: `Query execution failed`,
           success: false,
           status: 500,
         });

@@ -6,18 +6,21 @@ import {
   Typography,
   Space,
   Layout,
-  Drawer,
-  Alert,
   App,
 } from "antd";
 import {
   MenuUnfoldOutlined,
   CaretRightOutlined,
-  CloseOutlined,
   MacCommandOutlined,
   WindowsOutlined,
 } from "@ant-design/icons";
 import { format } from "sql-formatter";
+import { useNavigate } from "react-router-dom";
+import React from "react";
+import { debounce } from "lodash";
+
+
+// Ace Editor imports
 import AceEditor from "react-ace";
 import ace from "ace-builds";
 
@@ -35,9 +38,6 @@ import modeJsonUrl from "ace-builds/src-noconflict/mode-json?url";
 ace.config.setModuleUrl("ace/mode/json", modeJsonUrl);
 
 import themeChromeUrl from "ace-builds/src-noconflict/theme-chrome?url";
-import { useNavigate } from "react-router-dom";
-import React from "react";
-import { debounce } from "lodash";
 ace.config.setModuleUrl("ace/theme/chrome", themeChromeUrl);
 
 const { Title } = Typography;
@@ -45,7 +45,6 @@ const { Header } = Layout;
 
 const AceEditorComponent = ({ setResult }: any) => {
   const [sqlValue, setSQLValue] = useState("");
-  const [open, setOpen] = useState(false);
   const [running, setRunning] = useState(false);
   const { notification } = App.useApp();
 
@@ -192,36 +191,6 @@ const AceEditorComponent = ({ setResult }: any) => {
             style={{ overflow: "auto", height: "300px", borderRadius: "5px" }}
           />
         </div>
-        <Drawer
-          title={<>Database Details</>}
-          open={open}
-          closeIcon={null}
-          closable={false}
-          maskClosable={true}
-          onClose={() => setOpen(false)}
-          width={"35%"}
-          destroyOnClose
-          extra={<CloseOutlined onClick={() => setOpen(false)} />}
-          forceRender
-        >
-          <Alert
-            message="Note:"
-            description={
-              <Space size={1} direction="vertical">
-                <Typography.Paragraph className="mb-0">
-                  {"Max 3 databases can be created"}{" "}
-                </Typography.Paragraph>
-                <Typography.Paragraph className="mb-0">
-                  {"Max 5 tables can be created for each database"}
-                </Typography.Paragraph>
-              </Space>
-            }
-            type="info"
-            showIcon
-          />
-          <Title level={5}>Database</Title>
-          <Title level={5}>Tables</Title>
-        </Drawer>
       </div>
     </div>
   );
