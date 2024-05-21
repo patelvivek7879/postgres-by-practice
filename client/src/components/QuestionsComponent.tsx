@@ -39,8 +39,8 @@ const QuestionsComponent = () => {
                   expandIcon={({ isActive }) => (
                     <CaretRightOutlined rotate={isActive ? 90 : 0} />
                   )}
-                  // style={{ background: token.colorBgContainer }}
                   items={getItems(panelStyle, moduleProgress)}
+                  accordion
                 />
               </div>
             ),

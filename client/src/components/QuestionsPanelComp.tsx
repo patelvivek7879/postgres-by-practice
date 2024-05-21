@@ -1,67 +1,20 @@
-import React, { useEffect } from "react";
-import { Button, Checkbox, notification, Row, Space, Typography } from "antd";
+import React from "react";
+import { Button, Row, Space, Typography } from "antd";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { darcula } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyOutlined, CheckOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { useProgressContext } from "@/providers/ProgressProvider";
 
 const QuestionsPanelComp = ({
   text,
-  traceable,
-  id,
-  isMarkedCompleted
 }: {
   text: string;
-  traceable?: boolean;
-  id?: string;
-  isMarkedCompleted?: any;
 }) => {
   const [isCopying, setIsCopying] = useState(false);
-  const [isMarked, setIsMarked] = useState(false);
-  const { moduleProgress, updateModuleProgress }: any = useProgressContext();
-
-  useEffect(()=>{
-    setIsMarked((prev: boolean)=>{
-        return moduleProgress?.[id] ? true : false
-      });
-  },[isMarkedCompleted])
-
-
-
-  const updateCurrentModuleStatus = async (e: any ) => {
-
-    const isChecked = e.target.checked;
-    setIsMarked(isChecked);
-
-    const status = isChecked ? 1 : 0;
-    const moduleNameKey = id;
-
-    const data = {
-      status: status,
-      moduleName: moduleNameKey,
-    };
-
-    try {
-      // updating a single module status
-      updateModuleProgress(data);
-    } catch (err) {
-      setIsMarked(false);
-      console.log("Error while marking updatation", err)
-    }
-  };
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
-      {traceable ? (
-        <Row justify={"end"} align={"middle"}>
-          <Space size={3} align="center">
-            <Checkbox checked={isMarked} onChange={(e) => updateCurrentModuleStatus(e)} />
-            <small>{'mark as completed'}</small>
-          </Space>
-        </Row>
-      ) : null}
       <div className="relative">
         <Row
           justify={"space-between"}

@@ -21,7 +21,7 @@ const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { setLoggedInUser }: any = useAuthContext();
-  const {notification} = App.useApp();
+  const { notification } = App.useApp();
 
   const localLogin = async (values: any) => {
     try {
@@ -51,13 +51,11 @@ const Login = () => {
         setLoggedInUser(jsonResponse.user);
         navigate("/home");
         notification.success({
-          message: "Login successful",
+          message: "Logedd in successfully",
           placement: "bottomRight",
           duration: 3,
         });
       } else {
-        
-
         notification.error({
           message: "Error",
           description: jsonResponse.message,
@@ -67,16 +65,13 @@ const Login = () => {
         navigate("/login");
       }
     } catch (err: any) {
-
       const response = await fetch("/api/v1/flash", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-
-      const res = await  response.json();
-
+      const res = await response.json();
       form.resetFields();
       notification.error({
         message: res?.message?.error?.[0],
@@ -87,13 +82,19 @@ const Login = () => {
   };
 
   const googleLoginHandler = () => {
-    window.location.href = `${import.meta.env.VITE_BASE_URL}/api/v1/auth/google`;
+    window.location.href = `${
+      import.meta.env.VITE_BASE_URL
+    }/api/v1/auth/google`;
   };
 
   return (
     <Layout className="w-full h-screen d-flex justify-center align-middle">
       <Row justify={"center"} align={"middle"}>
-        <Title level={3} className="flex justify-center align-middle mt-4 mb-0 cursor-pointer" onClick={()=> navigate("/")}>
+        <Title
+          level={3}
+          className="flex justify-center align-middle mt-4 mb-0 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           Practice Postgres
         </Title>
       </Row>
