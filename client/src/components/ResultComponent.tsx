@@ -1,8 +1,9 @@
 import { Typography, Table, Space } from "antd";
 import "react-json-pretty/themes/monikai.css";
 import React from "react";
+import { isArray } from "lodash";
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 const ResultComponent = ({ result }: { result: any }) => {
   const dynamicCol =
@@ -23,7 +24,7 @@ const ResultComponent = ({ result }: { result: any }) => {
         <Title level={5} className="m-0" style={{marginBottom: 0}}>
           {"Results"}
         </Title>
-        {result && result?.length ? (
+        {isArray(result) && result?.length ? (
           <small>{`(Rows: ${result?.length})`}</small>
         ) : null}
       </Space>
@@ -32,7 +33,7 @@ const ResultComponent = ({ result }: { result: any }) => {
           {"No data available"}
         </Typography.Text>
       ) : (
-        result?.length > 0 ? 
+        isArray(result) && result?.length > 0 ? 
         <Table
           columns={dynamicCol}
           dataSource={result}
@@ -40,9 +41,15 @@ const ResultComponent = ({ result }: { result: any }) => {
           scroll={{ y: 156 }}
           pagination={false}
           rowKey={'name'}
-        /> : <Text type='secondary'>
+        /> : typeof(result) === 'string' ?
+        <Paragraph type="secondary">
+        {result}
+        </Paragraph>
+        :<>
+         <Text type='secondary'>
           {'No rows returned'}
         </Text>
+        </>
       )}
     </Space>
   );

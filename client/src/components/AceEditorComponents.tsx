@@ -104,6 +104,7 @@ const AceEditorComponent = ({ setResult }: any) => {
           duration: 3,
         });
       } else if (result.status === 500) {
+        setResult(result.message);
         notification.error({
           message: "Error",
           description: result.message,
