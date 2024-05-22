@@ -162,6 +162,16 @@ const Login = () => {
             </Form.Item>
           </Form>
           <Space className="flex justify-center" align="center">
+            <Button
+              className="m-0 pl-0"
+              type="link"
+              size="small"
+              onClick={() => navigate("/forgot-password")}
+            >
+              Forgot password?
+            </Button>
+          </Space>
+          <Space className="flex justify-center" align="center">
             <>Don't have an account?</>
             <Button
               className="m-0 pl-0"

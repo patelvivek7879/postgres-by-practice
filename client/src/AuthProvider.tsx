@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   useState,
   useEffect,
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: any) => {
       .then((jsonRes) => {
         if (
           (jsonRes.status === 401 || jsonRes.message === "Unauthorized") &&
-          location.pathname !== "/"
+          location.pathname !== "/" && !location?.pathname.includes('reset-password')
         ) {
           navigate("/");
         }
@@ -65,5 +65,3 @@ export const AuthProvider = ({ children }: any) => {
 export const useAuthContext = () => useContext(AuthContext);
 
 export default AuthProvider;
-
-// dummy commit

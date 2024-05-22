@@ -10,7 +10,8 @@ import { Strategy as PassportGoogleStrategy } from "passport-google-oauth20";
 import { logger } from "../utils/logger";
 import { mustBeAuthenticated } from "../middleware/authetication";
 import bcrypt from "bcrypt";
-
+import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -60,22 +61,22 @@ export async function passportGoogleStrategyHandler(
 
         // When user in new
         const initProgressData = {
-          "user_email": email,
-          "qryngdt": 0,
-          "fltrngdt": 0,
-          "jns": 0,
-          "grpngdt": 0,
-          "sbqry": 0,
-          "mdfyngdt": 0,
-          "transactions": 0,
-          "mngngtblcol": 0,
-          "psqlcntrnts": 0,
-          "dttyps": 0
-        }
+          user_email: email,
+          qryngdt: 0,
+          fltrngdt: 0,
+          jns: 0,
+          grpngdt: 0,
+          sbqry: 0,
+          mdfyngdt: 0,
+          transactions: 0,
+          mngngtblcol: 0,
+          psqlcntrnts: 0,
+          dttyps: 0,
+        };
 
-       await prisma.progress.create({
-        data: initProgressData,
-      });
+        await prisma.progress.create({
+          data: initProgressData,
+        });
 
         return done(null, user);
       }
@@ -100,24 +101,24 @@ export async function passportGoogleStrategyHandler(
             user_email: email,
           },
         });
-        if(!userProgressModule){
+        if (!userProgressModule) {
           const initProgressData = {
-            "user_email": email,
-            "qryngdt": 0,
-            "fltrngdt": 0,
-            "jns": 0,
-            "grpngdt": 0,
-            "sbqry": 0,
-            "mdfyngdt": 0,
-            "transactions": 0,
-            "mngngtblcol": 0,
-            "psqlcntrnts": 0,
-            "dttyps": 0
-          }
-  
-         await prisma.progress.create({
-          data: initProgressData,
-        });
+            user_email: email,
+            qryngdt: 0,
+            fltrngdt: 0,
+            jns: 0,
+            grpngdt: 0,
+            sbqry: 0,
+            mdfyngdt: 0,
+            transactions: 0,
+            mngngtblcol: 0,
+            psqlcntrnts: 0,
+            dttyps: 0,
+          };
+
+          await prisma.progress.create({
+            data: initProgressData,
+          });
         }
 
         return done(null, updatedUser);
@@ -209,10 +210,10 @@ router.get(
   }
 );
 
-router.get('/api/v1/flash', (req, res) => {
+router.get("/api/v1/flash", (req, res) => {
   res.json({
-      status: '200',
-      message: req.flash(''),
+    status: "200",
+    message: req.flash(""),
   });
 });
 
@@ -233,13 +234,111 @@ router.post(
           user: null,
           message: err.message,
         });
-      }else{
+      } else {
         res.status(200).json({
           status: 200,
           user: req.user,
         });
       }
     });
+  }
+);
+
+router.post(
+  "/api/v1/forgot-password",
+  async (req: any, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+
+    const user = await prisma.users.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      res.status(403).json({
+        status: 403,
+        message: "Email not registered",
+      });
+    }
+
+    const token = jwt.sign(
+      { id: user?.user_id },
+      process.env.JWT_SECRET_KEY as string,
+      { expiresIn: "5m" }
+    );
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "patelvivek7879@gmail.com",
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: "patelvivek7879@gmail.com",
+      to: email,
+      subject: "Practice Postgres Reset Password",
+      text: `http://localhost:3100/pbyp/reset-password/${token}`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        res.status(500).json({
+          message: "Unable to send reset password link",
+          status: 200,
+        });
+      } else {
+        console.log("Email sent: " + info.response);
+        res.status(200).json({
+          message: "Sent link to registered email",
+          status: 200,
+        });
+      }
+    });
+  }
+);
+
+router.post(
+  "/api/v1/reset-password/:token",
+  async (req: any, res: Response, next: NextFunction) => {
+    const { token }: any = req.params;
+    const { newPassword } = req.body;
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string);
+
+      const { id: user_id }: any = decoded;
+
+      const user = await prisma.users.findUnique({
+        where: {
+          user_id,
+        },
+      });
+
+      if (user) {
+        const updatedUser = await prisma.users.update({
+          where: {
+            user_id,
+          },
+          data: {
+            password: await bcrypt.hash(newPassword, 10),
+          },
+        });
+
+        res.status(200).json({
+          status: 200,
+          user: updatedUser,
+          message: "Password reset successfully",
+        });
+      }
+    } catch (err: any) {
+      res.status(500).json({
+        status: 500,
+        message: "Invalid token: " + err?.message,
+      });
+    }
   }
 );
 
