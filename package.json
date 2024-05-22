@@ -1,6 +1,6 @@
 {
   "name": "postgres-by-practice",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Platform where user can learn Postgres SQL  by practice",
   "main": "index.ts",
   "homepage": "/pbyp",
