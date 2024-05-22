@@ -280,7 +280,7 @@ router.post(
       from: "patelvivek7879@gmail.com",
       to: email,
       subject: "Practice Postgres Reset Password",
-      text: `http://localhost:3100/pbyp/reset-password/${token}`,
+      text: `${process.env.HOSTING_URL}pbyp/reset-password/${token}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
