@@ -4,44 +4,43 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
-
 model users {
-  user_id   String? @unique
-  username  String?
-  password String
-  progress Int?
-  email String @unique
-  name String?
-  dob DateTime?
-  picture String?
+  user_id     String?   @unique
+  username    String?
+  password    String
+  progress    Int?
+  email       String    @unique
+  name        String?
+  dob         DateTime?
+  picture     String?
   accesstoken String?
-  new_user Boolean?
-  practice Int?
-  theory Int?
+  new_user    Boolean?
+  practice    Int?
+  theory      Int?
 }
 
 model feedbacks {
-  f_id String? @unique
-  from String
-  name String?
-  message String?
-  createdAt BigInt @unique
+  f_id      String? @unique
+  from      String
+  name      String?
+  message   String?
+  createdAt BigInt  @unique
 }
 
 model progress {
-    user_email String @unique
-    qryngdt Int? @default(0)
-    fltrngdt Int? @default(0)
-    jns Int? @default(0)
-    grpngdt Int? @default(0)
-    sbqry Int? @default(0)
-    mdfyngdt Int? @default(0)
-    transactions Int? @default(0)
-    mngngtblcol Int? @default(0)
-    psqlcntrnts Int? @default(0)
-    dttyps Int? @default(0)
+  user_email   String @unique
+  qryngdt      Int?   @default(0)
+  fltrngdt     Int?   @default(0)
+  jns          Int?   @default(0)
+  grpngdt      Int?   @default(0)
+  sbqry        Int?   @default(0)
+  mdfyngdt     Int?   @default(0)
+  transactions Int?   @default(0)
+  mngngtblcol  Int?   @default(0)
+  psqlcntrnts  Int?   @default(0)
+  dttyps       Int?   @default(0)
 }
